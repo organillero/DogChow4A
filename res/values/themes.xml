@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+	<style name="iTitleTheme" parent="android:Theme">
+		<item name="android:windowTitleSize">40dip</item>item>
+		<item name="android:windowTitleBackgroundStyle">@style/iWindowTitleBackground</item> 
+		<item name="android:windowContentOverlay">@android:color/transparent</item>
+	</style>
+	
+		<style name="Dialog" parent="android:style/Theme.Dialog">
+		<item name="android:windowBackground">@layout/progress_layout</item>
+        <item name="android:windowNoTitle">true</item>
+        <item name="android:windowIsFloating">true</item>
+	</style>
+	
+</resources>

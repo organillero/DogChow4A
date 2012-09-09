@@ -1,0 +1,140 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/header"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent" >
+
+    <!-- android:layout_below="@+id/back" -->
+
+    <LinearLayout
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        android:id="@+id/LinearLayout02"
+        android:layout_width="fill_parent"
+        android:layout_height="42dip"
+        android:background="@drawable/title_bg" >
+
+        <!--
+            <Button android:id="@+id/title_left_btn" android:text="Photo"
+			android:layout_width="60dip" android:layout_height="wrap_content"
+			android:background="@drawable/blankarrowbutton" android:textColor="@color/white"
+			android:layout_gravity="center" android:gravity="center"
+			android:layout_marginLeft="5dip" />
+        -->
+
+        <TextView
+            android:id="@+id/title"
+            android:layout_width="wrap_content"
+            android:layout_height="42dip"
+            android:layout_gravity="center_horizontal"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:text="@string/photo_details"
+            android:textColor="#ddd"
+            android:textSize="20dip"
+            android:textStyle="bold" />
+    </LinearLayout>
+
+    <LinearLayout
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        android:id="@+id/layout1"
+        android:layout_width="fill_parent"
+        android:layout_height="120dip"
+        android:layout_below="@+id/LinearLayout02"
+        android:layout_marginLeft="5dip"
+        android:layout_marginRight="5dip"
+        android:layout_marginTop="5dip"
+        android:orientation="horizontal" >
+
+        <GridView
+            xmlns:android="http://schemas.android.com/apk/res/android"
+            android:id="@+id/gridview"
+            android:layout_width="210dip"
+            android:layout_height="110dip"
+            android:columnWidth="65dip"
+            android:gravity="center"
+            android:horizontalSpacing="5dip"
+            android:numColumns="3"
+            android:stretchMode="columnWidth"
+            android:verticalSpacing="5dip" />
+
+        <com.google.android.maps.MapView
+            android:id="@+id/mapView2"
+            android:layout_width="90dip"
+            android:layout_height="90dip"
+            android:layout_below="@+id/LinearLayoutTop"
+            android:layout_gravity="right"
+            android:layout_marginLeft="5dip"
+            android:apiKey="0DJlqNfmMwhsYGvPnTuMGnYEHQzVnk0mHfL__DQ"
+            android:clickable="true"
+            android:enabled="true" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/layoutProgress"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/layout1"
+        android:layout_centerInParent="true"
+        android:orientation="vertical" >
+
+        <ProgressBar
+            android:id="@+id/progress_horizontal"
+            style="?android:attr/progressBarStyleHorizontal"
+            android:layout_width="200dip"
+            android:layout_height="wrap_content" />
+    </LinearLayout>
+
+    <View
+        android:id="@+id/horizontal_view"
+        android:layout_width="fill_parent"
+        android:layout_height="2dip"
+        android:layout_below="@+id/layout1"
+        android:background="@color/black" />
+
+    <LinearLayout
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        android:id="@+id/layout3"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/horizontal_view"
+        android:layout_marginBottom="50px"
+        android:orientation="vertical" >
+
+        <ListView
+            android:id="@+id/ListView01"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="5dip"
+            android:layout_marginRight="5dip" />
+    </LinearLayout>
+
+    <RelativeLayout
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        android:id="@+id/footer"
+        android:layout_width="fill_parent"
+        android:layout_height="50dip"
+        android:layout_alignParentBottom="true"
+        android:background="#676767"
+        android:orientation="vertical" >
+
+        <EditText
+            android:id="@+id/EditText01"
+            android:layout_width="235dip"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
+            android:layout_marginLeft="10dip"
+            android:hint="@string/error_response"
+            android:imeOptions="actionDone"
+            android:inputType="textMultiLine" />
+
+        <Button
+            xmlns:android="http://schemas.android.com/apk/res/android"
+            android:id="@+id/ButtonSend"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
+            android:layout_centerHorizontal="true"
+            android:layout_toRightOf="@+id/EditText01" />
+    </RelativeLayout>
+
+</RelativeLayout>

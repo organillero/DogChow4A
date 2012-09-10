@@ -1,0 +1,112 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:background="#ffffff"
+    android:orientation="vertical" >
+
+    <LinearLayout
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:layout_weight="1"
+        android:gravity="center" >
+
+        <ImageView
+            android:id="@+id/image"
+            android:layout_width="fill_parent"
+            android:layout_height="140dp"
+            android:layout_gravity="center"
+            android:scaleType="centerInside"
+            android:src="@drawable/app_bg" />
+    </LinearLayout>
+
+    <ScrollView
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"       
+        android:layout_weight="7"
+        android:scrollbars="none" >
+
+        <LinearLayout
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:orientation="vertical" >
+
+            <TextView
+                android:id="@+id/loginTxt"
+                android:layout_width="150dp"
+                android:layout_height="wrap_content"                
+                android:text="@string/email"
+                android:textColor="@color/dimgreen" >
+            </TextView>
+
+            <EditText
+                android:id="@+id/manualemailEdit"
+                android:layout_width="158dp"
+                android:layout_height="wrap_content"
+                android:singleLine="true" >
+            </EditText>
+
+            <TextView
+                android:id="@+id/passwordTxt"
+                android:layout_width="150dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="5dip"
+                android:text="@string/password"
+                android:textColor="@color/dimgreen" >
+            </TextView>
+
+            <EditText
+                android:id="@+id/manualpasswordEdit"
+                android:layout_width="158dp"
+                android:layout_height="wrap_content"                
+                android:password="true"
+                android:singleLine="true" >
+            </EditText>
+
+            <TextView
+                android:id="@+id/confirmpasswordTxt"
+                android:layout_width="150dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="5dip"
+                android:text="@string/confirm_password"
+                android:textColor="@color/dimgreen" >
+            </TextView>
+
+            <EditText
+                android:id="@+id/manualconfirmPasswordEdit"
+                android:layout_width="158dp"
+                android:layout_height="wrap_content"               
+                android:password="true"
+                android:singleLine="true" >
+            </EditText>
+
+            <FrameLayout
+                android:layout_width="fill_parent"
+                android:layout_height="fill_parent"
+                android:gravity="center" >
+
+                <Button
+                    android:id="@+id/submit"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:layout_marginTop="5dp"
+                    android:background="@drawable/i_register"
+                    android:textColor="#ffffff" >
+                </Button>
+
+                <ProgressBar
+                    android:id="@+id/register_progress"
+                    android:layout_width="45dp"
+                    android:layout_height="45dp"
+                    android:layout_gravity="right|bottom"
+                    android:layout_marginRight="5dp" 
+                   />
+            </FrameLayout>
+        </LinearLayout>
+    </ScrollView>
+
+</LinearLayout>

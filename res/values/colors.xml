@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <drawable name="white">#ffffff</drawable>
+    <drawable name="black">#000000</drawable>
+
+    <color name="red">#f00</color>
+    <color name="opaque_red">#f00</color>
+    <color name="opaque_blue">#00f</color>
+    <color name="translucent_red">#80ff0000</color>
+    <color name="transparent">#00000000</color>
+    <color name="lightgrey">#A0A0A0</color>
+    <color name="white">#ffffff</color>
+    <color name="black">#000</color>
+    <color name="green">#00ff00</color>
+    <color name="blue">#0000ff</color>
+    <color name="dimgray1">#2F4F4F</color>
+    <color name="dimgray2">#696969</color>
+    <color name="gray1">#808080</color>
+    <color name="gray2">#808888</color>
+    <color name="lightGray1">#005d29</color>
+    <color name="lightGray2">#9ACD32</color>
+    <color name="lightSteelBlue">#000000</color>
+    <color name="lightgreen">#409a47</color>
+    <color name="lightgreendark">#014901</color>
+    <color name="lightgray3">#ececec</color>
+    <color name="dimwhite">#DCDCDC</color>
+    <color name="dimgreen">#0d6333</color>
+    
+    <color name="lightgraystyle">#797979</color>
+    <color name="darkGreen">#145339</color>
+    <color name="silver">#bcbcbc</color>
+    
+
+</resources>

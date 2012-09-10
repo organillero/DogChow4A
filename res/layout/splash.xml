@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+  xmlns:android="http://schemas.android.com/apk/res/android"
+  android:layout_width="fill_parent"
+  android:layout_height="fill_parent"
+  android:background="#ffffff"
+  
+  >
+  
+  
+  <ImageView 
+           android:layout_width="fill_parent" 
+           android:layout_height="fill_parent" 
+           android:scaleType="fitXY" 
+           android:src="@drawable/dog_image" 
+           android:layout_centerInParent="true"
+        /> 
+        
+<!--   <ImageView android:layout_width="fill_parent"
+  android:layout_height="fill_parent"
+  android:src="@drawable/app_bg"
+  android:scaleType="centerInside"/> -->
+  
+</RelativeLayout>

@@ -1,0 +1,100 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<manifest 
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    package="mx.ferreyra.dogapp"
+    android:versionCode="16"
+    android:versionName="1.2" >
+
+    <uses-sdk
+        android:minSdkVersion="7"
+        android:targetSdkVersion="16" />
+
+    <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
+    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+    <uses-permission android:name="android.permission.READ_PHONE_STATE" />
+    
+    <application
+        android:name=".DogUtil"
+        android:icon="@drawable/dog_chow_logo"
+        android:label="@string/app_name" >
+        <uses-library android:name="com.google.android.maps" />
+
+        <activity
+            android:name=".Splash"
+            android:label="@string/app_name" >
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+        <activity
+            android:name=".MainActivity"
+            android:label="@string/app_name"
+            android:theme="@android:style/Theme.NoTitleBar.Fullscreen" />
+        <activity
+            android:name=".PublishFacebookScreen"
+            android:label="@string/app_name"
+            android:theme="@style/iTitleTheme" />
+        <activity
+            android:name=".RetrievePassword"
+            android:label="@string/app_name"
+            android:theme="@style/iTitleTheme" />
+        <activity
+            android:name=".LoginScreen"
+            android:label="@string/app_name"
+            android:theme="@style/iTitleTheme" />
+        <activity
+            android:name=".LoginMainScreen"
+            android:label="@string/app_name"
+            android:theme="@style/iTitleTheme" />
+        <activity
+            android:name=".RetrievePasswordResult"
+            android:label="@string/app_name"
+            android:noHistory="true"
+            android:theme="@style/iTitleTheme" />
+        <activity
+            android:name=".ManualRegister"
+            android:label="@string/app_name"
+            android:theme="@style/iTitleTheme" />
+		<activity
+            android:name=".RegisterScreen"
+            android:label="@string/app_name"
+            android:theme="@style/iTitleTheme" />
+        <activity
+            android:name=".ExerciseMenu"
+            android:label="@string/app_name"
+            android:theme="@style/iTitleTheme" />
+        <activity
+            android:name=".RatingsActivity"
+            android:label="@string/app_name"
+            android:theme="@style/iTitleTheme" />
+        <activity
+            android:name=".RouteNaming"
+            android:label="@string/app_name"
+            android:theme="@style/iTitleTheme" />
+        <activity
+            android:name=".LoadPath"
+            android:label="@string/app_name"
+            android:theme="@style/iTitleTheme" />
+        <activity 
+            android:name=".TrackMapRoute" 
+            android:theme="@style/iTitleTheme" 
+            android:windowSoftInputMode="adjustPan" />        
+        <activity 
+            android:name=".ShowMapRoute" 
+            android:theme="@style/iTitleTheme" 
+            android:windowSoftInputMode="adjustPan" />
+        <activity 
+            android:name=".Report" 
+            android:theme="@style/iTitleTheme" 
+            android:windowSoftInputMode="adjustPan" />
+        <activity 
+            android:name=".Starting" 
+            android:theme="@style/iTitleTheme" 
+            android:windowSoftInputMode="adjustPan" />
+    </application>
+
+</manifest>

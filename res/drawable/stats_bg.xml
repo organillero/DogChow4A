@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="utf-8"?>
+<selector xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <item android:state_pressed="true">
+        <shape>
+            <gradient android:angle="45" 
+                android:endColor="@color/white" 
+                android:startColor="@color/black" />
+
+            <stroke android:width="3dp" 
+                android:color="#afafaf" />
+
+            <corners android:radius="10dp" />
+
+            <padding android:bottom="15dp" 
+                android:left="15dp" 
+                android:right="15dp" 
+                android:top="15dp" />
+        </shape>        
+    </item>
+    
+    <item android:state_focused="true">
+        <shape>
+            <gradient android:angle="45" 
+                android:endColor="@color/red" 
+                android:startColor="@color/white" />
+
+            <stroke android:width="3dp" 
+                android:color="#afafaf" />
+
+            <corners android:radius="10dp" />
+
+            <padding android:bottom="15dp" 
+                android:left="15dp" 
+                android:right="15dp" 
+                android:top="15dp" />
+        </shape>        
+    </item>
+    
+    <item>        
+       <shape>
+            <gradient android:angle="450" 
+                android:centerX="0.50" 
+                android:endColor="@color/lightgreen" 
+                android:startColor="@color/lightgreendark" 
+                android:type="linear" />
+
+            <corners android:bottomLeftRadius="10dp" 
+                android:bottomRightRadius="10dp" 
+                android:topLeftRadius="10dp"                
+                android:topRightRadius="10dp" />
+
+            <padding android:bottom="8dp" 
+                android:left="0dp" 
+                android:right="8dp" 
+                android:top="8dp" />
+
+            <size android:height="38dip" 
+                android:width="48dip" />
+            
+            <stroke android:width="3dp" 
+                android:color="#afafaf" />
+                         
+        </shape>        
+    </item>
+
+
+</selector>

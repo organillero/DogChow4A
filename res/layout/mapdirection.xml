@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:orientation="vertical" >
+
+    <com.google.android.maps.MapView
+        android:id="@+id/mapview"
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        android:apiKey="0JBhqaMm3Wr2I4Mhk1RuQy1q8Y3y7rnWOWot2Sw"
+        android:clickable="true" />
+
+    <LinearLayout
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="2px"
+        android:background="#88ffffff"
+        android:orientation="vertical"
+        android:padding="2px" >
+
+        <TextView
+            android:id="@+id/txt_srcAdd"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/direction_from"
+            android:textColor="#000000" />
+
+        <TextView
+            android:id="@+id/txt_desAdd"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/direction_to"
+            android:textColor="#000000" />
+
+        <TextView
+            android:id="@+id/txt_money"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/direction_fare"
+            android:textColor="#000000" />
+
+        <TextView
+            android:id="@+id/txt_distance"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/direction_distance"
+            android:textColor="#000000" />
+    </LinearLayout>
+
+</FrameLayout>

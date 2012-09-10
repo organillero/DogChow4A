@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <!-- Base application theme is the default theme. -->
+    <style name="Theme" parent="android:Theme"></style>
+
+    <!--
+         A theme for a custom dialog appearance.  Here we use an ugly
+         custom frame.
+    -->
+
+    <style name="iWindowTitleBackground">
+        <item name="android:background">@drawable/topbar</item>
+    </style>
+
+    <style name="myshelf_iBtn">
+        <item name="android:background">@drawable/title_bg</item>
+        <item name="android:paddingLeft">4dip</item>
+        <item name="android:paddingRight">14dip</item>
+        <item name="android:paddingTop">4dip</item>
+        <item name="android:paddingBottom">4dip</item>
+        <item name="android:textSize">15dip</item>
+        <item name="android:textColor">#fff</item>
+        <item name="android:shadowRadius">2</item>
+    </style>
+
+    <style name="foodRatingBar" parent="@android:style/Widget.RatingBar">
+        <item name="android:progressDrawable">@drawable/food_ratingbar_full</item>
+        <item name="android:minHeight">38dip</item>
+        <item name="android:maxHeight">70dip</item>
+    </style>
+
+    <style name="loginBtn">
+        <item name="android:textSize">9px</item>
+        <item name="android:gravity">center_horizontal</item>
+        <item name="android:textColor">#fff</item>
+        <item name="android:textStyle">bold</item>
+    </style>
+</resources>

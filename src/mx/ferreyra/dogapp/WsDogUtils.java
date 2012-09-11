@@ -27,6 +27,21 @@ public class WsDogUtils {
         this.context = context;
     }
 
+    /**
+     * Parse soap object response.
+     * @param result Soap object response to parse.
+     * @return If <code>result</code> parameter it returns <code>null</code>,
+     * otherwise return <code>String</code> matrix with elements parsed.
+     * This matrix should look like:
+     * <p><code>
+     * [["1","Moderada"]]
+     * </code></p>
+     * for this soap response:
+     * <p><code>
+     * &lt;IdActividadFisica&gt;1&lt;/IdActividadFisica&gt;
+     * &lt;Descripcion&gt;Moderada&lt;/Descripcion&gt;
+     * </code></p>
+     */
     public String[][] parseGetCatActividadFisica(SoapObject result) {
         if (result == null)
             return null;
@@ -65,6 +80,21 @@ public class WsDogUtils {
         return parseGetCatActividadFisica(result);
     }
 
+    /**
+     * Parse soap object response.
+     * @param result Soap object response to parse.
+     * @return If <code>result</code> parameter it returns <code>null</code>,
+     * otherwise return <code>String</code> matrix with elements parsed.
+     * This matrix should look like:
+     * <p><code>
+     * [["1","Aguascalientes"]]
+     * </code></p>
+     * for this soap response:
+     * <p><code>
+     * &lt;IdEstado&gt;1&lt;/IdEstado&gt;
+     * &lt;Descripcion&gt;Aguascalientes&lt;/Descripcion&gt;
+     * </code></p>
+     */
     public String[][] parseGetCatEstados(SoapObject result) {
         if (result == null)
             return null;
@@ -102,6 +132,22 @@ public class WsDogUtils {
         return parseGetCatEstados(result);
     }
 
+    /**
+     * Parse soap object response.
+     * @param result Soap object response to parse.
+     * @return If <code>result</code> parameter it returns <code>null</code>,
+     * otherwise return <code>String</code> matrix with elements parsed.
+     * This matrix should look like:
+     * <p><code>
+     * [["1","Masculino","Macho"]]
+     * </code></p>
+     * for this soap response:
+     * <p><code>
+     * &lt;IdGenero&gt;1&lt;/IdGenero&gt;
+     * &lt;Descripcion&gt;Masculino&lt;/Descripcion&gt;
+     * &lt;Descripcion2&gt;Macho&lt;/Descripcion2&gt;
+     * </code></p>
+     */
     public String[][] parseGetCatGenero(SoapObject result) {
         if (result == null)
             return null;
@@ -141,6 +187,21 @@ public class WsDogUtils {
         return parseGetCatGenero(result);
     }
 
+    /**
+     * Parse soap object response.
+     * @param result Soap object response to parse.
+     * @return If <code>result</code> parameter it returns <code>null</code>,
+     * otherwise return <code>String</code> matrix with elements parsed.
+     * This matrix should look like:
+     * <p><code>
+     * [["1","Exterior"]]
+     * </code></p>
+     * for this soap response:
+     * <p><code>
+     * &lt;IdTipoVida&gt;1&lt;/IdTipoVida&gt;
+     * &lt;Descripcion&gt;Exterior&lt;/Descripcion&gt;
+     * </code></p>
+     */
     public String[][] parseGetCatTipoVida(SoapObject result) {
         if (result == null)
             return null;
@@ -149,13 +210,13 @@ public class WsDogUtils {
         SoapObject diffgram = (SoapObject)root.getProperty(1);
         SoapObject newDataSet = (SoapObject)diffgram.getProperty(0);
         int count = newDataSet.getPropertyCount();
-        String[][] values = new String[count][2];
+        int columns = 17;
+        String[][] values = new String[count][columns];
 
-        for(int i=0; i<count; i++) {
+        for(int i=0; i<newDataSet.getPropertyCount(); i++) {
             SoapObject table = (SoapObject)newDataSet.getProperty(i);
-
-            values[i][0] = table.getPropertyAsString(0);
-            values[i][1] = table.getPropertyAsString(1);
+            for(int j=0; j<columns; j++)
+                values[i][j] = table.getPropertyAsString(j);
         }
 
         return values;

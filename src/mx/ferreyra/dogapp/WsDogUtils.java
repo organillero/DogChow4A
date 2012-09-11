@@ -412,7 +412,7 @@ public class WsDogUtils {
         int columns = 3;
         String[][] values = new String[count][columns];
 
-        for(int i=0; i<dtRegister.getPropertyCount(); i++) {
+        for(int i=0; i<count; i++) {
             SoapObject dtRegister = (SoapObject)documentElement.getProperty(i);
             for(int j=0; j<columns; j++)
                 values[i][j] = dtRegister.getPropertyAsString(j);
@@ -544,5 +544,290 @@ public class WsDogUtils {
 
         SoapObject result = (SoapObject)envelope.bodyIn;
         return parseGetTrainingSpot(result);
+    }
+
+    /**
+     * Parse soap object response.
+     * @param result Soap object response to parse.
+     * @return If <code>result</code> parameter it returns <code>null</code>,
+     * otherwise return <code>String</code> matrix with elements parsed.
+     * This matrix should look like:
+     * <p><code>
+     * [["1|37"]]
+     * </code></p>
+     * for this soap response:
+     * <p><code>
+     * &lt;return&gt;1|37&lt;/return&gt;
+     * </code></p>
+     */
+    public String[][] parseInsertIphoneID(SoapObject result) {
+        if (result == null)
+            return null;
+
+        SoapObject root = (SoapObject)result.getProperty(0);
+        SoapObject diffgram = (SoapObject)root.getProperty(1);
+        SoapObject documentElement = (SoapObject)diffgram.getProperty(0);
+        int count = documentElement.getPropertyCount();
+        if(count==0)
+            return null;
+
+        int columns = 1;
+        String[][] values = new String[count][columns];
+
+        for(int i=0; i<count; i++) {
+            SoapObject dtRegister = (SoapObject)documentElement.getProperty(i);
+            for(int j=0; j<columns; j++)
+                values[i][j] = dtRegister.getPropertyAsString(j);
+        }
+
+        return values;
+    }
+
+    public String[][] insertIphoneID(Map parameters)
+        throws IOException, XmlPullParserException {
+        String method = "insertIphoneID";
+        String action = "http://tempuri.org/insertIphoneID";
+
+        SoapObject request = new SoapObject(namespace, method);
+        request.addProperty("IphoneID",(Integer)parameters.get("iphone_id"));
+
+        SoapSerializationEnvelope envelope = new SoapSerializationEnvelope(SoapEnvelope.VER11);
+        envelope.setOutputSoapObject(request);
+        envelope.dotNet = true;
+
+        HttpTransportSE androidHttpTransport = new HttpTransportSE(url);
+        androidHttpTransport.call(action, envelope);
+
+        SoapObject result = (SoapObject)envelope.bodyIn;
+        return parseInsertIphoneID(result);
+    }
+
+    /**
+     * Parse soap object response.
+     * @param result Soap object response to parse.
+     * @return If <code>result</code> parameter it returns <code>null</code>,
+     * otherwise return <code>String</code> matrix with elements parsed.
+     * This matrix should look like:
+     * <p><code>
+     * [["1"]]
+     * </code></p>
+     * for this soap response:
+     * <p><code>
+     * &lt;return&gt;1&lt;/return&gt;
+     * </code></p>
+     */
+    public String[][] parseInsertRating(SoapObject result) {
+        if (result == null)
+            return null;
+
+        SoapObject root = (SoapObject)result.getProperty(0);
+        SoapObject diffgram = (SoapObject)root.getProperty(1);
+        SoapObject documentElement = (SoapObject)diffgram.getProperty(0);
+        int count = documentElement.getPropertyCount();
+        if(count==0)
+            return null;
+
+        int columns = 1;
+        String[][] values = new String[count][columns];
+
+        for(int i=0; i<count; i++) {
+            SoapObject dtRegister = (SoapObject)documentElement.getProperty(i);
+            for(int j=0; j<columns; j++)
+                values[i][j] = dtRegister.getPropertyAsString(j);
+        }
+
+        return values;
+    }
+
+    public String[][] insertRating(Map parameters)
+        throws IOException, XmlPullParserException {
+        String method = "insertRating";
+        String action = "http://tempuri.org/insertRating";
+
+        SoapObject request = new SoapObject(namespace, method);
+        request.addProperty("routeId",(Integer)parameters.get("route_id"));
+        request.addProperty("rating",(String)parameters.get("rating"));
+
+        SoapSerializationEnvelope envelope = new SoapSerializationEnvelope(SoapEnvelope.VER11);
+        envelope.setOutputSoapObject(request);
+        envelope.dotNet = true;
+
+        HttpTransportSE androidHttpTransport = new HttpTransportSE(url);
+        androidHttpTransport.call(action, envelope);
+
+        SoapObject result = (SoapObject)envelope.bodyIn;
+        return parseInsertRating(result);
+    }
+
+    /**
+     * Parse soap object response.
+     * @param result Soap object response to parse.
+     * @return If <code>result</code> parameter it returns <code>null</code>,
+     * otherwise return <code>String</code> matrix with elements parsed.
+     * This matrix should look like:
+     * <p><code>
+     * [["1"]]
+     * </code></p>
+     * for this soap response:
+     * <p><code>
+     * &lt;return&gt;1&lt;/return&gt;
+     * </code></p>
+     */
+    public String[][] parseInsertUserIphone(SoapObject result) {
+        if (result == null)
+            return null;
+
+        SoapObject root = (SoapObject)result.getProperty(0);
+        SoapObject diffgram = (SoapObject)root.getProperty(1);
+        SoapObject documentElement = (SoapObject)diffgram.getProperty(0);
+        int count = documentElement.getPropertyCount();
+        if(count==0)
+            return null;
+
+        int columns = 1;
+        String[][] values = new String[count][columns];
+
+        for(int i=0; i<count; i++) {
+            SoapObject dtRegister = (SoapObject)documentElement.getProperty(i);
+            for(int j=0; j<columns; j++)
+                values[i][j] = dtRegister.getPropertyAsString(j);
+        }
+
+        return values;
+    }
+
+    public String[][] insertUserIphone(Map parameters)
+        throws IOException, XmlPullParserException {
+        String method = "insertUserIphone";
+        String action = "http://tempuri.org/insertUserIphone";
+
+        SoapObject request = new SoapObject(namespace, method);
+        request.addProperty("IphoneID",(String)parameters.get("iphone_id"));
+        request.addProperty("username",(String)parameters.get("username"));
+        request.addProperty("password",(String)parameters.get("password"));
+        request.addProperty("isFacebook",(String)parameters.get("is_facebook"));
+
+        SoapSerializationEnvelope envelope = new SoapSerializationEnvelope(SoapEnvelope.VER11);
+        envelope.setOutputSoapObject(request);
+        envelope.dotNet = true;
+
+        HttpTransportSE androidHttpTransport = new HttpTransportSE(url);
+        androidHttpTransport.call(action, envelope);
+
+        SoapObject result = (SoapObject)envelope.bodyIn;
+        return parseInsertUserIphone(result);
+    }
+
+    /**
+     * Parse soap object response.
+     * @param result Soap object response to parse.
+     * @return If <code>result</code> parameter it returns <code>null</code>,
+     * otherwise return <code>String</code> matrix with elements parsed.
+     * This matrix should look like:
+     * <p><code>
+     * [["38"]]
+     * </code></p>
+     * for this soap response:
+     * <p><code>
+     * &lt;return&gt;38&lt;/return&gt;
+     * </code></p>
+     */
+    public String[][] parseUserLogin(SoapObject result) {
+        if (result == null)
+            return null;
+
+        SoapObject root = (SoapObject)result.getProperty(0);
+        SoapObject diffgram = (SoapObject)root.getProperty(1);
+        SoapObject documentElement = (SoapObject)diffgram.getProperty(0);
+        int count = documentElement.getPropertyCount();
+        if(count==0)
+            return null;
+
+        int columns = 1;
+        String[][] values = new String[count][columns];
+
+        for(int i=0; i<count; i++) {
+            SoapObject dtRegister = (SoapObject)documentElement.getProperty(i);
+            for(int j=0; j<columns; j++)
+                values[i][j] = dtRegister.getPropertyAsString(j);
+        }
+
+        return values;
+    }
+
+    public String[][] userLogin(Map parameters)
+        throws IOException, XmlPullParserException {
+        String method = "userLogin";
+        String action = "http://tempuri.org/userLogin";
+
+        SoapObject request = new SoapObject(namespace, method);
+        request.addProperty("username",(String)parameters.get("username"));
+        request.addProperty("password",(String)parameters.get("password"));
+
+        SoapSerializationEnvelope envelope = new SoapSerializationEnvelope(SoapEnvelope.VER11);
+        envelope.setOutputSoapObject(request);
+        envelope.dotNet = true;
+
+        HttpTransportSE androidHttpTransport = new HttpTransportSE(url);
+        androidHttpTransport.call(action, envelope);
+
+        SoapObject result = (SoapObject)envelope.bodyIn;
+        return parseUserLogin(result);
+    }
+
+    /**
+     * Parse soap object response.
+     * @param result Soap object response to parse.
+     * @return If <code>result</code> parameter it returns <code>null</code>,
+     * otherwise return <code>String</code> matrix with elements parsed.
+     * This matrix should look like:
+     * <p><code>
+     * [["SERVER_ERROR"]]
+     * </code></p>
+     * for this soap response:
+     * <p><code>
+     * &lt;return&gt;SERVER_ERROR&lt;/return&gt;
+     * </code></p>
+     */
+    public String[][] parseUserRecoveryPWD(SoapObject result) {
+        if (result == null)
+            return null;
+
+        SoapObject root = (SoapObject)result.getProperty(0);
+        SoapObject diffgram = (SoapObject)root.getProperty(1);
+        SoapObject documentElement = (SoapObject)diffgram.getProperty(0);
+        int count = documentElement.getPropertyCount();
+        if(count==0)
+            return null;
+
+        int columns = 1;
+        String[][] values = new String[count][columns];
+
+        for(int i=0; i<count; i++) {
+            SoapObject dtRegister = (SoapObject)documentElement.getProperty(i);
+            for(int j=0; j<columns; j++)
+                values[i][j] = dtRegister.getPropertyAsString(j);
+        }
+
+        return values;
+    }
+
+    public String[][] userRecoveryPWD(Map parameters)
+        throws IOException, XmlPullParserException {
+        String method = "userRecoveryPWD";
+        String action = "http://tempuri.org/userRecoveryPWD";
+
+        SoapObject request = new SoapObject(namespace, method);
+        request.addProperty("username",(String)parameters.get("username"));
+
+        SoapSerializationEnvelope envelope = new SoapSerializationEnvelope(SoapEnvelope.VER11);
+        envelope.setOutputSoapObject(request);
+        envelope.dotNet = true;
+
+        HttpTransportSE androidHttpTransport = new HttpTransportSE(url);
+        androidHttpTransport.call(action, envelope);
+
+        SoapObject result = (SoapObject)envelope.bodyIn;
+        return parseUserRecoveryPWD(result);
     }
 }

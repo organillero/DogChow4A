@@ -1,0 +1,47 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent" >
+
+    <TextView
+        android:id="@+id/banner_txt"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:layout_margin="30dp"
+        android:text="@string/presignup_banner" />
+
+    <Button
+        android:id="@+id/signup_btn"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:layout_margin="7dp"
+        android:layout_below="@id/banner_txt"
+        android:width="225dp"
+        android:onClick="onClickSignupButton"
+        android:text="@string/to_signup" />
+
+    <Button
+        android:id="@+id/login_btn"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:layout_margin="7dp"
+        android:width="225dp"
+        android:layout_below="@id/signup_btn"
+        android:onClick="onClickLoginButton"
+        android:text="@string/to_login" />
+
+    <Button
+        android:id="@+id/recover_password_btn"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:layout_margin="7dp"
+        android:width="225dp"
+        android:layout_below="@id/login_btn"
+        android:onClick="onClickRecoverPasswordButton"
+        android:text="@string/recover_password" />
+
+</RelativeLayout>

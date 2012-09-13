@@ -196,5 +196,11 @@
     <string name="state">Estado</string>
     <string name="send">"   Registrar   "</string>
 
+    <!-- PreSignup activity -->
+    <string name="title_activity_pre_signup">PreSignup</string>
+    <string name="presignup_banner">¡Te invitamos a iniciar sesión!</string>
+    <string name="recover_password">Recuperar contraseña</string>
+    <string name="to_login">Iniciar sesión</string>
+    <string name="to_signup">Registrarse</string>
 
 </resources>

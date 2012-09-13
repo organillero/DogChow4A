@@ -51,7 +51,7 @@
             android:background="@drawable/i_statistics" />
 
         <Button
-            android:id="@+id/dog_btn"
+            android:id="@+id/dog_welfare_btn"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignBaseline="@+id/statistics_btn"
@@ -59,6 +59,7 @@
             android:layout_below="@id/loadroute_btn"
             android:layout_margin="10dp"
             android:layout_toRightOf="@id/statistics_btn"
+            android:onClick="onClickDogWelfare"
             android:background="@drawable/i_statistics" />
     </RelativeLayout>
 

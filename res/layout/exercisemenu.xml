@@ -1,68 +1,65 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/menu_scroll"
     android:layout_width="fill_parent"
     android:layout_height="fill_parent"
-    android:background="#ffffff"
-    android:orientation="vertical" >
+    android:background="@android:color/white"
+    android:scrollbars="vertical" >
 
-    <LinearLayout
+    <RelativeLayout
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:layout_gravity="center"
-        android:layout_marginBottom="10dp"
-        android:layout_marginTop="10dp"
-        android:layout_weight="1"
-        android:gravity="center" >
+        android:gravity="center"
+        android:orientation="vertical" >
 
         <ImageView
             android:id="@+id/image"
             android:layout_width="100dp"
             android:layout_height="100dp"
-            android:layout_gravity="center"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="35dp"
             android:scaleType="fitCenter"
             android:src="@drawable/dog_bg_img" />
-    </LinearLayout>
 
-    <ScrollView
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-        android:layout_weight="2"
-        android:scrollbars="none" >
-
-        <LinearLayout
-            android:layout_width="fill_parent"
+        <Button
+            android:id="@+id/newroute_btn"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:gravity="center"
-            android:orientation="vertical" >
+            android:layout_alignParentLeft="true"
+            android:layout_below="@id/image"
+            android:layout_margin="10dp"
+            android:background="@drawable/i_newroute" />
 
-            <LinearLayout
-                android:layout_width="fill_parent"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center"
-                android:gravity="center" >
+        <Button
+            android:id="@+id/loadroute_btn"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignBaseline="@+id/newroute_btn"
+            android:layout_below="@id/image"
+            android:layout_margin="10dp"
+            android:layout_toRightOf="@id/newroute_btn"
+            android:background="@drawable/i_loadpath" />
 
-                <Button
-                    android:id="@+id/newroute_btn"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_margin="10dp"
-                    android:background="@drawable/i_newroute" />
+        <Button
+            android:id="@+id/statistics_btn"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentLeft="true"
+            android:layout_below="@id/newroute_btn"
+            android:layout_margin="10dp"
+            android:layout_marginTop="23dp"
+            android:background="@drawable/i_statistics" />
 
-                <Button
-                    android:id="@+id/loadroute_btn"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_margin="10dp"
-                    android:background="@drawable/i_loadpath" />
-            </LinearLayout>
+        <Button
+            android:id="@+id/dog_btn"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignBaseline="@+id/statistics_btn"
+            android:layout_alignTop="@+id/statistics_btn"
+            android:layout_below="@id/loadroute_btn"
+            android:layout_margin="10dp"
+            android:layout_toRightOf="@id/statistics_btn"
+            android:background="@drawable/i_statistics" />
+    </RelativeLayout>
 
-            <Button
-                android:id="@+id/statistics_btn"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_margin="5dp"
-                android:background="@drawable/i_statistics" />
-        </LinearLayout>
-    </ScrollView>
-
-</LinearLayout>
+</ScrollView>

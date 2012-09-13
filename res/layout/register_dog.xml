@@ -1,0 +1,200 @@
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent" >
+
+    <RelativeLayout
+        xmlns:tools="http://schemas.android.com/tools"
+        android:id="@+id/activityrootview"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="10dp" >
+
+        <TextView
+            android:id="@+id/textView1"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="2dp"
+            android:layout_marginRight="2dp"
+            android:background="#167044"
+            android:padding="6dp"
+            android:text="@string/dog_data_label"
+            android:textColor="@android:color/white"
+            android:textSize="16sp"
+            android:textStyle="bold" />
+
+        <EditText
+            android:id="@+id/dog_name_field"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/textView1"
+            android:layout_marginTop="10dp"
+            android:background="@drawable/bg_textfield_short"
+            android:ems="10"
+            android:hint="@string/name"
+            android:inputType="textPersonName" />
+
+        <EditText
+            android:id="@+id/dog_breed_field"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/dog_name_field"
+            android:layout_marginTop="5dp"
+            android:background="@drawable/bg_textfield_short"
+            android:ems="10"
+            android:hint="@string/breed"
+            android:inputType="textPersonName" />
+
+        <Button
+            android:id="@+id/dog_gender_field"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/dog_breed_field"
+            android:background="@drawable/bg_select_field"
+            android:gravity="left"
+            android:hint="@string/gender" />
+
+        <Button
+            android:id="@+id/dog_life_style_field"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/dog_gender_field"
+            android:background="@drawable/bg_select_field"
+            android:gravity="left"
+            android:hint="@string/life_Style" />
+
+        <Button
+            android:id="@+id/dog_activity_field"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/dog_life_style_field"
+            android:background="@drawable/bg_select_field"
+            android:gravity="left"
+            android:hint="@string/activity" />
+
+        <ImageView
+            android:id="@+id/imageView1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/dog_activity_field"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="10dp"
+            android:background="@drawable/bg_camera"
+            android:contentDescription="@null"
+            android:src="@drawable/bg_avatar_camera" />
+
+        <ImageButton
+            android:id="@+id/imageButton1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignTop="@+id/imageView1"
+            android:layout_marginRight="20dp"
+            android:layout_marginTop="21dp"
+            android:layout_toLeftOf="@+id/imageView1"
+            android:background="@null"
+            android:contentDescription="@null"
+            android:src="@drawable/bt_remove" />
+
+        <TextView
+            android:id="@+id/textView2"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/imageView1"
+            android:layout_marginLeft="2dp"
+            android:layout_marginRight="2dp"
+            android:layout_marginTop="10dp"
+            android:padding="6dp"
+            android:text="@string/birthday_label"
+            android:textColor="#666666"
+            android:textSize="16sp"
+            android:textStyle="bold" />
+
+        <Button
+            android:id="@+id/dog_birthday"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/textView2"
+            android:background="@drawable/bg_select_field"
+            android:gravity="left"
+            android:hint="@string/birthday" />
+
+        <TextView
+            android:id="@+id/textView3"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/dog_birthday"
+            android:layout_marginLeft="2dp"
+            android:layout_marginRight="2dp"
+            android:layout_marginTop="25dp"
+            android:background="#167044"
+            android:padding="6dp"
+            android:text="@string/dog_owner_data"
+            android:textColor="@android:color/white"
+            android:textSize="16sp"
+            android:textStyle="bold" />
+
+        <EditText
+            android:id="@+id/owner_name_field"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/textView3"
+            android:layout_marginTop="10dp"
+            android:background="@drawable/bg_textfield_short"
+            android:ems="10"
+            android:hint="@string/name"
+            android:inputType="textPersonName" />
+
+        <Button
+            android:id="@+id/owner_gender_field"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/owner_name_field"
+            android:background="@drawable/bg_select_field"
+            android:gravity="left"
+            android:hint="@string/gender" />
+
+        <TextView
+            android:id="@+id/textView4"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/owner_gender_field"
+            android:layout_marginLeft="2dp"
+            android:layout_marginRight="2dp"
+            android:layout_marginTop="10dp"
+            android:padding="6dp"
+            android:text="@string/birthday_label"
+            android:textColor="#666666"
+            android:textSize="16sp"
+            android:textStyle="bold" />
+
+        <Button
+            android:id="@+id/owner_birthday"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/textView4"
+            android:background="@drawable/bg_select_field"
+            android:gravity="left"
+            android:hint="@string/birthday" />
+
+        <Button
+            android:id="@+id/owner_state"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/owner_birthday"
+            android:background="@drawable/bg_select_field"
+            android:gravity="left"
+            android:hint="@string/state" />
+
+        <Button
+            android:id="@+id/imageButton2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/owner_state"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="20dp"
+            android:background="@drawable/bt_send"
+            android:contentDescription="@null"
+            android:text="@string/send"
+            android:textColor="@android:color/white" />
+    </RelativeLayout>
+
+</ScrollView>

@@ -178,10 +178,23 @@
     <!--  -->
     <string name="fb_user_logout_success">Salir con éxito en Facebook</string>
     <string name="fb_user_logout_failure">Usuario cerrará la sesión</string>
-    
     <string name="unable_to_publish">No se ha podido publicar</string>
     <string name="details_are_not_available">No hay detalles disponibles!</string>
-        
-        
+
+    <!-- Cadenas del layout del registro del perro -->
+
+    <string name="dog_data_label">Datos Mascota</string>
+    <string name="name">Nombre</string>
+    <string name="breed">Raza</string>
+    <string name="gender">Genero</string>
+    <string name="life_Style">Tipo de Vida</string>
+    <string name="activity">Actividad Física</string>
+    <string name="birthday_label">Fecha de Nacimiento</string>
+    <string name="birthday">Fecha</string>
+    <string name="dog_owner_data">Datos Dueño</string>
+    <string name="state">Estado</string>
+    <string name="send">"   Registrar   "</string>
+    
+    
 
 </resources>

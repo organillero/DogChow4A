@@ -178,6 +178,7 @@
     <!--  -->
     <string name="fb_user_logout_success">Salir con éxito en Facebook</string>
     <string name="fb_user_logout_failure">Usuario cerrará la sesión</string>
+
     <string name="unable_to_publish">No se ha podido publicar</string>
     <string name="details_are_not_available">No hay detalles disponibles!</string>
 
@@ -194,7 +195,6 @@
     <string name="dog_owner_data">Datos Dueño</string>
     <string name="state">Estado</string>
     <string name="send">"   Registrar   "</string>
-    
-    
+
 
 </resources>

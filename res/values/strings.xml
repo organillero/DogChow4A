@@ -206,5 +206,7 @@
     <string name="title_activity_signup">SignupActivity</string>
     <string name="email_label">Correo</string>
     <string name="password_label">Contraseña</string>
+    <string name="password_confirmation_label">Confirmar contraseña</string>
+    <string name="to_signup_with">Registrarse con</string>
 
 </resources>

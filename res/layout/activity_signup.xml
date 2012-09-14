@@ -1,99 +1,122 @@
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="fill_parent"
     android:layout_height="fill_parent" >
 
-    <TextView
-        android:id="@+id/email_label"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_centerHorizontal="true"
-        android:layout_marginTop="15dp"
-        android:layout_marginBottom="5dp"
-        android:width="250dp"
-        android:text="@string/email_label" />
+    <RelativeLayout
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content" >
 
-    <EditText
-        android:id="@+id/email_value"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_centerHorizontal="true"
-        android:layout_marginTop="5dp"
-        android:layout_marginBottom="5dp"
-        android:layout_below="@+id/email_label"
-        android:background="@drawable/bg_textfield_short"
-        android:ems="10"
-        android:inputType="textEmailAddress"
-        android:width="250dp" />
-    
-    <TextView
-        android:id="@+id/password_label"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_centerHorizontal="true"
-        android:layout_below="@+id/email_value"
-        android:layout_marginTop="15dp"
-        android:layout_marginBottom="5dp"
-        android:width="250dp"
-        android:text="@string/password_label" />
+        <TextView
+            android:id="@+id/email_label"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerHorizontal="true"
+            android:layout_marginBottom="2dp"
+            android:layout_marginTop="15dp"
+            android:textSize="15dp"
+            android:textColor="@color/darkGreen"
+            android:textStyle="bold"
+            android:text="@string/email_label"
+            android:width="250dp" />
 
-    <EditText
-        android:id="@+id/password_value"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_centerHorizontal="true"
-        android:layout_below="@+id/password_label"
-        android:background="@drawable/bg_textfield_short"
-        android:layout_marginTop="5dp"
-        android:layout_marginBottom="5dp"
-        android:width="250dp"
-        android:ems="10"
-        android:inputType="textPassword" />
+        <EditText
+            android:id="@+id/email_value"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/email_label"
+            android:layout_centerHorizontal="true"
+            android:layout_marginBottom="5dp"
+            android:layout_marginTop="1dp"
+            android:textSize="15dp"
+            android:textColor="@color/darkGreen"
+            android:textStyle="bold"
+            android:background="@drawable/bg_textfield_short"
+            android:ems="10"
+            android:inputType="textEmailAddress"
+            android:width="250dp" />
 
-    <TextView
-        android:id="@+id/password_confirmation_label"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_centerHorizontal="true"
-        android:layout_below="@+id/password_value"
-        android:layout_marginTop="15dp"
-        android:layout_marginBottom="5dp"
-        android:width="250dp"
-        android:text="@string/password_label" />
+        <TextView
+            android:id="@+id/password_label"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/email_value"
+            android:layout_centerHorizontal="true"
+            android:layout_marginBottom="2dp"
+            android:layout_marginTop="15dp"
+            android:textSize="15dp"
+            android:textColor="@color/darkGreen"
+            android:textStyle="bold"
+            android:text="@string/password_label"
+            android:width="250dp" />
 
-    <EditText
-        android:id="@+id/password_confirmation_value"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_centerHorizontal="true"
-        android:layout_below="@+id/password_confirmation_label"
-        android:background="@drawable/bg_textfield_short"
-        android:layout_marginTop="5dp"
-        android:layout_marginBottom="5dp"
-        android:width="250dp"
-        android:ems="10"
-        android:inputType="textPassword" />
+        <EditText
+            android:id="@+id/password_value"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/password_label"
+            android:layout_centerHorizontal="true"
+            android:layout_marginBottom="5dp"
+            android:layout_marginTop="1dp"
+            android:background="@drawable/bg_textfield_short"
+            android:ems="10"
+            android:inputType="textPassword"
+            android:width="250dp" />
 
-    <Button
-        android:id="@+id/signup_btn"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_centerHorizontal="true"
-        android:layout_below="@+id/password_confirmation_value"
-        android:layout_margin="20dp"
-        android:background="@drawable/bt_send"
-        android:onClick="onClickSignup"
-        android:text="@string/to_signup" />
+        <TextView
+            android:id="@+id/password_confirmation_label"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/password_value"
+            android:layout_centerHorizontal="true"
+            android:layout_marginBottom="2dp"
+            android:layout_marginTop="15dp"
+            android:textSize="15dp"
+            android:textColor="@color/darkGreen"
+            android:textStyle="bold"
+            android:text="@string/password_confirmation_label"
+            android:width="250dp" />
 
-    <Button
-        android:id="@+id/signup_with_facebook_btn"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_centerHorizontal="true"
-        android:layout_below="@+id/signup_btn"
-        android:layout_margin="20dp"
-        android:onClick="onClickSignupWithFacebook"
-        android:text="@string/to_signup" />
+        <EditText
+            android:id="@+id/password_confirmation_value"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/password_confirmation_label"
+            android:layout_centerHorizontal="true"
+            android:layout_marginBottom="5dp"
+            android:layout_marginTop="1dp"
+            android:background="@drawable/bg_textfield_short"
+            android:ems="10"
+            android:inputType="textPassword"
+            android:width="250dp" />
 
-    
-</RelativeLayout>
+        <Button
+            android:id="@+id/signup_btn"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/password_confirmation_value"
+            android:layout_centerHorizontal="true"
+            android:layout_margin="20dp"
+            android:background="@drawable/bt_send"
+            android:onClick="onClickSignup"
+            android:text="@string/to_signup"
+            android:textColor="@color/white"
+            android:textSize="15dp"
+            android:width="250dp" />
+
+        <Button
+            android:id="@+id/signup_with_facebook_btn"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/signup_btn"
+            android:layout_centerHorizontal="true"
+            android:layout_margin="30dp"
+            android:background="@drawable/bt_login_with_fb"
+            android:gravity="right|center_vertical"
+            android:onClick="onClickSignupWithFacebook"
+            android:text="@string/to_signup_with"
+            android:textSize="15dp"
+            android:width="250dp" />
+    </RelativeLayout>
+
+</ScrollView>

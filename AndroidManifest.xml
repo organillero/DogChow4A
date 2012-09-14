@@ -100,6 +100,10 @@
         <activity
             android:name=".SignupActivity"
             android:label="@string/title_activity_signup" />
+        <activity
+            android:name=".LoginActivity"
+            android:theme="@style/iTitleTheme"
+            android:label="@string/title_activity_login" />
     </application>
 
 </manifest>

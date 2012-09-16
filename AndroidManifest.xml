@@ -85,6 +85,7 @@
         <activity
             android:name=".ShowMapRoute"
             android:theme="@style/iTitleTheme"
+<<<<<<< HEAD
             android:windowSoftInputMode="adjustPan" />
         <activity
             android:name=".Report"
@@ -93,6 +94,18 @@
         <activity
             android:name=".Starting"
             android:theme="@style/iTitleTheme"
+            android:windowSoftInputMode="adjustPan" />
+        <activity
+            android:name=".Report"
+            android:theme="@style/iTitleTheme"
+            android:windowSoftInputMode="adjustPan" />
+        <activity
+            android:name=".Starting"
+            android:theme="@style/iTitleTheme"
+            android:windowSoftInputMode="adjustPan" />
+        <activity
+            android:name=".DogRegister"
+			android:theme="@style/iTitleTheme"
             android:windowSoftInputMode="adjustPan" />
         <activity
             android:name=".PreSignup"

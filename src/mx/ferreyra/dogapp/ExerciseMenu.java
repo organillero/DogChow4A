@@ -209,6 +209,16 @@ public class ExerciseMenu extends Activity{
 			}
 		}); 	
 
+		
+		dogWelfare.setOnClickListener(new OnClickListener() {
+			
+			@Override
+			public void onClick(View v) {
+				i =new Intent(ExerciseMenu.this, DogRegister.class); 
+				startActivity(i);
+			}
+		});
+		
 	}
 
 	@Override

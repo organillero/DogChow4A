@@ -106,11 +106,9 @@
             android:layout_below="@+id/signup_btn"
             android:layout_centerHorizontal="true"
             android:layout_margin="30dp"
-            android:background="@drawable/bt_login_with_fb"
-            android:gravity="right|center_vertical"
             android:onClick="onClickSignupWithFacebook"
             android:text="@string/to_signup_with"
-            android:textSize="15dp"
+            style="@style/buttonWithFBLogo"
             android:width="250dp" />
     </RelativeLayout>
 

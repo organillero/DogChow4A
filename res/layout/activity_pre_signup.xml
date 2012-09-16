@@ -21,12 +21,9 @@
         android:layout_centerHorizontal="true"
         android:layout_margin="7dp"
         android:layout_below="@id/banner_txt"
-        android:background="@drawable/bt_send"
         android:width="225dp"
         android:onClick="onClickSignupButton"
-        android:textColor="@android:color/white"
-        android:textSize="16sp"
-        android:textStyle="bold"
+        style="@style/greenButton"
         android:text="@string/to_signup" />
 
     <Button
@@ -36,12 +33,9 @@
         android:layout_centerHorizontal="true"
         android:layout_margin="7dp"
         android:layout_below="@id/signup_btn"
-        android:background="@drawable/bt_send"
         android:width="225dp"
         android:onClick="onClickLoginButton"
-        android:textColor="@android:color/white"
-        android:textSize="16sp"
-        android:textStyle="bold"
+        style="@style/greenButton"
         android:text="@string/to_login" />
 
     <Button
@@ -51,12 +45,9 @@
         android:layout_centerHorizontal="true"
         android:layout_margin="7dp"
         android:width="225dp"
-        android:background="@drawable/bt_send"
         android:layout_below="@id/login_btn"
         android:onClick="onClickRecoverPasswordButton"
-        android:textColor="@android:color/white"
-        android:textSize="16sp"
-        android:textStyle="bold"
+        style="@style/greenButton"
         android:text="@string/recover_password" />
 
 </RelativeLayout>

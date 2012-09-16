@@ -44,6 +44,13 @@
         <item name="android:textSize">16sp</item>
     </style>
 
+    <style name="buttonWithFBLogo">
+        <item name="android:gravity">right|center_vertical</item>
+        <item name="android:background">@drawable/bt_login_with_fb</item>
+        <item name="android:textColor">@android:color/black</item>
+        <item name="android:textSize">16sp</item>
+    </style>
+
     <style name="textField">
         <item name="android:background">@drawable/bg_textfield_short</item>
         <item name="android:textSize">15sp</item>

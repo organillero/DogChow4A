@@ -36,4 +36,11 @@
         <item name="android:textColor">#fff</item>
         <item name="android:textStyle">bold</item>
     </style>
+
+    <style name="greenButton">
+        <item name="android:textStyle">bold</item>
+        <item name="android:background">@drawable/bt_send</item>
+        <item name="android:textColor">@android:color/white</item>
+        <item name="android:textSize">16sp</item>
+    </style>
 </resources>

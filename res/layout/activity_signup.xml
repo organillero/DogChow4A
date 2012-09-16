@@ -28,12 +28,9 @@
             android:layout_centerHorizontal="true"
             android:layout_marginBottom="5dp"
             android:layout_marginTop="1dp"
-            android:textSize="15dp"
-            android:textColor="@color/darkGreen"
-            android:textStyle="bold"
-            android:background="@drawable/bg_textfield_short"
             android:ems="10"
             android:inputType="textEmailAddress"
+            style="@style/textField"
             android:width="250dp" />
 
         <TextView
@@ -58,9 +55,9 @@
             android:layout_centerHorizontal="true"
             android:layout_marginBottom="5dp"
             android:layout_marginTop="1dp"
-            android:background="@drawable/bg_textfield_short"
             android:ems="10"
             android:inputType="textPassword"
+            style="@style/textField"
             android:width="250dp" />
 
         <TextView
@@ -85,9 +82,9 @@
             android:layout_centerHorizontal="true"
             android:layout_marginBottom="5dp"
             android:layout_marginTop="1dp"
-            android:background="@drawable/bg_textfield_short"
             android:ems="10"
             android:inputType="textPassword"
+            style="@style/textField"
             android:width="250dp" />
 
         <Button
@@ -97,11 +94,9 @@
             android:layout_below="@+id/password_confirmation_value"
             android:layout_centerHorizontal="true"
             android:layout_margin="20dp"
-            android:background="@drawable/bt_send"
             android:onClick="onClickSignup"
             android:text="@string/to_signup"
-            android:textColor="@color/white"
-            android:textSize="15dp"
+            style="@style/greenButton"
             android:width="250dp" />
 
         <Button

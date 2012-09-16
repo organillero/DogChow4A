@@ -96,6 +96,7 @@
             android:windowSoftInputMode="adjustPan" />
         <activity
             android:name=".PreSignup"
+            android:theme="@style/iTitleTheme"
             android:label="@string/title_activity_pre_signup" />
         <activity
             android:name=".SignupActivity"

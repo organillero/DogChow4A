@@ -1,6 +1,6 @@
 <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent" >
 
     <RelativeLayout
         xmlns:tools="http://schemas.android.com/tools"
@@ -31,7 +31,6 @@
             android:background="@drawable/bg_textfield_short"
             android:ems="10"
             android:hint="@string/name"
-            
             android:inputType="textPersonName" />
 
         <EditText
@@ -43,8 +42,9 @@
             android:background="@drawable/bg_textfield_short"
             android:ems="10"
             android:hint="@string/breed"
-            android:nextFocusDown="@+id/dog_gender_field"
-            android:inputType="textPersonName" />
+            android:imeOptions="actionDone"
+            android:inputType="textPersonName"
+            android:nextFocusDown="@+id/dog_gender_field" />
 
         <Button
             android:id="@+id/dog_gender_field"
@@ -62,7 +62,6 @@
             android:layout_height="wrap_content"
             android:layout_below="@+id/dog_gender_field"
             android:background="@drawable/bg_select_field"
-            
             android:gravity="left"
             android:hint="@string/life_Style" />
 
@@ -146,6 +145,7 @@
             android:background="@drawable/bg_textfield_short"
             android:ems="10"
             android:hint="@string/name"
+            android:imeOptions="actionDone"
             android:inputType="textPersonName" />
 
         <Button

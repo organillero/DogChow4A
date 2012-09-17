@@ -34,8 +34,10 @@ import android.provider.MediaStore.Images.Media;
 import android.support.v4.app.FragmentActivity;
 import android.util.Base64;
 import android.util.Log;
+import android.view.KeyEvent;
 import android.view.View;
 import android.view.View.OnClickListener;
+import android.view.View.OnKeyListener;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.EditText;
@@ -62,8 +64,8 @@ public class DogRegister extends FragmentActivity {
 	private Button dogBirthday;
 
 	private ImageView btRemoveImage;
-	
-	
+
+
 	//Vistas del dueno
 
 	private EditText ownerNameField;
@@ -95,7 +97,7 @@ public class DogRegister extends FragmentActivity {
 	private int ownerDay = -1;
 
 	private Bitmap dogImage;
-	
+
 	@Override
 	protected void onCreate(android.os.Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -115,6 +117,8 @@ public class DogRegister extends FragmentActivity {
 		dogPhoto = (ImageView) findViewById(R.id.dog_photo);
 		dogBirthday = (Button) findViewById(R.id.dog_birthday);
 
+
+		
 		btRemoveImage = (ImageView) findViewById(R.id.bt_remove);
 
 		//Vistas del dueno
@@ -134,7 +138,7 @@ public class DogRegister extends FragmentActivity {
 		dogActivityField.setOnClickListener(this.displayDialogDogActivity);
 		dogPhoto.setOnClickListener(this.photoListener);
 		dogBirthday.setOnClickListener(this.showDogDatePicker);
-		
+
 		btRemoveImage.setOnClickListener(this.removeImageListener);
 
 		//dueno
@@ -283,21 +287,21 @@ public class DogRegister extends FragmentActivity {
 
 			}
 
-			
+
 			ByteArrayOutputStream stream = new ByteArrayOutputStream();
 			dogImage.compress(Bitmap.CompressFormat.PNG, 100, stream);
 			byte[] byteArray = stream.toByteArray();
-			
+
 			String encodedImageStr = Base64.encodeToString(byteArray,Base64.DEFAULT);
-			
+
 			Map<String, String> map = new HashMap<String, String>();
-			
+
 			//idUsuario
 			SharedPreferences pref = getSharedPreferences(Utilities.DOGCHOW, 0);
 			String userId = pref.getString(Utilities.USER_ID, "");
-			
+
 			map.put("idUsuario", userId);
-			
+
 			//Valores de la mascota
 			map.put("duenoNombre", dogNameField.getText().toString());
 			map.put("mascotaRaza", dogBreedField.getText().toString());
@@ -306,22 +310,22 @@ public class DogRegister extends FragmentActivity {
 			map.put("mascotaIdActividadFisica", String.valueOf(dogActivity));
 			map.put("mascotaImagen", encodedImageStr);
 			map.put("mascotaFechaCumpleanos", dogYear + "-" + dogMonth + "-"+ dogDay  + "T00:00:00");
-			
+
 			//valores del due–o
-			
+
 			map.put("duenoNombre", ownerNameField.getText().toString());
 			map.put("duenoIdGenero", String.valueOf(ownerGender));
 			map.put("duenoFechaCumpleanos", ownerYear + "-" + ownerMonth + "-"+ ownerDay  + "T00:00:00");
 			map.put("duenoIdEstado", String.valueOf(ownerState));
-			
-			
-			
+
+
+
 			DogRegisterAsync dogRegisterAsync =  new DogRegisterAsync (context);
 			dogRegisterAsync.setMap(map);
-			
+
 			dogRegisterAsync.execute();
-			
-		
+
+
 
 
 		}
@@ -337,10 +341,10 @@ public class DogRegister extends FragmentActivity {
 					ownerYear == -1 || ownerMonth == -1 || ownerDay == -1||
 
 					ownerState == -1 ||
-					
+
 					dogImage != null
-					
-					
+
+
 
 					){
 				ans = false;
@@ -447,20 +451,20 @@ public class DogRegister extends FragmentActivity {
 		}
 	};
 
-	
+
 	private OnClickListener removeImageListener = new OnClickListener(){
 
 		@Override
 		public void onClick(View v) {
-			
+
 			dogImage = null;
 			dogPhoto.setImageResource(R.drawable.bg_avatar_camera);
 			btRemoveImage.setVisibility(View.INVISIBLE);
-			
+
 		}
-		
+
 	};
-	
+
 	public void getPhoto (View view){
 
 		final CharSequence[] items = {"Desde mis imagenes", "Tomar una foto"};
@@ -532,9 +536,12 @@ public class DogRegister extends FragmentActivity {
 			}
 
 			if (mBitmap != null){
-				
+
 				//UtilsBitmap.resize(mBitmap, 100, 100);
-				dogPhoto.setImageBitmap(UtilsBitmap.resize(mBitmap, 100, 100));
+				dogImage = UtilsBitmap.resize(mBitmap, 100, 100);
+				dogPhoto.setImageBitmap( dogImage );
+
+				
 				
 				btRemoveImage.setVisibility(View.VISIBLE);
 				//this.avatar = saveImageToInternalStorage(mBitmap);
@@ -560,12 +567,12 @@ public class DogRegister extends FragmentActivity {
 
 		return;
 	}
-	
-	
-	
+
+
+
 	//AsyncTasj del Registro del Perfil del Perro
-	
-	
+
+
 	protected class DogRegisterAsync extends AsyncTask<Void, Integer, Integer> {
 		private Context context;
 		private ProgressDialog dialog;
@@ -575,12 +582,12 @@ public class DogRegister extends FragmentActivity {
 			this.context = context;
 		}
 
-		
+
 		public void setMap (Map<String, String> map ){
 			this.map = map;
 			return;
 		}
-		
+
 		@Override
 		protected void onPreExecute() {
 			super.onPreExecute();
@@ -591,17 +598,15 @@ public class DogRegister extends FragmentActivity {
 
 		@Override
 		protected Integer doInBackground(Void... params) {
-			
+
 			WsDogUtils wsDogUtils = new WsDogUtils(context);
 			try {
 				wsDogUtils.insertDuenoMascota(map);
-			} catch (IOException e) {
-				e.printStackTrace();
-			} catch (XmlPullParserException e) {
+			} catch (Exception e) {
 				e.printStackTrace();
 			}
-			
-			
+
+
 
 			return null;
 		}

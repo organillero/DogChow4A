@@ -86,8 +86,6 @@ public class LoginScreen extends Activity{
 
 			@Override
 			public void onClick(View v) {
-//				i =new Intent(LoginScreen.this, MainActivity.class); 
-//				startActivity(i);
 				finish();
 			}
 		});
@@ -212,42 +210,14 @@ public class LoginScreen extends Activity{
 					Toast.makeText(getApplicationContext(), R.string.user_not_exist, Toast.LENGTH_SHORT).show();
 				}else{
 					Integer userId = Integer.parseInt( returnValue );
+					// Save user id
+                    DogUtil.getInstance().saveCurrentUserId(userId);
 
-					/*
-					SharedPreferences pref = getSharedPreferences(Utilities.DOGCHOW, 0);
-					SharedPreferences.Editor edit = pref.edit();
-					edit.putString(Utilities.USER_ID,userId); 
-					edit.commit();
-
-					SharedPreferences sharedPreferences = getSharedPreferences(Utilities.DOGAPP, MODE_PRIVATE);
-					SharedPreferences.Editor editor = sharedPreferences.edit();
-					editor.putString(Utilities.ROUTE_TIMING, getResources().getString(R.string.route_time));
-					editor.putString(Utilities.ROUTE_DISTANCE, getResources().getString(R.string.route_distance));
-					editor.putString(Utilities.ROUTE_SPEED, getResources().getString(R.string.route_speed));
-					editor.commit();
-
-*/
-					
-					
-					Intent intent = new Intent();
+                    Intent intent = new Intent();
 			        intent.putExtra("ID_USER", userId);
 					
 					setResult(RESULT_OK, intent);
 					finish();
-					
-					/*
-					 
-					
-					AppData.USER_ID = userId.trim();
-					AppData.assignType(USER_LOGIN_TYPE.APPLICATION); 
-
-					i =new Intent(LoginScreen.this,ExerciseMenu.class);
-					i.setFlags(Intent.FLAG_ACTIVITY_NO_HISTORY);
-					startActivity(i);
-					
-					//finish();
-					 * 
-					 */
 				}
 			}catch (Exception e) { 
 

@@ -13,54 +13,33 @@ import android.view.WindowManager;
 
 public class Splash extends Activity {
 
-	private String userId;
+    private String currentUserId;
 
-	@Override
-	public void onCreate(Bundle savedInstanceState) {
-		super.onCreate(savedInstanceState);
-		requestWindowFeature(Window.FEATURE_NO_TITLE);
-		this.getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,
-				WindowManager.LayoutParams.FLAG_FULLSCREEN);
-		setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
+    @Override
+    public void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
 
-		setContentView(R.layout.splash);  
+        requestWindowFeature(Window.FEATURE_NO_TITLE);
+        this.getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,
+                                  WindowManager.LayoutParams.FLAG_FULLSCREEN);
+        setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
+        setContentView(R.layout.splash);
 
-		SharedPreferences pref = getSharedPreferences(Utilities.DOGCHOW, 0);
-		userId = pref.getString(Utilities.USER_ID, "");
+        SharedPreferences pref = getSharedPreferences(Utilities.DOGCHOW, 0);
+        currentUserId = pref.getString(Utilities.USER_ID, "");
 
-		TelephonyManager manager = (TelephonyManager) getSystemService(Context.TELEPHONY_SERVICE);
-		if(manager != null){
-			String deviceId = manager.getDeviceId();
-			DogUtil.setDeviceID(deviceId);
-		}
+        TelephonyManager manager = (TelephonyManager) getSystemService(Context.TELEPHONY_SERVICE);
+        if(manager != null)
+            DogUtil.setDeviceID(manager.getDeviceId());
 
+        Handler x = new Handler();
+        x.postDelayed(new SplashHandler(), 1500);
+    }
 
-		Handler x = new Handler();
-		//x.postDelayed(new splashhandler(), 2000);
-		x.post(new splashhandler());
-
-		//Log.i("Screen size", getWindow().getWindowManager().getDefaultDisplay().getWidth() + "X" + getWindow().getWindowManager().getDefaultDisplay().getHeight());
-
-	}
-
-	class splashhandler implements Runnable 
-	{
-		public void run() 
-		{
-
-			//TODO
-
-			//			if(userId.equals("")|| userId == null){
-			//				startActivity(new Intent(Splash.this, MainActivity.class));				
-			//				finish(); 
-			//			}else{
-			//startActivity(new Intent(Splash.this, ExerciseMenu.class));
-			startActivity(new Intent(Splash.this, DogRegister.class));
-			finish();   
-			//			}
-		}
-
-	} 	 
-
-
+    class SplashHandler implements Runnable {
+        public void run() {
+            startActivity(new Intent(Splash.this, ExerciseMenu.class));
+            finish();
+        }
+    }
 }

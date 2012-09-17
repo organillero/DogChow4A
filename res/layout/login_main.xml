@@ -39,6 +39,7 @@
             android:layout_width="263dp"
             android:layout_height="39dp"
             android:layout_margin="10dip"            
+            android:onClick="onClickLoginButton"
             android:background="@drawable/i_login_main" >
         </Button>
 
@@ -50,6 +51,7 @@
             android:background="@drawable/i_login_main_manual"
             android:focusable="true"
             android:focusableInTouchMode="true"
+            android:onClick="onClickRegisterButton"
            >
         </Button>
 

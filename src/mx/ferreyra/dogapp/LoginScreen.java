@@ -47,7 +47,6 @@ public class LoginScreen extends Activity{
 	private String result;
 	private SoapParseLogin soapParseLogin;
 	private EditText email,password;
-	private Button submit, fpwd;
 	private Intent i; 
 	private String returnValue;
 	private String userEmail,userPassword; 
@@ -78,31 +77,9 @@ public class LoginScreen extends Activity{
 
 		email = (EditText)findViewById(R.id.emailEdit);  
 		password = (EditText)findViewById(R.id.passwordEdit); 
-		submit = (Button)findViewById(R.id.submit);
 		progressBar = (ProgressBar)findViewById(R.id.login_progress);
 		progressBar.setVisibility(View.INVISIBLE);
 		
-		fpwd = (Button)findViewById(R.id.forgot_password);		
-		fpwd.setOnClickListener(new OnClickListener() {			
-			@Override
-			public void onClick(View v) {
-				i =new Intent(LoginScreen.this, RetrievePassword.class); 
-				startActivity(i);
-				//finish();			
-			}
-		});
-
-
-		submit.setOnClickListener(new OnClickListener(){
-			@Override
-			public void onClick(View arg0) {
-				userEmail=email.getText().toString();
-				userPassword= password.getText().toString();
-				String input[]={userEmail,userPassword};
-				soapParseLogin = new SoapParseLogin();
-				soapParseLogin.execute(input);
-			}
-		});
 
 
 		btnLeftTitle.setOnClickListener(new OnClickListener() {
@@ -117,6 +94,19 @@ public class LoginScreen extends Activity{
 
 
 	} 
+
+    public void onClickForgotPasswordButton(View view) {
+        startActivity(new Intent(this, RetrievePassword.class));
+    }
+
+    public void onClickSubmitButton(View view) {
+        String input[] = {
+            this.userEmail = this.email.getText().toString(),
+            this.userPassword = this.password.getText().toString()
+        };
+        soapParseLogin = new SoapParseLogin();
+        soapParseLogin.execute(input);
+    }
 
 	@Override
 	protected void onPause() {

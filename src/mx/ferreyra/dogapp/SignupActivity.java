@@ -2,17 +2,17 @@ package mx.ferreyra.dogapp;
 
 import java.io.IOException;
 
-import mx.ferreyra.dogapp.ui.UI;
-
+import org.w3c.dom.Comment;
 import org.xmlpull.v1.XmlPullParserException;
 
 import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.Context;
+import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
-import android.widget.EditText;
 import android.view.View;
+import android.widget.EditText;
 
 public class SignupActivity extends Activity {
 
@@ -51,6 +51,14 @@ public class SignupActivity extends Activity {
 	}
 
 	private void dispatchResult(Integer result) {
+		
+		Intent intent = new Intent();
+        intent.putExtra("ID_USER", result);
+		
+		setResult(RESULT_OK, intent);
+		finish();
+		
+		/*
 		if(result < 0) {
 			// -1 => Some data wrong
 			// -2 => User registered
@@ -64,6 +72,7 @@ public class SignupActivity extends Activity {
 			// TODO select an intent
 			UI.showToast("ID => " + result, this);
 		}
+		*/
 	}
 
 	private boolean validateEmail() {

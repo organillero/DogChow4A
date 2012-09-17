@@ -54,12 +54,7 @@ public class DogUtil extends Application{
 		    app = this;
 		
 		// Loading preferences
-        String prefer = getString(R.string.preferences_name);
-        String userId = getString(R.string.preference_user_id);
-        SharedPreferences pref = getSharedPreferences(prefer, 0);
-        int possibleUserId = pref.getInt(userId, -1);
-        if(possibleUserId>0)
-            this.currentUserId = possibleUserId;
+		loadCurrentUserId();
 
         initFacebook();
 		if(gTracker == null){
@@ -148,11 +143,20 @@ public class DogUtil extends Application{
         return this.currentUserId;
     }
 
+    public void loadCurrentUserId() {
+        SharedPreferences pref = getSharedPreferences(getString(R.string.preferences_name), 0);
+        int possible = pref.getInt(getString(R.string.preference_user_id), -1);
+        this.currentUserId = possible>=0 ? possible : null;
+    }
+
     public void saveCurrentUserId(Integer userId) {
 		// Store user id on preferences
         SharedPreferences pref = getSharedPreferences(getString(R.string.preferences_name), 0);
         Editor e = pref.edit();
         e.putInt(getString(R.string.preference_user_id), userId);
         e.commit();
+
+        // Reload value
+        this.currentUserId = userId;
     }
 }

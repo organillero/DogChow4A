@@ -52,6 +52,7 @@ public class ExerciseMenu extends Activity{
 	private ProgressBar progress_title;
 	private FacebookConnector facebookConnector;
 	private GoogleAnalyticsTracker analyticsTracker;
+	private DogUtil app;
 
 	//get gps strength in android
 	LocationManager locMgr;
@@ -62,6 +63,7 @@ public class ExerciseMenu extends Activity{
 		requestWindowFeature(Window.FEATURE_CUSTOM_TITLE);
 		setContentView(R.layout.exercisemenu);
 		getWindow().setFeatureInt(Window.FEATURE_CUSTOM_TITLE, R.layout.title_bar);
+		app = DogUtil.getInstance();
 		titleBar = (ProgressBar)findViewById(R.id.progress_title);
 		titleBar.setVisibility(View.INVISIBLE);
 
@@ -313,17 +315,24 @@ public class ExerciseMenu extends Activity{
 
             DogUtil.TRACKER_VALUE++;
 
-            i =new Intent(ExerciseMenu.this,Starting.class);
-            i.putExtra("loadroute", 2);
-            startActivity(i);
+            if(app.getCurrentUserId()==null) {
+                startActivityForResult(new Intent(this, PreSignup.class), DogChowApplication.NEW_ROUTE);
+            } else {
+                Intent i = new Intent(this, Starting.class);
+                i.putExtra("loadroute", 2);
+            	startActivity(i);
+            }
         }
     }
 
     public void onClickLoadRouteButton(View v) {
-        i =new Intent(ExerciseMenu.this, Starting.class);
-        i.putExtra("loadroute", 1);
-        startActivity(i);
-
+        if(app.getCurrentUserId()==null) {
+            startActivityForResult(new Intent(this, PreSignup.class), DogChowApplication.LOAD_ROUTE);
+        } else {
+            Intent i = new Intent(this, Starting.class);
+            i.putExtra("loadroute", 1);
+        	startActivity(i);
+        }
         analyticsTracker.trackEvent("Load Route",            // Category, i.e. New Route Button
                                     "Button",                // Action, i.e. New Route
                                     "clicked",               // Label    i.e. New Route
@@ -333,8 +342,11 @@ public class ExerciseMenu extends Activity{
     }
 
     public void onClickStatisticsButton(View v) {
-        i =new Intent(ExerciseMenu.this, Report.class);
-        startActivity(i);
+        if(app.getCurrentUserId()==null) {
+            startActivityForResult(new Intent(this, PreSignup.class), DogChowApplication.STATISTICS);
+        } else {
+            startActivity(new Intent(this, Report.class));
+        }
         analyticsTracker.trackEvent("Statictics",           // Category, i.e. Statictics Button
                                     "Button",               // Action, i.e. New Route
                                     "clicked",              // Label    i.e. New Route
@@ -343,8 +355,11 @@ public class ExerciseMenu extends Activity{
     }
 
     public void onClickDogWelfare(View v) {
-        i =new Intent(ExerciseMenu.this, DogRegister.class);
-        startActivity(i);
+        if(app.getCurrentUserId()==null) {
+            startActivityForResult(new Intent(this, PreSignup.class), DogChowApplication.DOGWELFARE);
+        } else {
+            startActivity(new Intent(this, DogRegister.class));
+        }
     }
 
     public void onClickTButtonLeftButton(View v) {

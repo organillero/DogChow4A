@@ -55,7 +55,10 @@ public class SignupActivity extends Activity {
             // -1 => Some data wrong
             // -2 => User registered
             // -3 => Server error
-            UI.showAlertDialog("Ups!", "Something wrong!", "Ok", this, null);
+            UI.showAlertDialog(getString(R.string.ups),
+                               getString(R.string.an_error_ocurred),
+                               getString(android.R.string.ok),
+                               this, null);
         } else {
             // ID user
             // TODO select an intent
@@ -90,7 +93,7 @@ public class SignupActivity extends Activity {
 	protected void onPreExecute() {
             super.onPreExecute();
             dialog = new ProgressDialog(context);
-            dialog.setMessage("Registrando...");
+            dialog.setMessage(context.getString(R.string.please_wait_signing_up));
             dialog.show();
         }
 

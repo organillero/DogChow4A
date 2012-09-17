@@ -3,6 +3,7 @@ package mx.ferreyra.dogapp;
 import android.app.Application;
 import android.content.ComponentName;
 import android.content.Context;
+import android.content.SharedPreferences;
 import android.content.pm.PackageInfo;
 import android.os.Build;
 
@@ -12,6 +13,13 @@ import com.facebook.android.Util;
 import com.google.android.apps.analytics.GoogleAnalyticsTracker;
 
 public class DogUtil extends Application{	
+	public static final int DOGWELFARE = 0x01;
+	public static final int STATISTICS = 0x02;
+	public static final int LOAD_ROUTE = 0x03;
+	public static final int NEW_ROUTE = 0x04;
+
+    private Integer currentUserId;
+    private static DogUtil app;
 	
 	public static final String FACEBOOK_APPID = "360694843999854"; //"120875961350018"; 
 	//public static final String APP_ID = "124807174259375";
@@ -40,7 +48,19 @@ public class DogUtil extends Application{
 	
 	public void onCreate() {		
 		super.onCreate(); 
-		initFacebook();
+
+		if(app == null)
+		    app = this;
+		
+		// Loading preferences
+        String prefer = getString(R.string.preferences_name);
+        String userId = getString(R.string.preference_user_id);
+        SharedPreferences pref = getSharedPreferences(prefer, 0);
+        userId = pref.getString(userId, null);
+        if(userId!=null)
+            this.currentUserId = Integer.valueOf(userId);
+
+        initFacebook();
 		if(gTracker == null){
 			gTracker = GoogleAnalyticsTracker.getInstance();
 			gTracker.startNewSession(TRACK_ID, this);
@@ -118,5 +138,13 @@ public class DogUtil extends Application{
 	public static String getDeviceUniqueNumber(){
 		return DEVICE_ID;
 	}
+
+    public static DogUtil getInstance() {
+        return app;
+    }
+
+    public Integer getCurrentUserId() {
+        return this.currentUserId;
+    }
 
 }

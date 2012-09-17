@@ -56,9 +56,9 @@ public class DogUtil extends Application{
         String prefer = getString(R.string.preferences_name);
         String userId = getString(R.string.preference_user_id);
         SharedPreferences pref = getSharedPreferences(prefer, 0);
-        userId = pref.getString(userId, null);
-        if(userId!=null)
-            this.currentUserId = Integer.valueOf(userId);
+        int possibleUserId = pref.getInt(userId, -1);
+        if(possibleUserId>0)
+            this.currentUserId = possibleUserId;
 
         initFacebook();
 		if(gTracker == null){

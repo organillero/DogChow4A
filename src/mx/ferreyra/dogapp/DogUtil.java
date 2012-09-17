@@ -4,6 +4,7 @@ import android.app.Application;
 import android.content.ComponentName;
 import android.content.Context;
 import android.content.SharedPreferences;
+import android.content.SharedPreferences.Editor;
 import android.content.pm.PackageInfo;
 import android.os.Build;
 
@@ -147,4 +148,11 @@ public class DogUtil extends Application{
         return this.currentUserId;
     }
 
+    public void saveCurrentUserId(Integer userId) {
+		// Store user id on preferences
+        SharedPreferences pref = getSharedPreferences(getString(R.string.preferences_name), 0);
+        Editor e = pref.edit();
+        e.putInt(getString(R.string.preference_user_id), userId);
+        e.commit();
+    }
 }

@@ -2,7 +2,10 @@ package mx.ferreyra.dogapp;
 
 import java.util.List;
 
+import mx.ferreyra.dogapp.fragments.DatePickerFragment;
+import mx.ferreyra.dogapp.fragments.DatePickerFragment.MyDate;
 import mx.ferreyra.dogapp.recursos.Recursos;
+import mx.ferreyra.dogapp.ui.UI;
 import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.app.AlertDialog;
@@ -18,100 +21,121 @@ import android.os.Build;
 import android.os.Bundle;
 import android.provider.MediaStore;
 import android.provider.MediaStore.Images.Media;
+import android.support.v4.app.FragmentActivity;
 import android.util.Log;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ImageView;
 
 @SuppressLint("NewApi")
-public class DogRegister extends Activity {
-	
+public class DogRegister extends FragmentActivity {
+
 	static final int DATE_DIALOG_ID = 0;
-	
+
 	private View activityRootView;
 	protected Activity context;
-	
+
 	//Variables internas para el control del registro
 	//Vistas  del perro
+
+	private EditText dogNameField;
+	private EditText dogBreedField;
+
 	private Button dogGenderField;
 	private Button dogLifeStyleField;
 	private Button dogActivityField;
 	private ImageView dogPhoto;
 	private Button dogBirthday;
-	
-	
+
+
 	//Vistas del dueno
+
+	private EditText ownerNameField;
 	private Button ownerGenderField;
 	private Button ownerStateField;
-	
-	
-	
-	
+	private Button ownerBirthDay;
+
+
+
+
+	private Button btSend;
+
 	private int dogGender = -1;
 	private int dogLifeStyle =-1;
 	private int dogActivity =-1;
-	
+
 	//vars. fec. nacimiento
-	private int dogYear = 0;
-	private int dogMonth = 0;
-	private int dogDay = 0;
-	
-	
+	private int dogYear = -1;
+	private int dogMonth = -1;
+	private int dogDay = -1;
+
+
 	private int ownerGender = -1;
 	private int ownerState = -1;
-	
+
 	//vars. fec. nacimiento
-	private int ownerYear = 0;
-	private int ownergMonth = 0;
-	private int ownerDay = 0;
-	
+	private int ownerYear = -1;
+	private int ownerMonth = -1;
+	private int ownerDay = -1;
+
 	@Override
 	protected void onCreate(android.os.Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.register_dog);
-		
+
 		context = this;
 		activityRootView = findViewById(R.id.activityrootview);
 		activityRootView.setOnClickListener(checkAndHideKeyboardListener);
-		
-		
+
+
 		//Vistas del pero
+		dogNameField = (EditText) findViewById(R.id.dog_name_field);
+		dogBreedField = (EditText) findViewById(R.id.dog_name_field);
 		dogGenderField = (Button) findViewById(R.id.dog_gender_field);
 		dogLifeStyleField = (Button) findViewById(R.id.dog_life_style_field);
 		dogActivityField = (Button) findViewById(R.id.dog_activity_field);
 		dogPhoto = (ImageView) findViewById(R.id.dog_photo);
 		dogBirthday = (Button) findViewById(R.id.dog_birthday);
-		
-		
+
+
 		//Vistas del dueno
+		ownerNameField = (EditText) findViewById(R.id.owner_name_field);
 		ownerGenderField = (Button) findViewById(R.id.owner_gender_field);
 		ownerStateField = (Button) findViewById(R.id.owner_state);
-		
-		
-		
-		
-		
+		ownerBirthDay = (Button) findViewById(R.id.owner_birthday);
+
+
+		btSend = (Button) findViewById(R.id.bt_send);
+
+
+
 		//perro
 		dogGenderField.setOnClickListener(this.displayDialogDogGender);
 		dogLifeStyleField.setOnClickListener(this.displayDialogDogLifeStyle);
 		dogActivityField.setOnClickListener(this.displayDialogDogActivity);
 		dogPhoto.setOnClickListener(this.photoListener);
-		dogBirthday.setOnClickListener(this.showDatePicker);
-		
+		dogBirthday.setOnClickListener(this.showDogDatePicker);
+
 		//dueno
 		ownerGenderField.setOnClickListener(this.displayDialogOwnerGender);
 		ownerStateField.setOnClickListener(this.displayDialogOwnerState);
-		
+		ownerBirthDay.setOnClickListener(this.showOwnerDatePicker);
+
+
+		//enviar
+		btSend.setOnClickListener(sendListener);
+
 	};
 
-	
-	
+
+
 	/*
 	 * Listener de los botones que tienen funion de spinner para no tener una opci—n ya selecionada desde un princicpio
 	 * */
-	
+
 
 	private OnClickListener displayDialogDogGender = new OnClickListener(){
 
@@ -141,7 +165,7 @@ public class DogRegister extends Activity {
 		}
 
 	};
-	
+
 	private OnClickListener displayDialogDogLifeStyle = new OnClickListener(){
 
 		@Override
@@ -170,7 +194,7 @@ public class DogRegister extends Activity {
 		}
 
 	};
-	
+
 	private OnClickListener displayDialogDogActivity = new OnClickListener(){
 
 		@Override
@@ -199,20 +223,100 @@ public class DogRegister extends Activity {
 		}
 
 	};
-	
-	
-	private OnClickListener showDatePicker = new View.OnClickListener (){
 
-		@SuppressWarnings("deprecation")
+
+	private OnClickListener showDogDatePicker = new View.OnClickListener (){
+
 		@Override
 		public void onClick(View v) {
-			showDialog(DATE_DIALOG_ID);
+			DatePickerFragment dogDialogBirtday = new DatePickerFragment();
+
+			dogDialogBirtday.setDate(dogYear, dogMonth, dogDay);
+			dogDialogBirtday.setInterface(myDogDate);
+
+			dogDialogBirtday.show(getSupportFragmentManager(), "dateOwnerPicker");
 		}
 
 	};
-	
-	
-	
+
+	private OnClickListener showOwnerDatePicker = new View.OnClickListener (){
+
+		@Override
+		public void onClick(View v) {
+			DatePickerFragment dogDialogBirtday = new DatePickerFragment();
+
+			dogDialogBirtday.setDate(ownerYear, ownerMonth, ownerDay);
+			dogDialogBirtday.setInterface(myOwnerDate);
+
+			dogDialogBirtday.show(getSupportFragmentManager(), "dateDoogPicker");
+		}
+
+	};
+
+
+
+	private OnClickListener sendListener  = new View.OnClickListener() {
+
+		@Override
+		public void onClick(View v) {
+
+			if (validateForm()  == false ){
+				UI.showAlertDialog("Upps!!", "Favor de llenar todos los campos antes de continuar", "OK", (Context)context, null);
+
+			}
+			
+			WsDogUtils wsDogUtils = new WsDogUtils(context);
+
+
+		}
+
+		private boolean validateForm() {
+			boolean ans = true;
+
+			if (dogNameField.getText().equals("") || dogBreedField.getText().equals("")||
+					dogGender== -1 || dogLifeStyle == -1 || dogActivity == -1 ||
+					dogYear == -1 || dogMonth == -1 || dogDay == -1 ||
+
+					ownerNameField.getText().equals("") || ownerGender == -1 ||
+					ownerYear == -1 || ownerMonth == -1 || ownerDay == -1||
+
+					ownerState == -1
+
+					){
+				ans = false;
+			}
+
+			return ans;
+		}
+	};
+
+	MyDate myDogDate = new MyDate(){
+		@Override
+		public void getDate(int year, int month, int day) {
+			dogYear = year;
+			dogMonth = month;
+			dogDay = day;
+
+			dogBirthday.setHint(day + " / " + Recursos.MONTHS[month] + " / " + year);
+		}
+
+	};
+
+
+	MyDate myOwnerDate = new MyDate(){
+		@Override
+		public void getDate(int year, int month, int day) {
+			ownerYear = year;
+			ownerMonth = month;
+			ownerDay = day;
+
+			ownerBirthDay.setHint(day + " / " + Recursos.MONTHS[month] + " / " + year);
+		}
+
+	};
+
+
+
 	private OnClickListener displayDialogOwnerGender = new OnClickListener(){
 
 		@Override
@@ -241,9 +345,10 @@ public class DogRegister extends Activity {
 		}
 
 	};
-	
-	
-	
+
+
+
+
 	private OnClickListener displayDialogOwnerState = new OnClickListener(){
 
 		@Override
@@ -272,8 +377,8 @@ public class DogRegister extends Activity {
 		}
 
 	};
-	
-	
+
+
 	android.view.View.OnClickListener photoListener = new View.OnClickListener() {
 
 		@Override
@@ -281,7 +386,7 @@ public class DogRegister extends Activity {
 			getPhoto(v);
 		}
 	};
-	
+
 	public void getPhoto (View view){
 
 		final CharSequence[] items = {"Desde mis imagenes", "Tomar una foto"};
@@ -301,8 +406,8 @@ public class DogRegister extends Activity {
 		AlertDialog alert = builder.create();
 		alert.show();
 	}
-	
-	
+
+
 	private void getPhotofromAlbum(){
 
 		int actionCode = 1;
@@ -325,7 +430,7 @@ public class DogRegister extends Activity {
 			startActivityForResult(takePictureIntent, actionCode);
 		}
 	}
-	
+
 	public static boolean isIntentAvailable(Context context, String action) {
 		final PackageManager packageManager = context.getPackageManager();
 		final Intent intent = new Intent(action);
@@ -333,8 +438,8 @@ public class DogRegister extends Activity {
 				packageManager.queryIntentActivities(intent, PackageManager.MATCH_DEFAULT_ONLY);
 		return list.size() > 0;
 	}
-	
-	
+
+
 	@Override
 	public void onActivityResult(int requestCode, int resultCode, Intent intent) {
 		super.onActivityResult(requestCode, resultCode, intent);
@@ -358,8 +463,8 @@ public class DogRegister extends Activity {
 			}
 		}
 	}
-	
-	
+
+
 	android.view.View.OnClickListener checkAndHideKeyboardListener = new View.OnClickListener() {
 
 		@Override
@@ -367,7 +472,7 @@ public class DogRegister extends Activity {
 			checkAndHideKeyboard(v);
 		}
 	};
-	
+
 	public void checkAndHideKeyboard (View view){
 
 		if(getResources().getConfiguration().keyboardHidden == Configuration.KEYBOARDHIDDEN_NO){
@@ -377,5 +482,5 @@ public class DogRegister extends Activity {
 
 		return;
 	}
-	
+
 }

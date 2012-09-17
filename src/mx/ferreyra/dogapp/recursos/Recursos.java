@@ -6,6 +6,8 @@ public class Recursos {
 	public static final String LIFE_STYLE[]={"Hogare–o", "Exterior"};
 	public static final String ACTIVITY[] ={"Moderada", "Intensa"};
 	
+	public static final String MONTHS[]={"Ene", "Feb", "Mar", "Abr", "May", "Jun", "Jul", "Ago", "Sep", "Oct", "Nov", "Dic"};
+	
 	public static final String STATES[] ={	"Aguascalientes", "Baja California",
 											"Baja California Sur", "Campeche",
 											"Chihuahua", "Chiapas",

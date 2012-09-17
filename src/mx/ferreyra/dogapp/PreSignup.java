@@ -3,6 +3,8 @@ package mx.ferreyra.dogapp;
 import mx.ferreyra.dogapp.ui.UI;
 import android.app.Activity;
 import android.content.Intent;
+import android.content.SharedPreferences;
+import android.content.SharedPreferences.Editor;
 import android.os.Bundle;
 import android.view.View;
 
@@ -51,6 +53,11 @@ public class PreSignup extends Activity {
 							this, null);
 				}
 				else {
+                    // Store user id on preferences
+                    SharedPreferences pref = getSharedPreferences(Utilities.DOGCHOW, 0);
+                    Editor e = pref.edit();
+                    e.putInt(Utilities.USER_ID, idUser);
+                    e.commit();
 
 					Intent intent1 = new Intent();
 					intent1.putExtra("ID_USER", idUser);

@@ -37,6 +37,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_margin="10dp"
+            android:onClick="onClickLoginButton"
             android:background="@drawable/i_login" >
         </Button>
 
@@ -46,6 +47,7 @@
             android:layout_height="wrap_content"
             android:layout_below="@+id/loginBtn"
             android:layout_margin="10dp"
+            android:onClick="onClickRegisterButton"
             android:background="@drawable/i_registerbtn" >
         </Button>      
     </LinearLayout>

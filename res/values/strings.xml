@@ -215,4 +215,8 @@
     <!-- Login activity -->
     <string name="title_activity_login">LoginActivity</string>
     <string name="to_login_with">Iniciar sesión con</string>
+
+    <!-- DogChow applcation -->
+    <string name="preferences_name">dogapp</string>
+    <string name="preference_user_id">userid</string>
 </resources>

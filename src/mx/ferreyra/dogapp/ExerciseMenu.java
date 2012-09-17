@@ -8,7 +8,6 @@ import mx.ferreyra.dogapp.AppData.USER_LOGIN_TYPE;
 
 import org.json.JSONException;
 import org.json.JSONObject;
-import org.xmlpull.v1.XmlPullParserException;
 
 import android.app.Activity;
 import android.app.AlertDialog;
@@ -18,7 +17,6 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Color;
-import android.location.Address;
 import android.location.LocationManager;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
@@ -28,7 +26,6 @@ import android.os.Handler;
 import android.provider.Settings;
 import android.util.Log;
 import android.view.View;
-import android.view.View.OnClickListener;
 import android.view.Window;
 import android.widget.Button;
 import android.widget.ProgressBar;
@@ -49,12 +46,13 @@ public class ExerciseMenu extends Activity{
 	public String mapurl;
 	public String actualkm;
 
-	private Button newRoutes,loadRoutes,statistics,dogWelfare;
 	private Intent i;
-	private Button title_left,title_right;
+	private Button title_right;
 	private TextView title_txt;
+	private ProgressBar progress_title;
 	private FacebookConnector facebookConnector;
 	private GoogleAnalyticsTracker analyticsTracker;
+	private DogUtil app;
 
 	//get gps strength in android
 	LocationManager locMgr;
@@ -65,16 +63,10 @@ public class ExerciseMenu extends Activity{
 		requestWindowFeature(Window.FEATURE_CUSTOM_TITLE);
 		setContentView(R.layout.exercisemenu);
 		getWindow().setFeatureInt(Window.FEATURE_CUSTOM_TITLE, R.layout.title_bar);
-
+		app = DogUtil.getInstance();
 		titleBar = (ProgressBar)findViewById(R.id.progress_title);
 		titleBar.setVisibility(View.INVISIBLE);
 
-		title_left = (Button)findViewById(R.id.tbutton_left);		
-		title_left.setOnClickListener(new OnClickListener() {
-			public void onClick(View v) { 
-				finish();
-			}
-		});
 		title_right= (Button)findViewById(R.id.tbutton_right);
 
 		title_right.setText(getResources().getString(R.string.logout));
@@ -83,142 +75,11 @@ public class ExerciseMenu extends Activity{
 		title_right.setVisibility(View.VISIBLE);
 
 		title_right.setTextSize(12);
-		final ProgressBar progress_title = (ProgressBar)findViewById(R.id.progress_title);
+		progress_title = (ProgressBar)findViewById(R.id.progress_title);
 		analyticsTracker = ((DogUtil)getApplication()).getTracker();
-
-		title_right.setOnClickListener(new OnClickListener() {			
-			@Override
-			public void onClick(View v) {
-				progress_title.setVisibility(View.VISIBLE);
-				runOnUiThread(new Runnable() {
-					@Override
-					public void run() {
-						if(AppData.getLoginType() == USER_LOGIN_TYPE.APPLICATION){
-							SharedPreferences pref = getSharedPreferences(Utilities.DOGCHOW, 0);
-							SharedPreferences.Editor edit = pref.edit();
-							edit.putString(Utilities.USER_ID,""); 
-							edit.commit();						
-
-							i =new Intent(ExerciseMenu.this,MainActivity.class); 
-							i.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-							i.addFlags(Intent.FLAG_ACTIVITY_NO_HISTORY);
-							i.setFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);				
-							startActivity(i);
-							finish();
-							progress_title.setVisibility(View.INVISIBLE);
-
-
-						}else if (AppData.getLoginType() == USER_LOGIN_TYPE.FACEBOOK){
-							title_right.setVisibility(View.INVISIBLE);
-							titleBar.setVisibility(View.VISIBLE);
-
-							facebook = ((DogUtil)getApplication()).getFacebook();
-							logoutFb();
-						}else {
-							SharedPreferences pref = getSharedPreferences(Utilities.DOGCHOW, 0);
-							SharedPreferences.Editor edit = pref.edit();
-							edit.putString(Utilities.USER_ID,""); 
-							edit.commit();
-
-							i =new Intent(ExerciseMenu.this,MainActivity.class); 
-							i.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-							i.addFlags(Intent.FLAG_ACTIVITY_NO_HISTORY);
-							i.setFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);				
-							startActivity(i);
-							finish();
-							progress_title.setVisibility(View.INVISIBLE);
-						}
-					}
-				});
-			}
-		});
 		title_txt = (TextView)findViewById(R.id.title_txt);
 
 		title_txt.setText(getString(R.string.exercise_title));
-
-		newRoutes = (Button)findViewById(R.id.newroute_btn);
-		loadRoutes = (Button)findViewById(R.id.loadroute_btn);
-		statistics = (Button)findViewById(R.id.statistics_btn);
-		dogWelfare  = (Button)findViewById(R.id.dog_welfare_btn);
-
-		newRoutes.setOnClickListener(new OnClickListener() {
-			public void onClick(View v) { 
-				boolean isRouteShow = false;
-				boolean isError = false;
-
-				try{
-					isRouteShow = isRouteShown();
-				}catch (Exception e) {
-					Log.e(this.getClass().getSimpleName(), ""+e.getMessage());
-					isError = true;
-				}
-				if(!isRouteShow && !isError){					
-					testalert();
-				}else{
-
-					analyticsTracker.trackEvent(
-							"New Route",  // Category, i.e. New Route Button
-							"Button",  // Action, i.e. New Route
-							"clicked", // Label    i.e. New Route
-							DogUtil.TRACKER_VALUE);   // Value
-
-					DogUtil.TRACKER_VALUE++;
-
-					i =new Intent(ExerciseMenu.this,Starting.class); 
-					int intValue = 2;
-					i.putExtra("loadroute", intValue);
-					startActivity(i);
-				}
-
-
-			}
-
-		});
-
-		// Others routes will display
-		loadRoutes.setOnClickListener(new OnClickListener() {
-
-			public void onClick(View v) {				
-				i =new Intent(ExerciseMenu.this, Starting.class); 
-				int intValue = 1;
-				i.putExtra("loadroute", intValue);
-				startActivity(i); 
-
-				analyticsTracker.trackEvent(
-						"Load Route",  // Category, i.e. New Route Button
-						"Button",  // Action, i.e. New Route
-						"clicked", // Label    i.e. New Route
-						DogUtil.TRACKER_VALUE);   // Value,
-
-				DogUtil.TRACKER_VALUE++;
-			}
-		}); 
-
-		// Our own routes will display
-		statistics.setOnClickListener(new OnClickListener() {
-			public void onClick(View v) {			
-				i =new Intent(ExerciseMenu.this, Report.class); 
-				startActivity(i); 
-
-				analyticsTracker.trackEvent(
-						"Statictics",  // Category, i.e. Statictics Button
-						"Button",  // Action, i.e. New Route
-						"clicked", // Label    i.e. New Route
-						DogUtil.TRACKER_VALUE);   // Value,
-				DogUtil.TRACKER_VALUE++;
-			}
-		}); 	
-
-		
-		dogWelfare.setOnClickListener(new OnClickListener() {
-			
-			@Override
-			public void onClick(View v) {
-				i =new Intent(ExerciseMenu.this, DogRegister.class); 
-				startActivity(i);
-			}
-		});
-		
 	}
 
 	@Override
@@ -420,6 +281,7 @@ public class ExerciseMenu extends Activity{
 			analyticsTracker.stopSession();
 	}
 
+    @SuppressWarnings("unused")
 	private void clearCredentials() {
 		try {
 			if(facebookConnector != null)
@@ -432,7 +294,117 @@ public class ExerciseMenu extends Activity{
 		}
 	}
 
-	public void onClickDogWelfare(View view) {
-		// TODO implement this method
-	}
+    public void onClickNewRouteButton(View v) {
+        boolean isRouteShow = false;
+        boolean isError = false;
+
+        try{
+            isRouteShow = isRouteShown();
+        } catch(Exception e) {
+            Log.e(this.getClass().getSimpleName(), ""+e.getMessage());
+            isError = true;
+        }
+
+        if(!isRouteShow && !isError){
+            testalert();
+        } else {
+            analyticsTracker.trackEvent("New Route",            // Category, i.e. New Route Button
+                                        "Button",               // Action, i.e. New Route
+                                        "clicked",              // Label    i.e. New Route
+                                        DogUtil.TRACKER_VALUE); // Value
+
+            DogUtil.TRACKER_VALUE++;
+
+            if(app.getCurrentUserId()==null) {
+                startActivityForResult(new Intent(this, PreSignup.class), DogChowApplication.NEW_ROUTE);
+            } else {
+                Intent i = new Intent(this, Starting.class);
+                i.putExtra("loadroute", 2);
+            	startActivity(i);
+            }
+        }
+    }
+
+    public void onClickLoadRouteButton(View v) {
+        if(app.getCurrentUserId()==null) {
+            startActivityForResult(new Intent(this, PreSignup.class), DogChowApplication.LOAD_ROUTE);
+        } else {
+            Intent i = new Intent(this, Starting.class);
+            i.putExtra("loadroute", 1);
+        	startActivity(i);
+        }
+        analyticsTracker.trackEvent("Load Route",            // Category, i.e. New Route Button
+                                    "Button",                // Action, i.e. New Route
+                                    "clicked",               // Label    i.e. New Route
+                                    DogUtil.TRACKER_VALUE);  // Value,
+
+        DogUtil.TRACKER_VALUE++;
+    }
+
+    public void onClickStatisticsButton(View v) {
+        if(app.getCurrentUserId()==null) {
+            startActivityForResult(new Intent(this, PreSignup.class), DogChowApplication.STATISTICS);
+        } else {
+            startActivity(new Intent(this, Report.class));
+        }
+        analyticsTracker.trackEvent("Statictics",           // Category, i.e. Statictics Button
+                                    "Button",               // Action, i.e. New Route
+                                    "clicked",              // Label    i.e. New Route
+                                    DogUtil.TRACKER_VALUE); // Value,
+        DogUtil.TRACKER_VALUE++;
+    }
+
+    public void onClickDogWelfare(View v) {
+        if(app.getCurrentUserId()==null) {
+            startActivityForResult(new Intent(this, PreSignup.class), DogChowApplication.DOGWELFARE);
+        } else {
+            startActivity(new Intent(this, DogRegister.class));
+        }
+    }
+
+    public void onClickTButtonLeftButton(View v) {
+        finish();
+    }
+
+    public void onClickTButtonRightButton(View v) {
+        progress_title.setVisibility(View.VISIBLE);
+        runOnUiThread(new Runnable() {
+                @Override
+                public void run() {
+                    if(AppData.getLoginType() == USER_LOGIN_TYPE.APPLICATION){
+                        SharedPreferences pref = getSharedPreferences(Utilities.DOGCHOW, 0);
+                        SharedPreferences.Editor edit = pref.edit();
+                        edit.putString(Utilities.USER_ID,"");
+                        edit.commit();
+
+                        i =new Intent(ExerciseMenu.this,MainActivity.class);
+                        i.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                        i.addFlags(Intent.FLAG_ACTIVITY_NO_HISTORY);
+                        i.setFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);
+                        startActivity(i);
+                        finish();
+                        progress_title.setVisibility(View.INVISIBLE);
+                    } else if (AppData.getLoginType() == USER_LOGIN_TYPE.FACEBOOK){
+                        title_right.setVisibility(View.INVISIBLE);
+                        titleBar.setVisibility(View.VISIBLE);
+
+                        facebook = ((DogUtil)getApplication()).getFacebook();
+                        logoutFb();
+                    } else {
+                        SharedPreferences pref = getSharedPreferences(Utilities.DOGCHOW, 0);
+                        SharedPreferences.Editor edit = pref.edit();
+                        edit.putString(Utilities.USER_ID,"");
+                        edit.commit();
+
+                        i =new Intent(ExerciseMenu.this,MainActivity.class);
+                        i.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                        i.addFlags(Intent.FLAG_ACTIVITY_NO_HISTORY);
+                        i.setFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);
+                        startActivity(i);
+                        finish();
+                        progress_title.setVisibility(View.INVISIBLE);
+                    }
+                }
+            });
+    }
 }

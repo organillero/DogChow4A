@@ -27,7 +27,6 @@ import android.os.Handler;
 import android.util.Log;
 import android.view.KeyEvent;
 import android.view.View;
-import android.view.View.OnClickListener;
 import android.view.Window;
 import android.widget.Button;
 import android.widget.ProgressBar;
@@ -43,7 +42,7 @@ import com.facebook.android.Util;
 
 public class LoginMainScreen extends Activity{
 
-    private Button fbBtn,manualBtn;
+    private Button manualBtn;
     private Intent i;
 
     public Facebook mFacebook;
@@ -51,7 +50,7 @@ public class LoginMainScreen extends Activity{
 
     private ProgressBar pb;
     private TextView txtTitle;
-    private Button txtBackBtn, txtHomeBtn;
+    private Button txtHomeBtn;
     private RegisterTask registerTask;
     private boolean isWindowOpen = true;
     public void onCreate(Bundle savedInstanceState) {
@@ -62,25 +61,20 @@ public class LoginMainScreen extends Activity{
         getWindow().setFeatureInt(Window.FEATURE_CUSTOM_TITLE,
                                   R.layout.title_bar);
 
-        txtBackBtn = (Button)findViewById(R.id.tbutton_left);
         txtTitle = (TextView)findViewById(R.id.title_txt);
         txtHomeBtn = (Button)findViewById(R.id.tbutton_right);
 
         txtHomeBtn.setVisibility(View.INVISIBLE);
         txtTitle.setText(getResources().getString(R.string.login_title));
 
-        fbBtn = (Button)findViewById(R.id.loginBtn);
         manualBtn = (Button)findViewById(R.id.registerBtn);
         manualBtn.setSelected(true);
         pb = (ProgressBar)findViewById(R.id.register_progress);
         pb.setVisibility(View.INVISIBLE);
+    }
 
-        txtBackBtn.setOnClickListener(new OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    finish();
-                }
-            });
+    public void onClickTButtonLeftButton(View v) {
+        finish();
     }
 
     public void onClickLoginButton(View v) {
@@ -88,7 +82,7 @@ public class LoginMainScreen extends Activity{
     }
 
     public void onClickRegisterButton(View v) {
-        i =new Intent(LoginMainScreen.this,LoginScreen.class);
+        i =new Intent(this,LoginScreen.class);
         i.setFlags(Intent.FLAG_ACTIVITY_NO_HISTORY);
         startActivity(i);
     }
@@ -110,7 +104,7 @@ public class LoginMainScreen extends Activity{
         private String response;
 
         @Override
-            public void run() {
+        public void run() {
             isWindowOpen = true;
             try {
                 //Log.i("LoginMainScreen", "resultData "+resultData);

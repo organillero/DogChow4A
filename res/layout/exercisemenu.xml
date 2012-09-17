@@ -28,6 +28,7 @@
             android:layout_alignParentLeft="true"
             android:layout_below="@id/image"
             android:layout_margin="10dp"
+            android:onClick="onClickNewRouteButton"
             android:background="@drawable/i_newroute" />
 
         <Button
@@ -38,6 +39,7 @@
             android:layout_below="@id/image"
             android:layout_margin="10dp"
             android:layout_toRightOf="@id/newroute_btn"
+            android:onClick="onClickLoadRouteButton"
             android:background="@drawable/i_loadpath" />
 
         <Button
@@ -48,6 +50,7 @@
             android:layout_below="@id/newroute_btn"
             android:layout_margin="10dp"
             android:layout_marginTop="23dp"
+            android:onClick="onClickStatisticsButton"
             android:background="@drawable/i_statistics" />
 
         <Button

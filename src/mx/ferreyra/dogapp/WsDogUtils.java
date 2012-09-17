@@ -871,7 +871,7 @@ public class WsDogUtils {
      * &lt;return&gt;1&lt;/return&gt;
      * </code></p>
      */
-    public String[][] parseInsertUsers(SoapObject result) {
+    public Integer parseInsertUsers(SoapObject result) {
         if (result == null)
             return null;
 
@@ -882,27 +882,19 @@ public class WsDogUtils {
         if(count==0)
             return null;
 
-        int columns = 1;
-        String[][] values = new String[count][columns];
-
-        for(int i=0; i<count; i++) {
-            SoapObject dtRegister = (SoapObject)documentElement.getProperty(i);
-            for(int j=0; j<columns; j++)
-                values[i][j] = dtRegister.getPropertyAsString(j);
-        }
-
-        return values;
+        SoapObject dtRegister = (SoapObject)documentElement.getProperty(0);
+        return Integer.parseInt(dtRegister.getPropertyAsString(0));
     }
 
-    public String[][] insertUsers(Map parameters)
+    public Integer insertUsers(String username, String password, boolean isFacebook)
         throws IOException, XmlPullParserException {
         String method = "insertUsers";
         String action = "http://tempuri.org/insertUsers";
 
         SoapObject request = new SoapObject(namespace, method);
-        request.addProperty("username",(String)parameters.get("username"));
-        request.addProperty("password",(String)parameters.get("password"));
-        request.addProperty("isFacebook",(String)parameters.get("is_facebook"));
+        request.addProperty("username",username);
+        request.addProperty("password",password);
+        request.addProperty("isFacebook",isFacebook ? "1" : "0");
 
         SoapSerializationEnvelope envelope = new SoapSerializationEnvelope(SoapEnvelope.VER11);
         envelope.setOutputSoapObject(request);
@@ -929,7 +921,7 @@ public class WsDogUtils {
      * &lt;return&gt;38&lt;/return&gt;
      * </code></p>
      */
-    public String[][] parseUserLogin(SoapObject result) {
+    public Integer parseUserLogin(SoapObject result) {
         if (result == null)
             return null;
 
@@ -940,26 +932,18 @@ public class WsDogUtils {
         if(count==0)
             return null;
 
-        int columns = 1;
-        String[][] values = new String[count][columns];
-
-        for(int i=0; i<count; i++) {
-            SoapObject dtRegister = (SoapObject)documentElement.getProperty(i);
-            for(int j=0; j<columns; j++)
-                values[i][j] = dtRegister.getPropertyAsString(j);
-        }
-
-        return values;
+        SoapObject dtRegister = (SoapObject)documentElement.getProperty(0);
+        return Integer.parseInt(dtRegister.getPropertyAsString(0));
     }
 
-    public String[][] userLogin(Map parameters)
+    public Integer userLogin(String username, String password)
         throws IOException, XmlPullParserException {
         String method = "userLogin";
         String action = "http://tempuri.org/userLogin";
 
         SoapObject request = new SoapObject(namespace, method);
-        request.addProperty("username",(String)parameters.get("username"));
-        request.addProperty("password",(String)parameters.get("password"));
+        request.addProperty("username",username);
+        request.addProperty("password",password);
 
         SoapSerializationEnvelope envelope = new SoapSerializationEnvelope(SoapEnvelope.VER11);
         envelope.setOutputSoapObject(request);

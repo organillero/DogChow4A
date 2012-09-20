@@ -1,36 +1,143 @@
-<LinearLayout xmlns:tools="http://schemas.android.com/tools"
+<RelativeLayout xmlns:tools="http://schemas.android.com/tools"
+    xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical" xmlns:android="http://schemas.android.com/apk/res/android">
+    android:orientation="vertical" >
+
+    <!-- <GridLayout -->
+    <!-- android:layout_width="fill_parent" -->
+    <!-- android:layout_height="wrap_content" -->
+    <!-- android:columnCount="1" -->
+    <!-- android:orientation="horizontal" > -->
+
+
+    <!-- <ImageView -->
+    <!-- android:id="@+id/dog_photo_image" -->
+    <!-- android:layout_column="1" -->
+    <!-- android:layout_gravity="center" -->
+    <!-- android:maxHeight="200px" -->
+    <!-- android:maxWidth="200px" -->
+    <!-- android:scaleType="centerInside" -->
+    <!-- android:src="@drawable/" /> -->
+
+
+    <!-- </GridLayout> -->
+
+    <ImageView
+        android:id="@+id/imageView1"
+        android:layout_width="100dp"
+        android:layout_height="100dp"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentTop="true"
+        android:layout_marginLeft="20dp"
+        android:layout_marginTop="20dp"
+        android:background="@drawable/bg_camera"
+        android:contentDescription="@null" />
 
     <TextView
+        android:id="@+id/textView2"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_alignTop="@+id/imageView1"
+        android:layout_toRightOf="@+id/imageView1"
+        android:padding="6dp"
+        android:text="@string/breed"
+        android:textColor="#666666"
+        android:textSize="16sp"
+        android:textStyle="bold" />
+
+    <TextView
+        android:id="@+id/tvBreed"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_above="@+id/TextView01"
+        android:layout_toRightOf="@+id/textView2"
+        android:padding="6dp"
         android:text="@string/a"
-        tools:context=".ShowDogProfile" />
+        android:textColor="#666666"
+        android:textSize="14sp"
+        android:textStyle="bold" />
 
-<!--     <GridLayout -->
-<!--         android:layout_width="fill_parent" -->
-<!--         android:layout_height="wrap_content" -->
-<!--         android:columnCount="1" -->
-<!--         android:orientation="horizontal" > -->
+    <TextView
+        android:id="@+id/TextView01"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignLeft="@+id/textView2"
+        android:layout_below="@+id/textView2"
+        android:padding="6dp"
+        android:text="@string/gender"
+        android:textColor="#666666"
+        android:textSize="16sp"
+        android:textStyle="bold" />
 
-<!--         <ImageView -->
-<!--             android:id="@+id/dog_photo_image" -->
-<!--             android:layout_column="1" -->
-<!--             android:layout_gravity="center" -->
-<!--             android:maxHeight="200px" -->
-<!--             android:maxWidth="200px" -->
-<!--             android:scaleType="centerInside" -->
-<!--             android:src="@drawable/" /> -->
+    <TextView
+        android:id="@+id/tvGender"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignBaseline="@+id/TextView01"
+        android:layout_toRightOf="@+id/TextView01"
+        android:padding="6dp"
+        android:text="@string/a"
+        android:textColor="#666666"
+        android:textSize="14sp"
+        android:textStyle="bold" />
 
-<!--     </GridLayout> -->
+    <TextView
+        android:id="@+id/tvLyfeStyle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignLeft="@+id/TextView01"
+        android:layout_below="@+id/TextView01"
+        android:padding="6dp"
+        android:text="@string/a"
+        android:textColor="#666666"
+        android:textSize="14sp"
+        android:textStyle="bold" />
+
+    <TextView
+        android:id="@+id/tvDate"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignLeft="@+id/tvLyfeStyle"
+        android:layout_below="@+id/tvLyfeStyle"
+        android:padding="6dp"
+        android:text="@string/a"
+        android:textColor="#666666"
+        android:textSize="14sp"
+        android:textStyle="bold" />
+
+    <TextView
+        android:id="@+id/TextView02"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignLeft="@+id/imageView1"
+        android:layout_below="@+id/tvDate"
+        android:padding="6dp"
+        android:text="@string/tips"
+        android:textColor="#666666"
+        android:textSize="14sp"
+        android:textStyle="bold" />
+
+    <TextView
+        android:id="@+id/textView1"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_above="@+id/edit_profile_button"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentRight="true"
+        android:layout_below="@+id/TextView02"
+        android:text="@string/a" />
 
     <Button
         android:id="@+id/edit_profile_button"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_gravity="center_horizontal"
-        android:text="@string/a" />
+        android:layout_alignParentBottom="true"
+        android:layout_centerHorizontal="true"
+        android:layout_margin="20dp"
+        android:background="@drawable/bt_send"
+        android:contentDescription="@null"
+        android:text="@string/edit_profile"
+        android:textColor="@android:color/white" />
 
-</LinearLayout>
+</RelativeLayout>

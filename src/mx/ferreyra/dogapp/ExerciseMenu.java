@@ -315,13 +315,13 @@ public class ExerciseMenu extends Activity{
 
 			DogUtil.TRACKER_VALUE++;
 
-			if(app.getCurrentUserId()==null) {
-				startActivityForResult(new Intent(this, PreSignup.class), DogUtil.NEW_ROUTE);
-			} else {
-				Intent i = new Intent(this, Starting.class);
-				i.putExtra("loadroute", 2);
-				startActivity(i);
-			}
+			//if(app.getCurrentUserId()==null) {
+			//startActivityForResult(new Intent(this, PreSignup.class), DogUtil.NEW_ROUTE);
+			//} else {
+			Intent i = new Intent(this, Starting.class);
+			i.putExtra("loadroute", 2);
+			startActivity(i);
+			//}
 		}
 	}
 

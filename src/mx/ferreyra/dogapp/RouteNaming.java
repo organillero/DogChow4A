@@ -24,6 +24,7 @@ import org.xml.sax.helpers.DefaultHandler;
 
 import android.app.Activity;
 import android.app.Dialog;
+import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.net.Uri;
@@ -63,22 +64,24 @@ public class RouteNaming extends Activity {
 	protected static final String TAG = "RouteNaming";
 	private FacebookConnector facebookConnector;
 	private GoogleAnalyticsTracker analyticsTracker;
-	
+
 	private Facebook facebook;
 
 	private String text = "<html><body bgcolor=\"#020202\"> Que nivel de dificultad " +
-	"<font color=\"#015b29\">tiene esta ruta? </font></body></html>";
+			"<font color=\"#015b29\">tiene esta ruta? </font></body></html>";
 	private String shareText = null;
 
 
 	private DIFFICULTY_LEVEL level;
 	private boolean isWindowOpen  = true;
 
-	
+	private Context context;
+
+
 	public static enum DIFFICULTY_LEVEL {
 		EASY, MEDIUM, DIFFICULT 
 	}
-	
+
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -121,6 +124,9 @@ public class RouteNaming extends Activity {
 
 		title_txt = (TextView)findViewById(R.id.title_txt); 
 		title_txt.setText("NUEVA RUTA"); 
+
+		context = this;
+
 		button6.setOnClickListener(new OnClickListener() {
 
 			@Override
@@ -216,30 +222,35 @@ public class RouteNaming extends Activity {
 			@Override
 			public void onClick(View v) {
 
+				if(DogUtil.getInstance().getCurrentUserId()==null) {
+					startActivityForResult(new Intent(context, PreSignup.class), DogUtil.NEW_ROUTE);
+				} else {
 
-				if(!validateRouteName()){
-					Toast.makeText(getApplicationContext(),  getResources().getString(R.string.enter_route_name), Toast.LENGTH_SHORT).show();
-					return;
-				}
 
-				SharedPreferences preferences = getSharedPreferences(Utilities.DOGCHOW, 0);				
-
-				if(preferences != null){
-					String userId = preferences.getString(Utilities.USER_ID, "-1");
-					if(userId != null && !userId.equals("")){
-						SoapParseInsertRoute insertRoute = new SoapParseInsertRoute();
-						insertRoute.execute("");
-					}else{
-						Toast.makeText(getApplicationContext(), getResources().getString(R.string.user_not_exist), Toast.LENGTH_SHORT).show();
+					if(!validateRouteName()){
+						Toast.makeText(getApplicationContext(),  getResources().getString(R.string.enter_route_name), Toast.LENGTH_SHORT).show();
+						return;
 					}
-				}
 
-				analyticsTracker.trackEvent(
-						"Save Route",  // Category
-						"Button",  // Action, 
-						"clicked", // Label    
-						DogUtil.TRACKER_VALUE);   // Value
-				DogUtil.TRACKER_VALUE++;
+					SharedPreferences preferences = getSharedPreferences(Utilities.DOGCHOW, 0);				
+
+					if(preferences != null){
+						String userId = preferences.getString(Utilities.USER_ID, "-1");
+						if(userId != null && !userId.equals("")){
+							SoapParseInsertRoute insertRoute = new SoapParseInsertRoute();
+							insertRoute.execute("");
+						}else{
+							Toast.makeText(getApplicationContext(), getResources().getString(R.string.user_not_exist), Toast.LENGTH_SHORT).show();
+						}
+					}
+
+					analyticsTracker.trackEvent(
+							"Save Route",  // Category
+							"Button",  // Action, 
+							"clicked", // Label    
+							DogUtil.TRACKER_VALUE);   // Value
+					DogUtil.TRACKER_VALUE++;
+				}
 
 			}
 		});
@@ -307,7 +318,7 @@ public class RouteNaming extends Activity {
 			}
 		});
 
-		
+
 		facebook = new Facebook(DogUtil.FACEBOOK_APPID);
 		boolean isSession = SessionStore.restore(facebook, getApplicationContext());
 		runOnUiThread(new Runnable() {
@@ -341,23 +352,23 @@ public class RouteNaming extends Activity {
 	public void loginAndSend(){
 		isWindowOpen = false;
 		facebook.authorize(this, new String[] {}, Facebook.FORCE_DIALOG_AUTH, new DialogListener() {
-			
+
 			@Override
 			public void onFacebookError(FacebookError e) {
 				isWindowOpen = true;
 				showToast(getString(R.string.fb_error_msg));
 				finish();
-				
+
 			}
-			
+
 			@Override
 			public void onError(DialogError e) {
 				isWindowOpen = true;
 				showToast(getString(R.string.fb_dialog_error_msg));
 				finish();
-				
+
 			}
-			
+
 			@Override
 			public void onComplete(Bundle values) {
 				isWindowOpen = true;
@@ -365,9 +376,9 @@ public class RouteNaming extends Activity {
 				Intent intent = new Intent(RouteNaming.this, PublishFacebookScreen.class);
 				intent.putExtra(Utilities.SHARE_ROUTE_NAME, shareText);				
 				startActivity(intent);
-				
+
 			}
-			
+
 			@Override
 			public void onCancel() {
 				isWindowOpen = true;
@@ -491,7 +502,7 @@ public class RouteNaming extends Activity {
 					dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
 					dialog.setContentView(R.layout.route_naming_dialog);	
 					dialog.setCancelable(true);
-					
+
 					//set up button
 					Button button = (Button) dialog.findViewById(R.id.naming_success);
 					button.setOnClickListener(new OnClickListener() {
@@ -570,7 +581,7 @@ public class RouteNaming extends Activity {
 		} 
 		@Override
 		public void endElement(String namespaceURI, String localName, String qName)
-		throws SAXException {
+				throws SAXException {
 
 			if (localName.equals("return")){
 				isreturn = false;
@@ -645,7 +656,7 @@ public class RouteNaming extends Activity {
 
 	String getFacebookMsg() {
 		String wall = getString(R.string.route_share_text1)+" "+shareText+" "
-		+getString(R.string.route_share_text2)+getString(R.string.dogchow)+ " "+getString(R.string.share_text)+" "+getString(R.string.share_link);
+				+getString(R.string.route_share_text2)+getString(R.string.dogchow)+ " "+getString(R.string.share_text)+" "+getString(R.string.share_link);
 		return wall;
 	}
 
@@ -682,7 +693,7 @@ public class RouteNaming extends Activity {
 		else 
 			return false;
 	}
-	
+
 	public boolean onKeyDown(int keyCode, KeyEvent event) {
 		if ((keyCode == KeyEvent.KEYCODE_BACK)) {
 			if(isWindowOpen){
@@ -693,5 +704,45 @@ public class RouteNaming extends Activity {
 		}
 		return super.onKeyDown(keyCode, event);
 	} 
+
+
+
+
+
+	@Override
+	protected void onActivityResult(int requestCode, int resultCode, Intent intent) {
+		super.onActivityResult(requestCode, resultCode, intent);
+
+		if (resultCode == Activity.RESULT_OK && intent != null){
+
+			if ( requestCode == DogUtil.NEW_ROUTE){
+
+				if(!validateRouteName()){
+					Toast.makeText(getApplicationContext(),  getResources().getString(R.string.enter_route_name), Toast.LENGTH_SHORT).show();
+					return;
+				}
+
+				SharedPreferences preferences = getSharedPreferences(Utilities.DOGCHOW, 0);				
+
+				if(preferences != null){
+					String userId = preferences.getString(Utilities.USER_ID, "-1");
+					if(userId != null && !userId.equals("")){
+						SoapParseInsertRoute insertRoute = new SoapParseInsertRoute();
+						insertRoute.execute("");
+					}else{
+						Toast.makeText(getApplicationContext(), getResources().getString(R.string.user_not_exist), Toast.LENGTH_SHORT).show();
+					}
+				}
+
+				analyticsTracker.trackEvent(
+						"Save Route",  // Category
+						"Button",  // Action, 
+						"clicked", // Label    
+						DogUtil.TRACKER_VALUE);   // Value
+				DogUtil.TRACKER_VALUE++;
+			}
+		}
+	}
+
 
 }

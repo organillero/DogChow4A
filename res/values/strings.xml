@@ -186,7 +186,7 @@
     <string name="dog_data_label">Datos Mascota</string>
     <string name="name">Nombre</string>
     <string name="breed">Raza</string>
-    <string name="gender">Genero</string>
+    <string name="gender">Género</string>
     <string name="life_Style">Tipo de Vida</string>
     <string name="activity">Actividad Física</string>
     <string name="birthday_label">Fecha de Nacimiento</string>
@@ -194,12 +194,18 @@
     <string name="dog_owner_data">Datos Dueño</string>
     <string name="state">Estado</string>
     <string name="send">"   Registrar   "</string>
+    
+    <!-- perfil del perro -->
+    
+    <string name="edit_profile">Editar Perfil</string>
+    <string name="tips">Tips</string>
+    
 
     <!-- PreSignup activity -->
     <string name="title_activity_pre_signup">PreSignup</string>
-    <string name="presignup_banner">¡Te invitamos a iniciar sesión!</string>
+    <string name="presignup_banner">Esta funcionalidad esta limitada a usuarios registrados. Para continuar por favor selecciona alguna de las siguientes opciones.\n ¡Gracias!</string>
     <string name="recover_password">Recuperar contraseña</string>
-    <string name="to_login">Iniciar sesión</string>
+    <string name="to_login">Loguearse</string>
     <string name="to_signup">Registrarse</string>
 
     <!-- Signup activity -->
@@ -211,7 +217,7 @@
     <string name="ups">¡Ups!</string>
     <string name="an_error_ocurred">¡Ocurrió un error!</string>
     <string name="please_wait_signing_up">"Por favor espere... ¡registrando!"</string>
-   
+
     <!-- Login activity -->
     <string name="title_activity_login">LoginActivity</string>
     <string name="to_login_with">Iniciar sesión con</string>
@@ -219,4 +225,5 @@
     <!-- DogChow applcation -->
     <string name="preferences_name">dogapp</string>
     <string name="preference_user_id">userid</string>
+
 </resources>

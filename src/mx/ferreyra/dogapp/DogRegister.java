@@ -284,12 +284,11 @@ public class DogRegister extends FragmentActivity {
 
 			if (validateForm()  == false ){
 				UI.showAlertDialog("Upps!!", "Favor de llenar todos los campos antes de continuar", "OK", (Context)context, null);
-
 			}
 
 
 			ByteArrayOutputStream stream = new ByteArrayOutputStream();
-			dogImage.compress(Bitmap.CompressFormat.PNG, 100, stream);
+			dogImage.compress(Bitmap.CompressFormat.JPEG, 80, stream);
 			byte[] byteArray = stream.toByteArray();
 
 			String encodedImageStr = Base64.encodeToString(byteArray,Base64.DEFAULT);

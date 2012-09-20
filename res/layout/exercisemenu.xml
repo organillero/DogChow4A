@@ -7,63 +7,75 @@
     android:scrollbars="vertical" >
 
     <RelativeLayout
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-        android:gravity="center"
-        android:orientation="vertical" >
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" >
 
         <ImageView
             android:id="@+id/image"
             android:layout_width="100dp"
             android:layout_height="100dp"
+            android:layout_alignParentTop="true"
             android:layout_centerHorizontal="true"
-            android:layout_marginTop="35dp"
+            android:layout_marginTop="40dp"
+            android:contentDescription="@null"
             android:scaleType="fitCenter"
             android:src="@drawable/dog_bg_img" />
 
-        <Button
-            android:id="@+id/newroute_btn"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentLeft="true"
-            android:layout_below="@id/image"
-            android:layout_margin="10dp"
-            android:onClick="onClickNewRouteButton"
-            android:background="@drawable/i_newroute" />
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_alignParentBottom="true"
+            android:layout_below="@+id/image"
+            android:layout_marginTop="40dp"
+            android:gravity="center"
+            android:orientation="vertical" >
 
-        <Button
-            android:id="@+id/loadroute_btn"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignBaseline="@+id/newroute_btn"
-            android:layout_below="@id/image"
-            android:layout_margin="10dp"
-            android:layout_toRightOf="@id/newroute_btn"
-            android:onClick="onClickLoadRouteButton"
-            android:background="@drawable/i_loadpath" />
+            <Button
+                android:id="@+id/newroute_btn"
+                android:layout_width="120dp"
+                android:layout_height="120dp"
+                android:layout_alignParentLeft="true"
+                android:layout_margin="10dp"
+                android:src="@drawable/selector_shape_obscurecer"
+                android:onClick="onClickNewRouteButton"
+                android:background="@drawable/newroute_" />
 
-        <Button
-            android:id="@+id/statistics_btn"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentLeft="true"
-            android:layout_below="@id/newroute_btn"
-            android:layout_margin="10dp"
-            android:layout_marginTop="23dp"
-            android:onClick="onClickStatisticsButton"
-            android:background="@drawable/i_statistics" />
+            <Button
+                android:id="@+id/loadroute_btn"
+                android:layout_width="120dp"
+                android:layout_height="120dp"
+                android:layout_alignBaseline="@+id/newroute_btn"
+                android:layout_margin="10dp"
+                android:layout_toRightOf="@id/newroute_btn"
+                android:src="@drawable/selector_shape_obscurecer"
+                android:onClick="onClickLoadRouteButton"
+                android:background="@drawable/loadpath_" />
 
-        <Button
-            android:id="@+id/dog_welfare_btn"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignBaseline="@+id/statistics_btn"
-            android:layout_alignTop="@+id/statistics_btn"
-            android:layout_below="@id/loadroute_btn"
-            android:layout_margin="10dp"
-            android:layout_toRightOf="@id/statistics_btn"
-            android:onClick="onClickDogWelfare"
-            android:background="@drawable/i_statistics" />
+            <Button
+                android:id="@+id/statistics_btn"
+                android:layout_width="120dp"
+                android:layout_height="120dp"
+                android:layout_alignParentLeft="true"
+                android:layout_below="@id/newroute_btn"
+                android:layout_margin="10dp"
+                android:layout_marginTop="23dp"
+                android:src="@drawable/selector_shape_obscurecer"
+                android:background="@drawable/statistics_"
+                android:onClick="onClickStatisticsButton" />
+
+            <Button
+                android:id="@+id/dog_welfare_btn"
+                android:layout_width="120dp"
+                android:layout_height="120dp"
+                android:layout_alignBaseline="@+id/statistics_btn"
+                android:layout_alignTop="@+id/statistics_btn"
+                android:layout_below="@id/loadroute_btn"
+                android:layout_margin="10dp"
+                android:src="@drawable/selector_shape_obscurecer"
+                android:layout_toRightOf="@id/statistics_btn"
+                android:background="@drawable/wealth_"
+                android:onClick="onClickDogWelfare" />
+        </RelativeLayout>
     </RelativeLayout>
 
 </ScrollView>

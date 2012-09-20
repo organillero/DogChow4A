@@ -1,16 +1,18 @@
 <?xml version="1.0" encoding="utf-8"?>
-<resources>
+<resources xmlns:android="http://schemas.android.com/apk/res/android">
 
-	<style name="iTitleTheme" parent="android:Theme.Light">
-		<item name="android:windowTitleSize">40dip</item>item>
-		<item name="android:windowTitleBackgroundStyle">@style/iWindowTitleBackground</item> 
-		<item name="android:windowContentOverlay">@android:color/transparent</item>
-	</style>
-	
-		<style name="Dialog" parent="android:style/Theme.Dialog">
-		<item name="android:windowBackground">@layout/progress_layout</item>
+    <style name="iTitleTheme" parent="android:Theme.Light">
+        <item name="android:windowTitleSize">40dip</item>
+        <item name="android:windowTitleBackgroundStyle">@style/iWindowTitleBackground</item>
+        <item name="android:windowContentOverlay">@android:color/transparent</item>
+        <item name="android:windowSoftInputMode">adjustPan</item>
+        <item name="android:configChanges">orientation|keyboardHidden</item>
+    </style>
+
+    <style name="Dialog" parent="android:style/Theme.Dialog">
+        <item name="android:windowBackground">@layout/progress_layout</item>
         <item name="android:windowNoTitle">true</item>
         <item name="android:windowIsFloating">true</item>
-	</style>
-	
+    </style>
+
 </resources>

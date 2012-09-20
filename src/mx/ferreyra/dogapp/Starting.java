@@ -17,17 +17,17 @@ public class Starting extends Activity {
 	private TextView textView2;
 	private TextView textView3;
 	private TextView textView4; 
-	private String text = "<html><body bgcolor=\"#5c5c5c\"><b>Si estï¿½s empezando a correr con tu perro, " +
-	"<font color=\"#0f7243\">haz ejercicio poco a poco&nbsp;</font>" +
-	"para que se acostumbre a correr en la calle.</b>";
+	private String text = "<html><body bgcolor=\"#5c5c5c\"><b>Si est‡s empezando a correr con tu perro, " +
+			"<font color=\"#0f7243\">haz ejercicio poco a poco&nbsp;</font>" +
+			"para que se acostumbre a correr en la calle.</b>";
 
-	private String text2 = "<font color=\"#0f7243\"><b>Procura no alimentarlo 45 min. antes,&nbsp;</font>ni despuï¿½s de correr.</b>";
+	private String text2 = "<font color=\"#0f7243\"><b>Procura no alimentarlo 45 min. antes,&nbsp;</font>ni despuŽs de correr.</b>";
 
 
 	private String text3 = "<font color=\"#0f7243\"><b>Evita correr sobre el cemento&nbsp;</font>cuando haga mucho calor.</b>";
 
-	private String text4 = "<b>Si te gusta pasear con tu perro de noche," +
-	"<font color=\"#0f7243\">es recomendable colocarle un collar reflejante</font>&nbsp;o una lucecita intermitente.</b></body></html>";
+	private String text4 = "<b>Si te gusta pasear con tu perro de noche, " +
+			"<font color=\"#0f7243\">es recomendable colocarle un collar reflejante</font>&nbsp;o una lucecita intermitente.</b></body></html>";
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
@@ -37,6 +37,8 @@ public class Starting extends Activity {
 		setContentView(R.layout.tips_before_starting);  	
 		getWindow().setFeatureInt(Window.FEATURE_CUSTOM_TITLE,
 				R.layout.title_bar);
+
+	//	text = getString(R.string.text);
 
 		this.getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,
 				WindowManager.LayoutParams.FLAG_FULLSCREEN);

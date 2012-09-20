@@ -22,6 +22,7 @@ import org.xml.sax.XMLReader;
 import org.xml.sax.helpers.DefaultHandler;
 
 import android.app.Activity;
+import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.RectF;
@@ -59,6 +60,9 @@ public class RetrievePassword extends Activity {
 	private RetrievePasswordHandler retrievePasswordHandler;
 
 
+	private Context context;
+	
+	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -66,12 +70,14 @@ public class RetrievePassword extends Activity {
 		setContentView(R.layout.retrieve_password);
 		getWindow().setFeatureInt(Window.FEATURE_CUSTOM_TITLE, R.layout.title_bar);
 
+		context = this;
+		
 		titleLeft = (Button)findViewById(R.id.tbutton_left);
 		titleLeft.setOnClickListener(new OnClickListener() {
 
 			@Override
 			public void onClick(View v) {
-				startActivity(new Intent(this, LoginScreen.class));
+				startActivity(new Intent(context, LoginScreen.class));
 				finish();
 			}
 		});

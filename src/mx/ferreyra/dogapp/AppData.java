@@ -40,9 +40,9 @@ public class AppData {
 	public static final String METHOD_NAME_INSERT_RATINGS = "insertRating";	
 
 	public static final String METHOD_NAME_INSERT_ROUTE = "insertRoute";
-	
+
 	public static final String METHOD_NAME_USER_RECOVERY_PWD = "userRecoveryPWD";
-	
+
 	public static final String METHOD_NAME_USER_STATS = "getStats";	
 
 }

@@ -167,20 +167,20 @@ public class LoginScreen extends Activity{
 			}
 			catch (UnknownHostException e) {
 				errorMsg = getResources().getString(R.string.no_connection);
-				Log.e(this.getClass().getSimpleName(), errorMsg);
+				Log.e(DogUtil.DEBUG_TAG, errorMsg);
 				return false;
 			}catch (UnknownServiceException e) {
 				errorMsg = getResources().getString(R.string.service_unavailable);				
-				Log.e(this.getClass().getSimpleName(),  getResources().getString(R.string.service_unavailable));
+				Log.e(DogUtil.DEBUG_TAG,  getResources().getString(R.string.service_unavailable));
 				return false;
 			}catch (MalformedURLException e) {
 				errorMsg = getResources().getString(R.string.url_malformed);	
 				//e.printStackTrace();
-				Log.e(this.getClass().getSimpleName(), errorMsg );
+				Log.e(DogUtil.DEBUG_TAG, errorMsg );
 				return false;
 			}catch (Exception e) {
 				errorMsg = getResources().getString(R.string.unable_to_get_data);	
-				Log.e(this.getClass().getSimpleName(), errorMsg);
+				Log.e(DogUtil.DEBUG_TAG, errorMsg);
 				//e.printStackTrace();
 				return false;
 			}

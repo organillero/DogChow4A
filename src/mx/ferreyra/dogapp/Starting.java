@@ -62,27 +62,6 @@ public class Starting extends Activity {
 		textView4 = (TextView)findViewById(R.id.tips4);
 		textView4.setText(Html.fromHtml(text4));
 
-		final Button button = (Button)findViewById(R.id.button12);
-
-		button.setOnClickListener(new OnClickListener() {
-
-			@Override
-			public void onClick(View v) {	
-				int data = getIntent().getExtras().getInt(Utilities.LOAD_ROUTE);
-				if(data == 1){
-					Intent intent = new Intent(Starting.this, LoadPath.class);
-					int intValue = 1;
-					intent.putExtra(Utilities.TRAINING_SPOT, intValue);
-					startActivity(intent);
-				}else if(data == 2){
-					Intent intent = new Intent(Starting.this, TrackMapRoute.class);
-					int intValue = 2;
-					intent.putExtra(Utilities.TRAINING_SPOT, intValue);
-					startActivity(intent);
-				}				
-			}
-		});
-
 		Button previous = (Button)findViewById(R.id.tbutton_left);
 		previous.setOnClickListener(new OnClickListener() {
 
@@ -96,5 +75,17 @@ public class Starting extends Activity {
 
 	}
 
+    public void onClickButton12Button(View v) {
+        int data = getIntent().getExtras().getInt(Utilities.LOAD_ROUTE);
+        if(data == 1){
+            Intent intent = new Intent(this, LoadPath.class);
+            intent.putExtra(Utilities.TRAINING_SPOT, 1);
+            startActivity(intent);
+        } else if(data == 2){
+            Intent intent = new Intent(this, TrackMapRoute.class);
+            intent.putExtra(Utilities.TRAINING_SPOT, 2);
+            startActivity(intent);
+        }
+    }
 
 }

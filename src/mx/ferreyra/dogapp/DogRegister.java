@@ -76,8 +76,6 @@ public class DogRegister extends FragmentActivity {
 
 
 
-	private Button btSend;
-
 	private int dogGender = -1;
 	private int dogLifeStyle =-1;
 	private int dogActivity =-1;
@@ -105,8 +103,6 @@ public class DogRegister extends FragmentActivity {
 
 		context = this;
 		activityRootView = findViewById(R.id.activityrootview);
-		activityRootView.setOnClickListener(checkAndHideKeyboardListener);
-
 
 		//Vistas del perro
 		dogNameField = (EditText) findViewById(R.id.dog_name_field);
@@ -116,8 +112,6 @@ public class DogRegister extends FragmentActivity {
 		dogActivityField = (Button) findViewById(R.id.dog_activity_field);
 		dogPhoto = (ImageView) findViewById(R.id.dog_photo);
 		dogBirthday = (Button) findViewById(R.id.dog_birthday);
-
-
 		
 		btRemoveImage = (ImageView) findViewById(R.id.bt_remove);
 
@@ -128,236 +122,178 @@ public class DogRegister extends FragmentActivity {
 		ownerBirthDay = (Button) findViewById(R.id.owner_birthday);
 
 
-		btSend = (Button) findViewById(R.id.bt_send);
-
-
-
 		//perro
-		dogGenderField.setOnClickListener(this.displayDialogDogGender);
-		dogLifeStyleField.setOnClickListener(this.displayDialogDogLifeStyle);
-		dogActivityField.setOnClickListener(this.displayDialogDogActivity);
 		dogPhoto.setOnClickListener(this.photoListener);
-		dogBirthday.setOnClickListener(this.showDogDatePicker);
-
 		btRemoveImage.setOnClickListener(this.removeImageListener);
-
-		//dueno
-		ownerGenderField.setOnClickListener(this.displayDialogOwnerGender);
-		ownerStateField.setOnClickListener(this.displayDialogOwnerState);
-		ownerBirthDay.setOnClickListener(this.showOwnerDatePicker);
-
-
-		//enviar
-		btSend.setOnClickListener(sendListener);
-
 	};
 
 
 
 	/*
-	 * Listener de los botones que tienen funion de spinner para no tener una opci—n ya selecionada desde un princicpio
+	 * Listener de los botones que tienen funion de spinner para no tener una opcion ya selecionada desde un principio
 	 * */
 
+    public void onClickDogGenderFieldButton(View view) {
+        int version = Build.VERSION.SDK_INT;
+        AlertDialog.Builder builder;
+        checkAndHideKeyboard(null);
+        if(version>=11){
+            builder = new AlertDialog.Builder(context,AlertDialog.THEME_HOLO_LIGHT);
+        } else
+            builder = new AlertDialog.Builder(context);
 
-	private OnClickListener displayDialogDogGender = new OnClickListener(){
+        builder.setTitle("Genero");
+        builder.setSingleChoiceItems(Recursos.GENDER,  dogGender, new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialog, int item) {
+                    //Registro.this.tvSexo.setText(Recursos.GENDER[item]);
+                    dogGenderField.setHint(Recursos.GENDER[item]);
+                    dogGender = item;
+                    dialog.dismiss();
+                }
+            });
+        builder.create().show();
+    }
 
-		@Override
-		public void onClick(View v) {
-			int version=Build.VERSION.SDK_INT;
-			AlertDialog.Builder builder;
-			checkAndHideKeyboard(null);
-			if(version>=11){
-				Log.d("Version", "Cambio de tema");
-				builder = new AlertDialog.Builder(context,AlertDialog.THEME_HOLO_LIGHT);
-			}
-			else
-				builder = new AlertDialog.Builder(context);
-			builder.setTitle("Genero");
-			builder.setSingleChoiceItems(Recursos.GENDER,  dogGender, new DialogInterface.OnClickListener() {
-				@Override
-				public void onClick(DialogInterface dialog, int item) {		    	
-					//Registro.this.tvSexo.setText(Recursos.GENDER[item]);
-					dogGenderField.setHint(Recursos.GENDER[item]);
-					dogGender = item;
-					dialog.dismiss();
-				}
-			});
-			AlertDialog alert = builder.create();
-			alert.show();
-		}
+    public void onClickDogLifeStyleFieldButton(View view) {
+        int version=Build.VERSION.SDK_INT;
+        AlertDialog.Builder builder;
+        checkAndHideKeyboard(null);
+        if(version>=11){
+            builder = new AlertDialog.Builder(context,AlertDialog.THEME_HOLO_LIGHT);
+        } else
+            builder = new AlertDialog.Builder(context);
+        builder.setTitle("Tipo de Vida");
+        builder.setSingleChoiceItems(Recursos.LIFE_STYLE,  dogLifeStyle, new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialog, int item) {
+                    //Registro.this.tvSexo.setText(Recursos.GENDER[item]);
+                    dogLifeStyleField.setHint(Recursos.LIFE_STYLE[item]);
+                    dogLifeStyle = item;
+                    dialog.dismiss();
+                }
+            });
+        builder.create().show();
+    }
 
-	};
+    public void onClickDogActivityFieldButton(View view) {
+        int version=Build.VERSION.SDK_INT;
+        AlertDialog.Builder builder;
+        checkAndHideKeyboard(null);
+        if(version>=11){
+            builder = new AlertDialog.Builder(context,AlertDialog.THEME_HOLO_LIGHT);
+        } else
+            builder = new AlertDialog.Builder(context);
+        builder.setTitle("Actividad F\u00edsica");
+        builder.setSingleChoiceItems(Recursos.ACTIVITY,  dogActivity, new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialog, int item) {
+                    //Registro.this.tvSexo.setText(Recursos.GENDER[item]);
+                    dogActivityField.setHint(Recursos.ACTIVITY[item]);
+                    dogActivity = item;
+                    dialog.dismiss();
+                }
+            });
+        builder.create().show();
+    }
 
-	private OnClickListener displayDialogDogLifeStyle = new OnClickListener(){
+    public void onClickDogBirthdayButton(View view) {
+        DatePickerFragment dogDialogBirtday = new DatePickerFragment();
 
-		@Override
-		public void onClick(View v) {
-			int version=Build.VERSION.SDK_INT;
-			AlertDialog.Builder builder;
-			checkAndHideKeyboard(null);
-			if(version>=11){
-				Log.d("Version", "Cambio de tema");
-				builder = new AlertDialog.Builder(context,AlertDialog.THEME_HOLO_LIGHT);
-			}
-			else
-				builder = new AlertDialog.Builder(context);
-			builder.setTitle("Tipo de Vida");
-			builder.setSingleChoiceItems(Recursos.LIFE_STYLE,  dogLifeStyle, new DialogInterface.OnClickListener() {
-				@Override
-				public void onClick(DialogInterface dialog, int item) {		    	
-					//Registro.this.tvSexo.setText(Recursos.GENDER[item]);
-					dogLifeStyleField.setHint(Recursos.LIFE_STYLE[item]);
-					dogLifeStyle = item;
-					dialog.dismiss();
-				}
-			});
-			AlertDialog alert = builder.create();
-			alert.show();
-		}
+        dogDialogBirtday.setDate(dogYear, dogMonth, dogDay);
+        dogDialogBirtday.setInterface(myDogDate);
+        dogDialogBirtday.show(getSupportFragmentManager(), "dateOwnerPicker");
+    }
 
-	};
+    public void onClickOwnerBirthdayButton(View view) {
+        DatePickerFragment dogDialogBirtday = new DatePickerFragment();
 
-	private OnClickListener displayDialogDogActivity = new OnClickListener(){
+        dogDialogBirtday.setDate(ownerYear, ownerMonth, ownerDay);
+        dogDialogBirtday.setInterface(myOwnerDate);
+        dogDialogBirtday.show(getSupportFragmentManager(), "dateDoogPicker");
+    }
 
-		@Override
-		public void onClick(View v) {
-			int version=Build.VERSION.SDK_INT;
-			AlertDialog.Builder builder;
-			checkAndHideKeyboard(null);
-			if(version>=11){
-				Log.d("Version", "Cambio de tema");
-				builder = new AlertDialog.Builder(context,AlertDialog.THEME_HOLO_LIGHT);
-			}
-			else
-				builder = new AlertDialog.Builder(context);
-			builder.setTitle("Actividad F’sica");
-			builder.setSingleChoiceItems(Recursos.ACTIVITY,  dogActivity, new DialogInterface.OnClickListener() {
-				@Override
-				public void onClick(DialogInterface dialog, int item) {		    	
-					//Registro.this.tvSexo.setText(Recursos.GENDER[item]);
-					dogActivityField.setHint(Recursos.ACTIVITY[item]);
-					dogActivity = item;
-					dialog.dismiss();
-				}
-			});
-			AlertDialog alert = builder.create();
-			alert.show();
-		}
+    public void onClickSendButton(View v) {
+        if(!validateForm())
+            return;
 
-	};
+        ByteArrayOutputStream stream = new ByteArrayOutputStream();
+        dogImage.compress(Bitmap.CompressFormat.PNG, 100, stream);
+        byte[] byteArray = stream.toByteArray();
+        String encodedImageStr = Base64.encodeToString(byteArray,Base64.DEFAULT);
 
+        Map<String, String> map = new HashMap<String, String>();
 
-	private OnClickListener showDogDatePicker = new View.OnClickListener (){
+        String userId = DogUtil.getInstance().getCurrentUserId().toString();
+        map.put("idUsuario", userId);
+        map.put("duenoNombre", dogNameField.getText().toString());
+        map.put("mascotaRaza", dogBreedField.getText().toString());
+        map.put("mascotaIdGenero", String.valueOf(dogGender+1));
+        map.put("mascotaIdTipoVida", String.valueOf(dogLifeStyle));
+        map.put("mascotaIdActividadFisica", String.valueOf(dogActivity));
+        map.put("mascotaImagen", encodedImageStr);
+        map.put("mascotaFechaCumpleanos", dogYear + "-" + (dogMonth<10 ? "0"+dogMonth : dogMonth) + "-"+ dogDay);
 
-		@Override
-		public void onClick(View v) {
-			DatePickerFragment dogDialogBirtday = new DatePickerFragment();
+        map.put("duenoNombre", ownerNameField.getText().toString());
+        map.put("duenoIdGenero", String.valueOf(ownerGender+1));
+        map.put("duenoFechaCumpleanos", ownerYear + "-" + (ownerMonth<10 ? "0"+ownerMonth : ownerMonth) + "-"+ ownerDay);
+        map.put("duenoIdEstado", String.valueOf(ownerState));
 
-			dogDialogBirtday.setDate(dogYear, dogMonth, dogDay);
-			dogDialogBirtday.setInterface(myDogDate);
+        DogRegisterAsync dogRegisterAsync =  new DogRegisterAsync (context);
+        dogRegisterAsync.setMap(map);
+        dogRegisterAsync.execute();
+    }
 
-			dogDialogBirtday.show(getSupportFragmentManager(), "dateOwnerPicker");
-		}
+    private boolean validateForm() {
+        if(dogNameField.getText().equals("")) {
+            dogNameField.requestFocus();
+            UI.showAlertDialog("Upps!!",
+                               "Ingrese el nombre del perro",
+                               "OK", this, null);
+            return false;
+        }
 
-	};
+        if(dogBreedField.getText().equals("")) {
+            dogBreedField.requestFocus();
+            UI.showAlertDialog("Upps!!",
+                               "Ingrese la raza del perro",
+                               "OK", this, null);
+            return false;
+        }
 
-	private OnClickListener showOwnerDatePicker = new View.OnClickListener (){
+        if(ownerNameField.getText().equals("")) {
+            ownerNameField.requestFocus();
+            UI.showAlertDialog("Upps!!",
+                               "Ingrese el nombre del due\u00f1o",
+                               "OK", this, null);
+            return false;
+        }
 
-		@Override
-		public void onClick(View v) {
-			DatePickerFragment dogDialogBirtday = new DatePickerFragment();
+        if(dogImage == null) {
+            UI.showAlertDialog("Upps!!",
+                               "Seleccione una imagen",
+                               "OK", this, null);
+            return false;
+        }
 
-			dogDialogBirtday.setDate(ownerYear, ownerMonth, ownerDay);
-			dogDialogBirtday.setInterface(myOwnerDate);
+        if(dogGender == -1 || dogLifeStyle == -1 || dogActivity == -1 ||
+           dogYear == -1 || dogMonth == -1 || dogDay == -1 ||
+           ownerGender == -1 || ownerYear == -1 || ownerMonth == -1 ||
+           ownerDay == -1 || ownerState == -1) {
+            UI.showAlertDialog("Upps!!",
+                               "Favor de llenar todos los campos antes de continuar",
+                               "OK", this, null);
+            return false;
+        }
 
-			dogDialogBirtday.show(getSupportFragmentManager(), "dateDoogPicker");
-		}
-
-	};
-
-
-
-	private OnClickListener sendListener  = new View.OnClickListener() {
-
-		@Override
-		public void onClick(View v) {
-
-			if (validateForm()  == false ){
-				UI.showAlertDialog("Upps!!", "Favor de llenar todos los campos antes de continuar", "OK", (Context)context, null);
-			}
-
-
-			ByteArrayOutputStream stream = new ByteArrayOutputStream();
-			dogImage.compress(Bitmap.CompressFormat.JPEG, 80, stream);
-			byte[] byteArray = stream.toByteArray();
-
-			String encodedImageStr = Base64.encodeToString(byteArray,Base64.DEFAULT);
-
-			Map<String, String> map = new HashMap<String, String>();
-
-			//idUsuario
-			SharedPreferences pref = getSharedPreferences(Utilities.DOGCHOW, 0);
-			String userId = pref.getString(Utilities.USER_ID, "");
-
-			map.put("idUsuario", userId);
-
-			//Valores de la mascota
-			map.put("duenoNombre", dogNameField.getText().toString());
-			map.put("mascotaRaza", dogBreedField.getText().toString());
-			map.put("mascotaIdGenero", String.valueOf(dogGender));
-			map.put("mascotaIdTipoVida", String.valueOf(dogLifeStyle));
-			map.put("mascotaIdActividadFisica", String.valueOf(dogActivity));
-			map.put("mascotaImagen", encodedImageStr);
-			map.put("mascotaFechaCumpleanos", dogYear + "-" + dogMonth + "-"+ dogDay  + "T00:00:00");
-
-			//valores del due–o
-
-			map.put("duenoNombre", ownerNameField.getText().toString());
-			map.put("duenoIdGenero", String.valueOf(ownerGender));
-			map.put("duenoFechaCumpleanos", ownerYear + "-" + ownerMonth + "-"+ ownerDay  + "T00:00:00");
-			map.put("duenoIdEstado", String.valueOf(ownerState));
-
-
-
-			DogRegisterAsync dogRegisterAsync =  new DogRegisterAsync (context);
-			dogRegisterAsync.setMap(map);
-
-			dogRegisterAsync.execute();
-
-
-
-
-		}
-
-		private boolean validateForm() {
-			boolean ans = true;
-
-			if (dogNameField.getText().equals("") || dogBreedField.getText().equals("")||
-					dogGender== -1 || dogLifeStyle == -1 || dogActivity == -1 ||
-					dogYear == -1 || dogMonth == -1 || dogDay == -1 ||
-
-					ownerNameField.getText().equals("") || ownerGender == -1 ||
-					ownerYear == -1 || ownerMonth == -1 || ownerDay == -1||
-
-					ownerState == -1 ||
-
-					dogImage != null
-
-
-
-					){
-				ans = false;
-			}
-
-			return ans;
-		}
-	};
+        return true;
+    }
 
 	MyDate myDogDate = new MyDate(){
 		@Override
 		public void getDate(int year, int month, int day) {
 			dogYear = year;
-			dogMonth = month;
+			dogMonth = month+1;
 			dogDay = day;
 
 			dogBirthday.setHint(day + " / " + Recursos.MONTHS[month] + " / " + year);
@@ -378,69 +314,47 @@ public class DogRegister extends FragmentActivity {
 
 	};
 
+    public void onClickOwnerGenderButton(View view) {
+        int version=Build.VERSION.SDK_INT;
+        AlertDialog.Builder builder;
+        checkAndHideKeyboard(null);
+        if(version>=11){
+            builder = new AlertDialog.Builder(context,AlertDialog.THEME_HOLO_LIGHT);
+        } else
+            builder = new AlertDialog.Builder(context);
+        builder.setTitle("Genero");
+        builder.setSingleChoiceItems(Recursos.GENDER_OWNER,  ownerGender, new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialog, int item) {
+                    //Registro.this.tvSexo.setText(Recursos.GENDER[item]);
+                    ownerGenderField.setHint(Recursos.GENDER_OWNER[item]);
+                    ownerGender = item;
+                    dialog.dismiss();
+                }
+            });
+        builder.create().show();
+    }
 
-
-	private OnClickListener displayDialogOwnerGender = new OnClickListener(){
-
-		@Override
-		public void onClick(View v) {
-			int version=Build.VERSION.SDK_INT;
-			AlertDialog.Builder builder;
-			checkAndHideKeyboard(null);
-			if(version>=11){
-				Log.d("Version", "Cambio de tema");
-				builder = new AlertDialog.Builder(context,AlertDialog.THEME_HOLO_LIGHT);
-			}
-			else
-				builder = new AlertDialog.Builder(context);
-			builder.setTitle("Genero");
-			builder.setSingleChoiceItems(Recursos.GENDER_OWNER,  ownerGender, new DialogInterface.OnClickListener() {
-				@Override
-				public void onClick(DialogInterface dialog, int item) {		    	
-					//Registro.this.tvSexo.setText(Recursos.GENDER[item]);
-					ownerGenderField.setHint(Recursos.GENDER_OWNER[item]);
-					ownerGender = item;
-					dialog.dismiss();
-				}
-			});
-			AlertDialog alert = builder.create();
-			alert.show();
-		}
-
-	};
-
-
-
-
-	private OnClickListener displayDialogOwnerState = new OnClickListener(){
-
-		@Override
-		public void onClick(View v) {
-			int version=Build.VERSION.SDK_INT;
-			AlertDialog.Builder builder;
-			checkAndHideKeyboard(null);
-			if(version>=11){
-				Log.d("Version", "Cambio de tema");
-				builder = new AlertDialog.Builder(context,AlertDialog.THEME_HOLO_LIGHT);
-			}
-			else
-				builder = new AlertDialog.Builder(context);
-			builder.setTitle("Estado");
-			builder.setSingleChoiceItems(Recursos.STATES,  ownerState, new DialogInterface.OnClickListener() {
-				@Override
-				public void onClick(DialogInterface dialog, int item) {		    	
-					//Registro.this.tvSexo.setText(Recursos.GENDER[item]);
-					ownerStateField.setHint(Recursos.STATES[item]);
-					ownerState = item;
-					dialog.dismiss();
-				}
-			});
-			AlertDialog alert = builder.create();
-			alert.show();
-		}
-
-	};
-
+    public void onClickOwnerStateButton(View view) {
+        int version=Build.VERSION.SDK_INT;
+        AlertDialog.Builder builder;
+        checkAndHideKeyboard(null);
+        if(version>=11)
+            builder = new AlertDialog.Builder(context,AlertDialog.THEME_HOLO_LIGHT);
+        else
+            builder = new AlertDialog.Builder(context);
+        builder.setTitle("Estado");
+        builder.setSingleChoiceItems(Recursos.STATES,  ownerState, new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialog, int item) {
+                    //Registro.this.tvSexo.setText(Recursos.GENDER[item]);
+                    ownerStateField.setHint(Recursos.STATES[item]);
+                    ownerState = item;
+                    dialog.dismiss();
+                }
+            });
+        builder.create().show();
+    }
 
 	android.view.View.OnClickListener photoListener = new View.OnClickListener() {
 
@@ -469,7 +383,7 @@ public class DogRegister extends FragmentActivity {
 		final CharSequence[] items = {"Desde mis imagenes", "Tomar una foto"};
 
 		AlertDialog.Builder builder = new AlertDialog.Builder(context);
-		builder.setTitle("Tomar Fotograf’a");
+		builder.setTitle("Tomar Fotograf\u00eda");
 		builder.setItems(items, new DialogInterface.OnClickListener() {
 			public void onClick(DialogInterface dialog, int item) {
 
@@ -548,24 +462,16 @@ public class DogRegister extends FragmentActivity {
 		}
 	}
 
+    public void onClickActivityRootView(View view) {
+        checkAndHideKeyboard(view);
+    }
 
-	android.view.View.OnClickListener checkAndHideKeyboardListener = new View.OnClickListener() {
-
-		@Override
-		public void onClick(View v) {
-			checkAndHideKeyboard(v);
-		}
-	};
-
-	public void checkAndHideKeyboard (View view){
-
-		if(getResources().getConfiguration().keyboardHidden == Configuration.KEYBOARDHIDDEN_NO){
-			InputMethodManager imm = (InputMethodManager)context.getSystemService(Context.INPUT_METHOD_SERVICE);
-			imm.hideSoftInputFromWindow(activityRootView.getWindowToken(), 0);
-		}
-
-		return;
-	}
+    public void checkAndHideKeyboard(View view){
+        if(getResources().getConfiguration().keyboardHidden == Configuration.KEYBOARDHIDDEN_NO){
+            InputMethodManager imm = (InputMethodManager)context.getSystemService(Context.INPUT_METHOD_SERVICE);
+            imm.hideSoftInputFromWindow(activityRootView.getWindowToken(), 0);
+        }
+    }
 
 
 
@@ -595,26 +501,25 @@ public class DogRegister extends FragmentActivity {
 			dialog.show();
 		}
 
-		@Override
-		protected Integer doInBackground(Void... params) {
-
-			WsDogUtils wsDogUtils = new WsDogUtils(context);
-			try {
-				wsDogUtils.insertDuenoMascota(map);
-			} catch (Exception e) {
-				e.printStackTrace();
-			}
-
-
-
-			return null;
-		}
+                @Override
+                protected Integer doInBackground(Void... params) {
+                    WsDogUtils wsDogUtils = new WsDogUtils(context);
+                    try {
+                        return wsDogUtils.insertDuenoMascota(map);
+                    } catch (Exception e) {
+                        return null;
+                    }
+                }
 
 		@Override
 		protected void onPostExecute(Integer result) {
 			super.onPostExecute(result);
 			dialog.dismiss();
 			//dispatchResult(result);
+
+			UI.showAlertDialog("Result",
+					   "Result => " + result,
+					   "OK", context, null);
 		}
 	}
 

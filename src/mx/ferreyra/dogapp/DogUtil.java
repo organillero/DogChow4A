@@ -13,7 +13,10 @@ import com.facebook.android.Facebook;
 import com.facebook.android.Util;
 import com.google.android.apps.analytics.GoogleAnalyticsTracker;
 
-public class DogUtil extends Application{	
+public class DogUtil extends Application {
+
+    public static final String DEBUG_TAG = "DogChowMx";
+
 	public static final int DOGWELFARE = 0x01;
 	public static final int STATISTICS = 0x02;
 	public static final int LOAD_ROUTE = 0x03;

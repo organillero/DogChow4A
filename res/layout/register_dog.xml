@@ -7,6 +7,7 @@
         android:id="@+id/activityrootview"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+	android:onClick="onClickActivityRootView"
         android:padding="20dp" >
 
         <TextView
@@ -54,6 +55,7 @@
             android:background="@drawable/bg_select_field"
             android:ems="10"
             android:gravity="left"
+            android:onClick="onClickDogGenderFieldButton"
             android:hint="@string/gender" />
 
         <Button
@@ -63,6 +65,7 @@
             android:layout_below="@+id/dog_gender_field"
             android:background="@drawable/bg_select_field"
             android:gravity="left"
+            android:onClick="onClickDogLifeStyleFieldButton"
             android:hint="@string/life_Style" />
 
         <Button
@@ -72,6 +75,7 @@
             android:layout_below="@+id/dog_life_style_field"
             android:background="@drawable/bg_select_field"
             android:gravity="left"
+            android:onClick="onClickDogActivityFieldButton"
             android:hint="@string/activity" />
 
         <ImageView
@@ -119,6 +123,7 @@
             android:layout_below="@+id/textView2"
             android:background="@drawable/bg_select_field"
             android:gravity="left"
+            android:onClick="onClickDogBirthdayButton"
             android:hint="@string/birthday" />
 
         <TextView
@@ -155,6 +160,7 @@
             android:layout_below="@+id/owner_name_field"
             android:background="@drawable/bg_select_field"
             android:gravity="left"
+            android:onClick="onClickOwnerGenderButton"
             android:hint="@string/gender" />
 
         <TextView
@@ -178,6 +184,7 @@
             android:layout_below="@+id/textView4"
             android:background="@drawable/bg_select_field"
             android:gravity="left"
+            android:onClick="onClickOwnerBirthdayButton"
             android:hint="@string/birthday" />
 
         <Button
@@ -187,6 +194,7 @@
             android:layout_below="@+id/owner_birthday"
             android:background="@drawable/bg_select_field"
             android:gravity="left"
+            android:onClick="onClickOwnerStateButton"
             android:hint="@string/state" />
 
         <Button
@@ -198,6 +206,7 @@
             android:layout_marginTop="20dp"
             android:background="@drawable/bt_send"
             android:contentDescription="@null"
+            android:onClick="onClickSendButton"
             android:text="@string/send"
             android:textColor="@android:color/white" />
     </RelativeLayout>

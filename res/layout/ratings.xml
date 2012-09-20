@@ -47,6 +47,7 @@
         android:layout_below="@+id/ratingBar1"
         android:layout_centerHorizontal="true"
         android:layout_marginTop="20dp"
+        android:onClick="onClickButton1Button"
         android:background="@drawable/i_rating_path" >
     </Button>
 
@@ -76,6 +77,7 @@
             android:id="@+id/cancel"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"           
+            android:onClick="onClickCancelButton"
             android:background="@drawable/i_route_naming_cancel" >
         </Button>
     </LinearLayout>
@@ -95,6 +97,7 @@
             android:layout_height="wrap_content"
             android:layout_gravity="left"
             android:layout_margin="5dp"
+            android:onClick="onClickFbButton"
             android:background="@drawable/fbicon" />
 
         <Button
@@ -103,6 +106,7 @@
             android:layout_height="wrap_content"
             android:layout_gravity="right"
             android:layout_margin="5dp"
+            android:onClick="onClickTwrButton"
             android:background="@drawable/twitter_icon" />
     </LinearLayout>
 

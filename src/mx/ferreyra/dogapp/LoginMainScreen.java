@@ -107,7 +107,6 @@ public class LoginMainScreen extends Activity{
         public void run() {
             isWindowOpen = true;
             try {
-                //Log.i("LoginMainScreen", "resultData "+resultData);
                 // process the response here: executed in background thread)
                 final JSONObject json = Util.parseJson(resultData);
 
@@ -147,39 +146,39 @@ public class LoginMainScreen extends Activity{
             }
             catch (UnknownHostException e) {
                 errorMsg = getResources().getString(R.string.no_connection);
-                Log.e(this.getClass().getSimpleName(), errorMsg);
+                Log.e(DogUtil.DEBUG_TAG, errorMsg);
                 progressTitle();
 
             }catch (UnknownServiceException e) {
                 errorMsg = getResources().getString(R.string.service_unavailable);
-                Log.e(this.getClass().getSimpleName(),  getResources().getString(R.string.service_unavailable));
+                Log.e(DogUtil.DEBUG_TAG,  getResources().getString(R.string.service_unavailable));
                 progressTitle();
             }catch (MalformedURLException e) {
                 errorMsg = getResources().getString(R.string.url_malformed);
                 e.printStackTrace();
-                Log.e(this.getClass().getSimpleName(), errorMsg );
+                Log.e(DogUtil.DEBUG_TAG, errorMsg );
                 progressTitle();
             }catch (JSONException e) {
                 errorMsg = getResources().getString(R.string.parse_error);
-                Log.e(this.getClass().getSimpleName(), errorMsg);
+                Log.e(DogUtil.DEBUG_TAG, errorMsg);
                 e.printStackTrace();
                 progressTitle();
             } catch (FacebookError e) {
                 errorMsg = getResources().getString(R.string.fb_error);
-                Log.e(this.getClass().getSimpleName(), errorMsg);
+                Log.e(DogUtil.DEBUG_TAG, errorMsg);
                 e.printStackTrace();
                 progressTitle();
             }catch (XmlPullParserException e) {
                 errorMsg = getResources().getString(R.string.unable_to_parse);
-                Log.e(this.getClass().getSimpleName(), errorMsg);
+                Log.e(DogUtil.DEBUG_TAG, errorMsg);
                 progressTitle();
             } catch (IOException e) {
                 errorMsg = getResources().getString(R.string.io_error);
-                Log.e(this.getClass().getSimpleName(), errorMsg);
+                Log.e(DogUtil.DEBUG_TAG, errorMsg);
                 progressTitle();
             } catch (Exception e) {
                 errorMsg = getResources().getString(R.string.error_in_register);
-                Log.e(this.getClass().getSimpleName(), errorMsg);
+                Log.e(DogUtil.DEBUG_TAG, errorMsg);
                 progressTitle();
             }
 
@@ -238,9 +237,9 @@ public class LoginMainScreen extends Activity{
             SessionEvents.addLogoutListener(new SampleLogoutListener());
 
             if(isSessionValid)
-                Log.i("DogChow-Login","Aleady logged in");
+                Log.i(DogUtil.DEBUG_TAG,"Aleady logged in");
             else
-                Log.i("DogChow-Login","Login necessary");
+                Log.i(DogUtil.DEBUG_TAG,"Login necessary");
 
             //                if(!isSessionValid)
             //                        mFacebook.authorize(LoginMainScreen.this, ac.getPermissions(),         new UserInfoListener());
@@ -253,11 +252,7 @@ public class LoginMainScreen extends Activity{
                 Bundle parameters = new Bundle();
                 parameters.putString("locale", "es-mx");
                 parameters.putString(Facebook.TOKEN, mFacebook.getAccessToken());
-                //Log.i("DogChow-Login","Token "+mFacebook.getAccessToken());
-                //Log.i("DogChow-Login","Expires "+mFacebook.getAccessExpires());
                 mAsyncRunner.request("me", parameters,  new FacebookUserRequestListener());
-
-                //mAsyncRunner.request("me", new FacebookUserRequestListener());
             }
         } catch(Exception e) {
             e.printStackTrace();
@@ -267,12 +262,12 @@ public class LoginMainScreen extends Activity{
 
     public class SampleAuthListener implements AuthListener {
         public void onAuthSucceed() {
-            Log.i("DogChow-Login","Success!");
+            Log.i(DogUtil.DEBUG_TAG,"Success!");
             progressTitle();
         }
 
         public void onAuthFail(String error) {
-            Log.i("DogChow-Login","Fail!");
+            Log.i(DogUtil.DEBUG_TAG,"Fail!");
             progressTitle();
         }
     }
@@ -300,7 +295,7 @@ public class LoginMainScreen extends Activity{
                             pb.setVisibility(View.VISIBLE);
                         }
                     });
-                Log.i("DogChowLogin", "Logged in!");
+                Log.i(DogUtil.DEBUG_TAG, "Logged in!");
                 SessionStore.save(mFacebook, getApplicationContext());
                 mAsyncRunner.request("me", new FacebookUserRequestListener());
             } catch (Exception e) {
@@ -312,20 +307,20 @@ public class LoginMainScreen extends Activity{
         public void onCancel() {
             isWindowOpen = true;
             progressTitle();
-            Log.i("DogChow-Loggin", "Login cancelled");
+            Log.i(DogUtil.DEBUG_TAG, "Login cancelled");
         }
 
         public void onError(DialogError e) {
             isWindowOpen = true;
             progressTitle();
-            Log.i("DogChow-Loggin", "Dialog error");
+            Log.i(DogUtil.DEBUG_TAG, "Dialog error");
             e.printStackTrace();
         }
 
         public void onFacebookError(FacebookError e) {
             isWindowOpen = true;
             progressTitle();
-            Log.i("DogChow-Loggin", "Facebook error ");
+            Log.i(DogUtil.DEBUG_TAG, "Facebook error ");
             e.printStackTrace();
         }
     }
@@ -365,7 +360,7 @@ public class LoginMainScreen extends Activity{
             // TODO Auto-generated method stub
             super.onFacebookError(e, state);
             isWindowOpen = true;
-            Log.i("DogChow-Loggin", "onFacebookError error ");
+            Log.i(DogUtil.DEBUG_TAG, "onFacebookError error ");
             progressTitle();
         }
 
@@ -375,7 +370,7 @@ public class LoginMainScreen extends Activity{
             // TODO Auto-generated method stub
             super.onFileNotFoundException(e, state);
             isWindowOpen = true;
-            Log.i("DogChow-Loggin", "onFileNotFoundException error ");
+            Log.i(DogUtil.DEBUG_TAG, "onFileNotFoundException error ");
             progressTitle();
         }
 
@@ -384,7 +379,7 @@ public class LoginMainScreen extends Activity{
             // TODO Auto-generated method stub
             super.onIOException(e, state);
             isWindowOpen = true;
-            Log.i("DogChow-Loggin", "onIOException error ");
+            Log.i(DogUtil.DEBUG_TAG, "onIOException error ");
             progressTitle();
         }
 
@@ -394,7 +389,7 @@ public class LoginMainScreen extends Activity{
             // TODO Auto-generated method stub
             super.onMalformedURLException(e, state);
             isWindowOpen = true;
-            Log.i("DogChow-Loggin", "onMalformedURLException error ");
+            Log.i(DogUtil.DEBUG_TAG, "onMalformedURLException error ");
             progressTitle();
         }
     }
@@ -418,7 +413,7 @@ public class LoginMainScreen extends Activity{
                                     Intent data) {
         // TODO Auto-generated method stub
         super.onActivityResult(requestCode, resultCode, data);
-        Log.i("DogChow-Login",requestCode + " " + resultCode + " " + data);
+        Log.i(DogUtil.DEBUG_TAG,requestCode + " " + resultCode + " " + data);
         mFacebook.authorizeCallback(requestCode, resultCode, data);
         finish();
     }

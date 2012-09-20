@@ -219,13 +219,13 @@ public class FacebookConnector {
 
 		@Override
 		public void onCancel() {			
-			Log.d("FacebookConnector","onCancel");
+			Log.d(DogUtil.DEBUG_TAG,"onCancel");
 			showMessage(context.getResources().getString(R.string.login_cancel));
 		}
 
 		@Override
 		public void onComplete(Bundle values) {
-			Log.d("FacebookConnector","success");
+			Log.d(DogUtil.DEBUG_TAG,"success");
 			requestParameter = values.getString("access_token");	
 			SessionStore.save(facebook, context);
 			Intent intent = new Intent(context, PublishFacebookScreen.class);
@@ -236,13 +236,13 @@ public class FacebookConnector {
 
 		@Override
 		public void onError(DialogError e) {
-			Log.d("FacebookConnector","dialog error "+e.getMessage());
+			Log.d(DogUtil.DEBUG_TAG,"dialog error "+e.getMessage());
 			showMessage(context.getResources().getString(R.string.error_in_dialog));
 		}
 
 		@Override
 		public void onFacebookError(FacebookError e) {
-			Log.d("FacebookConnector","facebook error "+e.getMessage());
+			Log.d(DogUtil.DEBUG_TAG,"facebook error "+e.getMessage());
 			showMessage(e.getMessage());
 		}
 	}

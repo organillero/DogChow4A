@@ -105,27 +105,27 @@ public class ExerciseMenu extends Activity{
 
 				@Override
 				public void onMalformedURLException(MalformedURLException e, Object state) {
-					Log.e("DogChowMX", "Error : "+e.getMessage());
+					Log.e(DogUtil.DEBUG_TAG, "Error : "+e.getMessage());
 					setTitleInvisible();
 				}
 
 				@Override
 				public void onIOException(IOException e, Object state) {
-					Log.e("DogChowMX", "Network unreachable: "+e.getMessage());
+					Log.e(DogUtil.DEBUG_TAG, "Network unreachable: "+e.getMessage());
 					setTitleInvisible();
 
 				}
 
 				@Override
 				public void onFileNotFoundException(FileNotFoundException e, Object state) {
-					Log.e("DogChowMX", "onFileNotFoundException: "+e.getMessage());
+					Log.e(DogUtil.DEBUG_TAG, "onFileNotFoundException: "+e.getMessage());
 					setTitleInvisible();
 
 				}
 
 				@Override
 				public void onFacebookError(FacebookError e, Object state) {
-					Log.e("DogChowMX", "Facebook error: "+e.getMessage());
+					Log.e(DogUtil.DEBUG_TAG, "Facebook error: "+e.getMessage());
 					setTitleInvisible();
 				}
 

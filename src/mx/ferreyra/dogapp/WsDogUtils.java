@@ -584,12 +584,18 @@ public class WsDogUtils {
         return parseGetTrainingSpot(result);
     }
 
-    public String[][] parseInsertDuenoMascota(SoapObject result) {
-        // TODO implement this method
-        return null;
+    public Integer parseInsertDuenoMascota(SoapObject result) {
+        if (result == null)
+            return null;
+
+        SoapObject root = (SoapObject)result.getProperty(0);
+        SoapObject diffgram = (SoapObject)root.getProperty(1);
+        SoapObject newDataSet = (SoapObject)diffgram.getProperty(0);
+	SoapObject table = (SoapObject)newDataSet.getProperty(0);
+	return Integer.valueOf(table.getPropertyAsString(0));
     }
 
-    public String[][] insertDuenoMascota(Map parameters)
+    public Integer insertDuenoMascota(Map parameters)
         throws IOException, XmlPullParserException {
         String method = "insertDuenoMascota";
         String action = "http://tempuri.org/insertDuenoMascota";

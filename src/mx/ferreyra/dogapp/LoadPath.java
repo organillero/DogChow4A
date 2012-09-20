@@ -203,8 +203,6 @@ public class LoadPath extends Activity {
 
 					result = androidHttpTransport.responseDump;
 					getParsedMyXML(result);	
-					//Log.d("Loadpath", "result: "+result);
-
 				}else if(intValue==2){
 					SoapObject request = new SoapObject(AppData.NAMESPACE,
 							AppData.METHOD_NAME_GET_USER_TRAININGSPOT);
@@ -227,24 +225,24 @@ public class LoadPath extends Activity {
 			}
 			catch (UnknownHostException e) {
 				errorMsg = getResources().getString(R.string.no_connection);
-				Log.e(this.getClass().getSimpleName(), errorMsg);
+				Log.e(DogUtil.DEBUG_TAG, errorMsg);
 				return false;
 			}catch (UnknownServiceException e) {
 				errorMsg = getResources().getString(R.string.service_unavailable);				
-				Log.e(this.getClass().getSimpleName(),  getResources().getString(R.string.service_unavailable));
+				Log.e(DogUtil.DEBUG_TAG,  getResources().getString(R.string.service_unavailable));
 				return false;
 			}catch (MalformedURLException e) {
 				errorMsg = getResources().getString(R.string.url_malformed);	
 				e.printStackTrace();
-				Log.e(this.getClass().getSimpleName(), errorMsg );
+				Log.e(DogUtil.DEBUG_TAG, errorMsg );
 				return false;
 			}catch (XmlPullParserException e) {
 				errorMsg = getResources().getString(R.string.unable_to_retrieve_data);	
-				Log.e(this.getClass().getSimpleName(), errorMsg);	
+				Log.e(DogUtil.DEBUG_TAG, errorMsg);	
 				return false;
 			}catch (Exception e) {
 				errorMsg = getResources().getString(R.string.unable_to_get_data);	
-				Log.e(this.getClass().getSimpleName(), "Exception : "+errorMsg);
+				Log.e(DogUtil.DEBUG_TAG, "Exception : "+errorMsg);
 				e.printStackTrace();
 				return false;
 			}
@@ -292,7 +290,7 @@ public class LoadPath extends Activity {
 					i.putExtra(Utilities.ROUTE_DISTANCE, list.get(arg2).getDistance());
 					i.putExtra(Utilities.ROUTE_TIMING, list.get(arg2).getTimeTaken());
 					i.putExtra(Utilities.ROUTE_RATINGS, list.get(arg2).getRating());
-					//Log.d("CargarRuta", "Ratings "+list.get(arg2).getRating());
+
 					startActivity(i); 
 
 
@@ -545,7 +543,7 @@ public class LoadPath extends Activity {
 		@Override
 		public void startElement(String uri, String localName, String qName,
 				Attributes attributes) throws SAXException {
-			//Log.e("Start ********* ", localName);
+
 			if (localName.equals("Table")) {
 				data = new Dataset();
 			}
@@ -582,64 +580,46 @@ public class LoadPath extends Activity {
 		public void endElement(String uri, String localName, String qName)
 		throws SAXException {
 
-			//Log.e("End ********** ", localName);
 			if(localName.equals("Table")){
-				//Log.e("Its comin here2", localName + " " + data);
-				//Log.e("Its comin here2", localName + " " + data.getRating());
-				//data.setRouteId(routeId);
 				list.add(data);
 				mAdapter.notifyDataSetChanged();
 			}else
 				if(localName.equals("routeId")){
-					//data.setRouteId(routeId);
 					isrouteId=false; 
 				}else if(localName.equals("routeName")){
-					//data.setRouteName(routeName);
 					isrouteName=false;
 				}else if(localName.equals("sourceLatitude")){
-					//data.setSourceLatitude(sourceLatitude);
 					issourceLatitude=false;
 				}else if(localName.equals("sourceLongitude")){
-					//data.setSourceLongitude(sourceLongitude);
 					issourceLongitude=false;
 				}else if(localName.equals("routeLatitude")){
 					data.setRouteLatitude(builder.substring(0));
-					//data.setRouteLatitude(routeLatitude);
 					isrouteLatitude=false;
 				}else if(localName.equals("routeLongitude")){
 					data.setRouteLongitude(builder.substring(0));
-					//data.setRouteLongitude(routeLongitude);
 					isrouteLongitude=false;
 				}else if(localName.equals("distance")){
-					//data.setDistance(distance);
 					isdistance=false;
 				}else if(localName.equals("timeTaken")){
-					//data.setTimeTaken(timeTaken);
 					istimeTaken=false;
 				}else if(localName.equals("difficulty")){
-					//data.setDifficulty(difficulty);
 					isdifficulty=false;
 				}else if(localName.equals("userId")){
-					//data.setUserId(userId);
 					isuserId=false;
 				}else if(localName.equals("rating")){
-					//data.setRating(rating);
 					israting=false;
 				}
 		}
-		//}
 
 		@Override
 		public void characters(char[] ch, int start, int length)
 		throws SAXException {
 			String value = new String(ch, start,length);
-			//.i("LoadPath", "Value: "+value);
-			//Log.i("LoadPath", "israting : "+israting);
 
 			if(value == null||value.length()<=0){
 				return;
 			} 
-			//Log.i("LoadPath", "israting to be set : "+israting);
+
 			if(isrouteId){
 				data.setRouteId(value);
 			}else if(isrouteName){

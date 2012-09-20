@@ -186,68 +186,6 @@ public class TrackMapRoute extends MapActivity implements LocationListener{
 
 
 		//mapa.setText("Mapa");
-		mapa.setOnClickListener(new OnClickListener() {
-
-			public void onClick(View v) { 
-
-				((RelativeLayout)findViewById(R.id.header)).setVisibility(View.INVISIBLE);
-				mapView.setVisibility(View.VISIBLE);
-				mapView.setFocusableInTouchMode(true);
-				mapa.setBackgroundResource(R.drawable.mapa_sele);
-				//ipod.setBackgroundResource(R.drawable.ipod_grey);
-				stats.setBackgroundResource(R.drawable.stats);
-				//stats.setText("Stats");
-				bottomBar.setVisibility(View.VISIBLE);
-
-				btnStart.setVisibility(View.VISIBLE);
-				btnStop.setVisibility(View.VISIBLE);
-
-
-				analyticsTracker.trackEvent(
-						"Maps",  // Category,
-						"Button",  // Action,
-						"clicked", // Label   
-						DogUtil.TRACKER_VALUE);   // Value
-				DogUtil.TRACKER_VALUE++;
-				isStat = false;
-
-			}
-		});
-
-		stats.setOnClickListener(new OnClickListener() {
-
-			public void onClick(View v) { 
-				((RelativeLayout)findViewById(R.id.header)).setVisibility(View.VISIBLE);
-				time = "00.00.00";
-				//Log.d("TrackMapRoute", "time: "+time);
-				txt_time_stats.setText(time);
-
-				mapView.setVisibility(View.INVISIBLE);
-
-				mapa.setBackgroundResource(R.drawable.mapa);
-				//ipod.setBackgroundResource(R.drawable.ipod_grey);				
-				stats.setBackgroundResource(R.drawable.stats_sele);
-				//stats.setText("Stats");
-				bottomBar.setVisibility(View.INVISIBLE);
-				btnStart.setVisibility(View.INVISIBLE);
-				btnStop.setVisibility(View.INVISIBLE);
-
-				SharedPreferences pref = getSharedPreferences(Utilities.DOGCHOW	, 0);
-				String userId = pref.getString(Utilities.USER_ID, "");
-
-				SoapParseLogin soapParseLogin = new SoapParseLogin();
-				soapParseLogin.execute(userId);
-				statsProgressBar.setVisibility(View.VISIBLE);
-				isStat = true;
-				analyticsTracker.trackEvent(
-						"Stats",  // Category, 
-						"Button",  // Action, 
-						"clicked", // Label    
-						DogUtil.TRACKER_VALUE);   // Value
-				DogUtil.TRACKER_VALUE++;
-
-			}
-		});
 
 		//		ipod.setOnClickListener(new OnClickListener() {
 		//
@@ -259,15 +197,6 @@ public class TrackMapRoute extends MapActivity implements LocationListener{
 		//
 		//			}
 		//		});
-
-		camera.setOnClickListener(new OnClickListener() {
-
-			public void onClick(View v) { 
-				Intent intent = new Intent(MediaStore.INTENT_ACTION_STILL_IMAGE_CAMERA);
-				startActivity(intent);
-
-			}
-		});
 
 		btnStart = (Button)findViewById(R.id.button4);
 		btnStart.setOnClickListener(startClickListener);
@@ -294,6 +223,55 @@ public class TrackMapRoute extends MapActivity implements LocationListener{
 
 
 	}
+
+    public void onClickButton1Button(View v) {
+	((RelativeLayout)findViewById(R.id.header)).setVisibility(View.INVISIBLE);
+	mapView.setVisibility(View.VISIBLE);
+	mapView.setFocusableInTouchMode(true);
+	mapa.setBackgroundResource(R.drawable.mapa_sele);
+	stats.setBackgroundResource(R.drawable.stats);
+	bottomBar.setVisibility(View.VISIBLE);
+	btnStart.setVisibility(View.VISIBLE);
+	btnStop.setVisibility(View.VISIBLE);
+
+	analyticsTracker.trackEvent("Maps",                 // Category,
+				    "Button",               // Action,
+				    "clicked",              // Label
+				    DogUtil.TRACKER_VALUE); // Value
+	DogUtil.TRACKER_VALUE++;
+	isStat = false;
+    }
+
+    public void onClickButton2Button(View v) {
+	((RelativeLayout)findViewById(R.id.header)).setVisibility(View.VISIBLE);
+	time = "00.00.00";
+	txt_time_stats.setText(time);
+
+	mapView.setVisibility(View.INVISIBLE);
+
+	mapa.setBackgroundResource(R.drawable.mapa);
+	stats.setBackgroundResource(R.drawable.stats_sele);
+	bottomBar.setVisibility(View.INVISIBLE);
+	btnStart.setVisibility(View.INVISIBLE);
+	btnStop.setVisibility(View.INVISIBLE);
+
+	SharedPreferences pref = getSharedPreferences(Utilities.DOGCHOW	, 0);
+	String userId = pref.getString(Utilities.USER_ID, "");
+
+	SoapParseLogin soapParseLogin = new SoapParseLogin();
+	soapParseLogin.execute(userId);
+	statsProgressBar.setVisibility(View.VISIBLE);
+	isStat = true;
+	analyticsTracker.trackEvent("Stats",  // Category,
+				    "Button",  // Action,
+				    "clicked", // Label
+				    DogUtil.TRACKER_VALUE);   // Value
+	DogUtil.TRACKER_VALUE++;
+    }
+
+    public void onClickButton5Button(View v) {
+	startActivity(new Intent(MediaStore.INTENT_ACTION_STILL_IMAGE_CAMERA));
+    }
 
 	private void SavePreferences(String key, String value){
 		SharedPreferences sharedPreferences = getSharedPreferences(Utilities.DOGAPP, MODE_PRIVATE);
@@ -455,7 +433,6 @@ public class TrackMapRoute extends MapActivity implements LocationListener{
 
 	@Override
 	public void onLocationChanged(Location location) {
-		//Log.i("New route", "Location: "+location.getTime());
 		if (location == null) return;
 
 		GeoPoint point = new GeoPoint((int)(location.getLatitude() * 1e6),   (int)(location.getLongitude() * 1e6));	
@@ -484,19 +461,15 @@ public class TrackMapRoute extends MapActivity implements LocationListener{
 
 	@Override
 	public void onProviderDisabled(String provider) {
-		//Log.i("New route", "Provider disabled: "+provider);
 		stopListining();
 	}
 
 	@Override
 	public void onProviderEnabled(String provider) {
-
-		//Log.i("New route", "Provider enabled: "+provider);
 	}
 
 	@Override
 	public void onStatusChanged(String provider, int status, Bundle extras) {
-		//Log.i("New route", "Status changed: "+provider + " "+status + " "+extras);
 	}
 
 
@@ -552,7 +525,7 @@ public class TrackMapRoute extends MapActivity implements LocationListener{
 			setDisplay(String.valueOf(minutes), String.valueOf(seconds),
 					String.valueOf(millis / 100));
 		}catch (NumberFormatException e) {
-			Log.e("MapRoute", "Range may exceeds: "+e.getMessage());
+			Log.e(DogUtil.DEBUG_TAG, "Range may exceeds: "+e.getMessage());
 		}
 	}
 
@@ -573,7 +546,7 @@ public class TrackMapRoute extends MapActivity implements LocationListener{
 			if(!isStat)
 				txt_time_stats.setText(time);
 		}catch (Exception e) {
-			Log.e("MapRoute", "Exception: "+e.getMessage());
+			Log.e(DogUtil.DEBUG_TAG, "Exception: "+e.getMessage());
 			throw new NumberFormatException();
 		}
 
@@ -694,7 +667,6 @@ public class TrackMapRoute extends MapActivity implements LocationListener{
 	}
 
 	private void startLocationUpdates(){
-		//Log.i("TraceMapRoute", "start Location Updates");
 		locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, MINUTES, METERS, this); 
 	}
 	TextView textView;
@@ -735,8 +707,6 @@ public class TrackMapRoute extends MapActivity implements LocationListener{
 
 				}
 
-				//Log.d("timeTaken","distance: "+distance);
-				//Log.d("tracemaproute","lastTime: "+lastTime);
 				Intent i = new Intent(TrackMapRoute.this, RouteNaming.class);  
 				i.putExtra("sourceLatitude", srcLat);
 				i.putExtra("sourceLongitude", srcLong);
@@ -982,20 +952,20 @@ public class TrackMapRoute extends MapActivity implements LocationListener{
 			}
 			catch (UnknownHostException e) {
 				errorMsg = getResources().getString(R.string.no_connection);
-				Log.e(this.getClass().getSimpleName(), errorMsg);
+				Log.e(DogUtil.DEBUG_TAG, errorMsg);
 				return false;
 			}catch (UnknownServiceException e) {
 				errorMsg = getResources().getString(R.string.service_unavailable);				
-				Log.e(this.getClass().getSimpleName(),  getResources().getString(R.string.service_unavailable));
+				Log.e(DogUtil.DEBUG_TAG,  getResources().getString(R.string.service_unavailable));
 				return false;
 			}catch (MalformedURLException e) {
 				errorMsg = getResources().getString(R.string.url_malformed);	
 				e.printStackTrace();
-				Log.e(this.getClass().getSimpleName(), errorMsg );
+				Log.e(DogUtil.DEBUG_TAG, errorMsg );
 				return false;
 			}catch (Exception e) {
 				errorMsg =  getResources().getString(R.string.unable_to_get_data);	
-				Log.e(this.getClass().getSimpleName(), errorMsg);
+				Log.e(DogUtil.DEBUG_TAG, errorMsg);
 				return false;
 			}
 
@@ -1010,7 +980,7 @@ public class TrackMapRoute extends MapActivity implements LocationListener{
 				if (reportHandler != null && !reportHandler.getData())
 					Toast.makeText(getApplicationContext(), R.string.service_error, Toast.LENGTH_SHORT).show();
 				else if(!b){
-					Log.e("Report","Error: "+errorMsg);
+					Log.e(DogUtil.DEBUG_TAG,"Error: "+errorMsg);
 					Toast.makeText(getApplicationContext(), errorMsg, Toast.LENGTH_SHORT).show();
 					return;
 				}
@@ -1042,7 +1012,7 @@ public class TrackMapRoute extends MapActivity implements LocationListener{
 				if(statsProgressBar != null)
 					statsProgressBar.setVisibility(View.INVISIBLE);
 			}catch (Exception e) {
-				Log.e(this.getClass().getSimpleName(), e.getMessage());
+				Log.e(DogUtil.DEBUG_TAG, e.getMessage());
 			}
 
 		}

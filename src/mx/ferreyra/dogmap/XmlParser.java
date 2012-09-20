@@ -16,7 +16,6 @@ public class XmlParser extends DefaultHandler
 		super.characters(ch, start, length);
 		if(location) 
 		{
-			//Log.v("xml parser in location===>","location");
 			if(lat) 
 			{
 				latitude=new String(ch, start, length);
@@ -62,17 +61,14 @@ public class XmlParser extends DefaultHandler
 		if(localName.equalsIgnoreCase("location")) 
 		{
 			location=true;
-			//Log.v("xml parser in location===>","location");
 		}
 		if(localName.equalsIgnoreCase("lat"))
 		{
 			lat=true;
-			//Log.v("xml parser in lat===>","lat");
 		}
 		if(localName.equalsIgnoreCase("lng"))
 		{
 			lon=true;
-			//Log.v("xml parser in lon===>","lon");
 		}
 	}
 

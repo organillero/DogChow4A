@@ -8,6 +8,7 @@ import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 
 import mx.ferreyra.dogapp.R;
+import mx.ferreyra.dogapp.DogUtil;
 
 import org.w3c.dom.Document;
 import org.w3c.dom.Node;
@@ -67,7 +68,7 @@ public class MapDirectionActivity extends MapActivity {
         	desLat = in.getStringExtra("desAdlat");
         }
         System.out.println(distance+" Distance "+money+" Money");
-        Log.i("Src and dest",srcLat + "and"+ desLat);
+        Log.i(DogUtil.DEBUG_TAG, srcLat + "and"+ desLat);
         txtDes = (TextView) findViewById(R.id.txt_desAdd);
         txtDistance = (TextView) findViewById(R.id.txt_distance);
         txtMoney = (TextView) findViewById(R.id.txt_money);
@@ -112,7 +113,7 @@ public class MapDirectionActivity extends MapActivity {
             gp2 = new GeoPoint((int) (Double.parseDouble(lngLat[1]) * 1E6),
                     (int) (Double.parseDouble(lngLat[0]) * 1E6));
             myMapView.getOverlays().add(new DirectionPathOverlay(gp1, gp2));
-            Log.d("xxx", "pair:" + pairs[i]);
+            Log.d(DogUtil.DEBUG_TAG, "pair:" + pairs[i]);
         }
 
         // END POINT
@@ -138,7 +139,7 @@ public class MapDirectionActivity extends MapActivity {
         */
        String urlString =  "http://maps.google.com/maps?output=kml&saddr=" + srcPlace + "&daddr=" + destPlace;
 //       http://maps.google.com/maps?output=kml&saddr=chennai&daddr=bangalore
-        Log.d("URL", urlString);
+        Log.d(DogUtil.DEBUG_TAG, urlString);
         Document doc = null;
         HttpURLConnection urlConnection = null;
         URL url = null;
@@ -166,7 +167,7 @@ public class MapDirectionActivity extends MapActivity {
                 Node lineStringNode = configItems.item(x);
                 NodeList path = lineStringNode.getChildNodes();
                 pathConent = path.item(0).getNodeValue();
-                Log.i("Path Content", pathConent);
+                Log.i(DogUtil.DEBUG_TAG, pathConent);
             }
         }
         String[] tempContent = pathConent.split(" ");

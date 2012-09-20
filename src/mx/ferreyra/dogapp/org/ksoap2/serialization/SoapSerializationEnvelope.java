@@ -27,6 +27,7 @@ import java.util.Vector;
 import mx.ferreyra.dogapp.org.ksoap2.SoapEnvelope;
 import mx.ferreyra.dogapp.org.ksoap2.SoapFault;
 import mx.ferreyra.dogapp.org.ksoap2.SoapFault12;
+import mx.ferreyra.dogapp.DogUtil;
 
 import org.xmlpull.v1.XmlPullParser;
 import org.xmlpull.v1.XmlPullParserException;
@@ -158,7 +159,7 @@ public class SoapSerializationEnvelope extends SoapEnvelope
 				try{
 				parser.nextTag();
 				}catch(Exception e){
-					Log.i("Exception", "Parse body");
+					Log.i(DogUtil.DEBUG_TAG, "Parse body");
 				}
 			}
 		}
@@ -263,7 +264,6 @@ public class SoapSerializationEnvelope extends SoapEnvelope
 		if (parser.getEventType() == XmlPullParser.TEXT){
 
 			text = parser.getText().trim().replace("<br />", "");
-			//Log.i("XMLPULLPARSER", text);
             SoapPrimitive sp = new SoapPrimitive(typeNamespace, typeName, text);
 			result = sp;
               // apply all the cached attribute info list before we add the property and descend further for parsing
@@ -286,8 +286,8 @@ public class SoapSerializationEnvelope extends SoapEnvelope
 		{
 			if (text != null && text.trim().length() != 0)
 			{
-				Log.i("Text", "text************");
-				Log.i("Text", text);
+				Log.i(DogUtil.DEBUG_TAG, "text************");
+				Log.i(DogUtil.DEBUG_TAG, text);
 				//throw new RuntimeException("Malformed input: Mixed content");
 			}
 			SoapObject so = new SoapObject(typeNamespace, typeName);
@@ -303,7 +303,7 @@ public class SoapSerializationEnvelope extends SoapEnvelope
 				try{
 				parser.nextTag();
 				}catch(Exception e){
-					Log.i("Exception", "text************");
+					Log.i(DogUtil.DEBUG_TAG, "text************");
 				}
 			}
 			result = so;

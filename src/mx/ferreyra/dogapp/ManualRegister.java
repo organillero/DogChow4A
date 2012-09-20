@@ -51,7 +51,6 @@ public class ManualRegister extends Activity{
 	private String result;
 	private SoapParseLogin soapParseLogin;
 	private EditText confirmPassword,email,password;
-	private Button submit;
 	private Intent i; 
 	private String returnValue;
 	private String userEmail,userPassword, confirmPwd;
@@ -111,36 +110,6 @@ public class ManualRegister extends Activity{
 		confirmPassword = (EditText)findViewById(R.id.manualconfirmPasswordEdit);
 		loginProgress = (ProgressBar)findViewById(R.id.register_progress);
 		loginProgress.setVisibility(View.INVISIBLE);
-		submit = (Button)findViewById(R.id.submit);
-
-		submit.setOnClickListener(new OnClickListener() {
-
-			public void onClick(View arg0) {
-				confirmPwd=confirmPassword.getText().toString();
-
-				userEmail=email.getText().toString();
-
-				userPassword= password.getText().toString();
-
-
-				if(userPassword.length()>0 && confirmPwd.length()>0 && !userPassword.equals(confirmPwd)){
-					Toast.makeText(getApplicationContext(), R.string.pwd_repwd_notmatch, Toast.LENGTH_SHORT).show(); 
-					return;
-				}else if(userEmail == null || userEmail.length()<1 || !isValidEmail(userEmail)){
-					Toast.makeText(getApplicationContext(), R.string.email_not_valid, Toast.LENGTH_SHORT).show(); 
-					return;
-				}else if(userPassword== null || confirmPwd==null || userPassword.length()<3 || confirmPwd.length()<3 ){
-					Toast.makeText(getApplicationContext(), R.string.min_three_chars, Toast.LENGTH_SHORT).show(); 
-					return;
-				}
-
-				String input[]={userEmail,userPassword,"0"};
-
-				soapParseLogin = new SoapParseLogin();
-				soapParseLogin.execute(input);
-
-			}
-		});
 
 		txtBackBtn.setOnClickListener(new OnClickListener() {
 
@@ -154,6 +123,40 @@ public class ManualRegister extends Activity{
 
 
 	} 
+
+    public void onClickSubmitButton(View arg0) {
+        confirmPwd=confirmPassword.getText().toString();
+        userEmail=email.getText().toString();
+        userPassword= password.getText().toString();
+
+        if(userPassword.length()>0 &&
+           confirmPwd.length()>0 &&
+           !userPassword.equals(confirmPwd)) {
+            Toast.makeText(getApplicationContext(),
+                           R.string.pwd_repwd_notmatch,
+                           Toast.LENGTH_SHORT).show();
+            return;
+        } else if(userEmail == null ||
+                  userEmail.length()<1 ||
+                  !isValidEmail(userEmail)) {
+            Toast.makeText(getApplicationContext(),
+                           R.string.email_not_valid,
+                           Toast.LENGTH_SHORT).show();
+            return;
+        } else if(userPassword== null ||
+                  confirmPwd==null ||
+                  userPassword.length()<3 ||
+                  confirmPwd.length()<3 ) {
+            Toast.makeText(getApplicationContext(),
+                           R.string.min_three_chars,
+                           Toast.LENGTH_SHORT).show();
+            return;
+        }
+
+        String input[]={userEmail,userPassword,"0"};
+        soapParseLogin = new SoapParseLogin();
+        soapParseLogin.execute(input);
+    }
 
 
 	@Override
@@ -215,20 +218,20 @@ public class ManualRegister extends Activity{
 			}
 			catch (UnknownHostException e) {
 				errorMsg = getResources().getString(R.string.no_connection);
-				Log.e(this.getClass().getSimpleName(), errorMsg);
+				Log.e(DogUtil.DEBUG_TAG, errorMsg);
 				return false;
 			}catch (UnknownServiceException e) {
 				errorMsg = getResources().getString(R.string.service_unavailable);				
-				Log.e(this.getClass().getSimpleName(),  getResources().getString(R.string.service_unavailable));
+				Log.e(DogUtil.DEBUG_TAG,  getResources().getString(R.string.service_unavailable));
 				return false;
 			}catch (MalformedURLException e) {
 				errorMsg = getResources().getString(R.string.url_malformed) + e.getMessage();	
 				e.printStackTrace();
-				Log.e(this.getClass().getSimpleName(), errorMsg );
+				Log.e(DogUtil.DEBUG_TAG, errorMsg );
 				return false;
 			}catch (Exception e) {
 				errorMsg = getResources().getString(R.string.unable_to_get_data);	
-				Log.e(this.getClass().getSimpleName(), errorMsg);
+				Log.e(DogUtil.DEBUG_TAG, errorMsg);
 				return false;
 			}
 

@@ -3,7 +3,6 @@ package mx.ferreyra.dogapp;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.content.pm.ActivityInfo;
 import android.os.Bundle;
 import android.os.Handler;
@@ -12,8 +11,6 @@ import android.view.Window;
 import android.view.WindowManager;
 
 public class Splash extends Activity {
-
-    private String currentUserId;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -24,9 +21,6 @@ public class Splash extends Activity {
                                   WindowManager.LayoutParams.FLAG_FULLSCREEN);
         setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
         setContentView(R.layout.splash);
-
-        SharedPreferences pref = getSharedPreferences(Utilities.DOGCHOW, 0);
-        currentUserId = pref.getString(Utilities.USER_ID, "");
 
         TelephonyManager manager = (TelephonyManager) getSystemService(Context.TELEPHONY_SERVICE);
         if(manager != null)

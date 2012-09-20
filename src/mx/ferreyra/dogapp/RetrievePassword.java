@@ -51,7 +51,6 @@ public class RetrievePassword extends Activity {
 
 	private EditText emailId; 
 	private String userEmail;
-	private Button emailSend;
 
 	private String parseResult;
 	private String returnValue;
@@ -71,10 +70,9 @@ public class RetrievePassword extends Activity {
 		titleLeft.setOnClickListener(new OnClickListener() {
 
 			@Override
-			public void onClick(View v) {			
-				i =new Intent(RetrievePassword.this, LoginScreen.class); 
-				startActivity(i);
-				finish();	
+			public void onClick(View v) {
+				startActivity(new Intent(this, LoginScreen.class));
+				finish();
 			}
 		});
 		
@@ -93,22 +91,15 @@ public class RetrievePassword extends Activity {
 		sendProgress.setVisibility(View.INVISIBLE);
 
 		emailId = (EditText)findViewById(R.id.re_pwd_text);
-
-
-		emailSend = (Button)findViewById(R.id.forgotPasswordSend);
-		emailSend.setOnClickListener(new OnClickListener() {
-
-			@Override
-			public void onClick(View v) {
-				userEmail=emailId.getText().toString().trim();
-
-				String input[]={userEmail};
-				parseRetrievePassword = new SoapParseRetrievePassword();
-				parseRetrievePassword.execute(input);				
-			}
-		});
-
 	}
+
+    public void onClickForgotPasswordSendButton(View view) {
+        String input[] = {
+            this.userEmail = emailId.getText().toString().trim()
+        };
+        this.parseRetrievePassword = new SoapParseRetrievePassword();
+        this.parseRetrievePassword.execute(input);
+    }
 
 	@Override
 	protected void onPause() {

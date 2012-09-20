@@ -88,6 +88,7 @@
                         android:id="@+id/submit"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
+                        android:onClick="onClickSubmitButton"
                         android:background="@drawable/i_submit" >
                     </Button>
 
@@ -98,6 +99,7 @@
                         android:layout_below="@id/submit"
                         android:layout_marginBottom="3dp"
                         android:layout_marginTop="5dp"
+                        android:onClick="onClickForgotPasswordButton"
                         android:background="@drawable/i_forgot" >
                     </Button>
                 </LinearLayout>

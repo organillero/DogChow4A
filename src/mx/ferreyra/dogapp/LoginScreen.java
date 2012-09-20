@@ -47,7 +47,6 @@ public class LoginScreen extends Activity{
 	private String result;
 	private SoapParseLogin soapParseLogin;
 	private EditText email,password;
-	private Button submit, fpwd;
 	private Intent i; 
 	private String returnValue;
 	private String userEmail,userPassword; 
@@ -78,45 +77,34 @@ public class LoginScreen extends Activity{
 
 		email = (EditText)findViewById(R.id.emailEdit);  
 		password = (EditText)findViewById(R.id.passwordEdit); 
-		submit = (Button)findViewById(R.id.submit);
 		progressBar = (ProgressBar)findViewById(R.id.login_progress);
 		progressBar.setVisibility(View.INVISIBLE);
 		
-		fpwd = (Button)findViewById(R.id.forgot_password);		
-		fpwd.setOnClickListener(new OnClickListener() {			
-			@Override
-			public void onClick(View v) {
-				i =new Intent(LoginScreen.this, RetrievePassword.class); 
-				startActivity(i);
-				//finish();			
-			}
-		});
-
-
-		submit.setOnClickListener(new OnClickListener(){
-			@Override
-			public void onClick(View arg0) {
-				userEmail=email.getText().toString();
-				userPassword= password.getText().toString();
-				String input[]={userEmail,userPassword};
-				soapParseLogin = new SoapParseLogin();
-				soapParseLogin.execute(input);
-			}
-		});
 
 
 		btnLeftTitle.setOnClickListener(new OnClickListener() {
 
 			@Override
 			public void onClick(View v) {
-//				i =new Intent(LoginScreen.this, MainActivity.class); 
-//				startActivity(i);
 				finish();
 			}
 		});
 
 
 	} 
+
+    public void onClickForgotPasswordButton(View view) {
+        startActivity(new Intent(this, RetrievePassword.class));
+    }
+
+    public void onClickSubmitButton(View view) {
+        String input[] = {
+            this.userEmail = this.email.getText().toString(),
+            this.userPassword = this.password.getText().toString()
+        };
+        soapParseLogin = new SoapParseLogin();
+        soapParseLogin.execute(input);
+    }
 
 	@Override
 	protected void onPause() {
@@ -222,42 +210,14 @@ public class LoginScreen extends Activity{
 					Toast.makeText(getApplicationContext(), R.string.user_not_exist, Toast.LENGTH_SHORT).show();
 				}else{
 					Integer userId = Integer.parseInt( returnValue );
+					// Save user id
+                    DogUtil.getInstance().saveCurrentUserId(userId);
 
-					/*
-					SharedPreferences pref = getSharedPreferences(Utilities.DOGCHOW, 0);
-					SharedPreferences.Editor edit = pref.edit();
-					edit.putString(Utilities.USER_ID,userId); 
-					edit.commit();
-
-					SharedPreferences sharedPreferences = getSharedPreferences(Utilities.DOGAPP, MODE_PRIVATE);
-					SharedPreferences.Editor editor = sharedPreferences.edit();
-					editor.putString(Utilities.ROUTE_TIMING, getResources().getString(R.string.route_time));
-					editor.putString(Utilities.ROUTE_DISTANCE, getResources().getString(R.string.route_distance));
-					editor.putString(Utilities.ROUTE_SPEED, getResources().getString(R.string.route_speed));
-					editor.commit();
-
-*/
-					
-					
-					Intent intent = new Intent();
+                    Intent intent = new Intent();
 			        intent.putExtra("ID_USER", userId);
 					
 					setResult(RESULT_OK, intent);
 					finish();
-					
-					/*
-					 
-					
-					AppData.USER_ID = userId.trim();
-					AppData.assignType(USER_LOGIN_TYPE.APPLICATION); 
-
-					i =new Intent(LoginScreen.this,ExerciseMenu.class);
-					i.setFlags(Intent.FLAG_ACTIVITY_NO_HISTORY);
-					startActivity(i);
-					
-					//finish();
-					 * 
-					 */
 				}
 			}catch (Exception e) { 
 

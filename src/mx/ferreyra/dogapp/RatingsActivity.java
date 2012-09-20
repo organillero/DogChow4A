@@ -52,7 +52,6 @@ import com.google.android.apps.analytics.GoogleAnalyticsTracker;
 public class RatingsActivity extends Activity {
 
 	private Button title_left, title_right;
-	private Button submit, cancel;
 	private TextView title_txt;
 	private RatingsTask soapParseLogin;
 
@@ -62,7 +61,6 @@ public class RatingsActivity extends Activity {
 	private String routeID;
 	private int ratingValue; 
 	private GoogleAnalyticsTracker analyticsTracker;
-	private Button fb, tw;
 	private String routeName;
 	private Facebook facebook;
 	private RatingBar ratingBar;	
@@ -85,9 +83,6 @@ public class RatingsActivity extends Activity {
 		title_txt.setText(routeName);	
 
 		routeID = getIntent().getStringExtra("routeID");
-
-		submit = (Button)findViewById(R.id.button1);  
-		cancel = (Button)findViewById(R.id.cancel);
 
 		title_left.setOnClickListener(new OnClickListener() {
 
@@ -123,59 +118,38 @@ public class RatingsActivity extends Activity {
 		facebook = new Facebook(DogUtil.FACEBOOK_APPID);
 		SessionStore.restore(facebook, getApplicationContext());
 
-		submit.setOnClickListener(new OnClickListener() {
-
-			@Override
-			public void onClick(View v) {
-
-				String input[]={routeID,String.valueOf(ratingValue)};
-
-				soapParseLogin = new RatingsTask();
-				soapParseLogin.execute(input);
-			}
-		});
-
-		cancel.setOnClickListener(new OnClickListener() {
-
-			@Override
-			public void onClick(View v) {
-				analyticsTracker.trackEvent(
-						"Cancel Ratings",  // Category 
-						"Button",  // Action
-						"clicked", // Label    
-						DogUtil.TRACKER_VALUE);   // Value
-				DogUtil.TRACKER_VALUE++;
-				finish();
-			}
-		});
-
-		fb = (Button)findViewById(R.id.fb);
-		fb.setOnClickListener(new OnClickListener() {
-
-			@Override
-			public void onClick(View v) {
-				share();
-			}
-		});
-
-		tw = (Button)findViewById(R.id.twr);
-		tw.setOnClickListener(new OnClickListener() {
-
-			@Override
-			public void onClick(View v) {
-				String url = "http://twitter.com/";  
-				Intent i = new Intent(Intent.ACTION_VIEW);  
-				i.setData(Uri.parse(url));  
-				startActivity(i);
-				finish();
-			}
-		});
-
-
 		if(analyticsTracker == null)
 			analyticsTracker = ((DogUtil)getApplication()).getTracker();
 	}
 
+    public void onClickButton1Button(View view) {
+        String input[]={
+            routeID,
+            String.valueOf(ratingValue)};
+        soapParseLogin = new RatingsTask();
+        soapParseLogin.execute(input);
+    }
+
+    public void onClickCancelButton(View view) {
+        analyticsTracker.trackEvent("Cancel Ratings",       // Category
+                                    "Button",               // Action
+                                    "clicked",              // Label
+                                    DogUtil.TRACKER_VALUE); // Value
+        DogUtil.TRACKER_VALUE++;
+        finish();
+    }
+
+    public void onClickFbButton(View view) {
+        share();
+    }
+
+    public void onClickTwrButton(View view) {
+        String url = "http://twitter.com/";
+        Intent i = new Intent(Intent.ACTION_VIEW);
+        i.setData(Uri.parse(url));
+        startActivity(i);
+        finish();
+    }
 
 	public void share(){
 		if (! facebook.isSessionValid()) {
@@ -319,20 +293,20 @@ public class RatingsActivity extends Activity {
 			}
 			catch (UnknownHostException e) {
 				errorMsg = getResources().getString(R.string.no_connection);
-				Log.e(this.getClass().getSimpleName(), errorMsg);
+				Log.e(DogUtil.DEBUG_TAG, errorMsg);
 				return false;
 			}catch (UnknownServiceException e) {
 				errorMsg = getResources().getString(R.string.service_unavailable);				
-				Log.e(this.getClass().getSimpleName(),  getResources().getString(R.string.service_unavailable));
+				Log.e(DogUtil.DEBUG_TAG,  getResources().getString(R.string.service_unavailable));
 				return false;
 			}catch (MalformedURLException e) {
 				errorMsg = getResources().getString(R.string.url_malformed);	
 				e.printStackTrace();
-				Log.e(this.getClass().getSimpleName(), errorMsg );
+				Log.e(DogUtil.DEBUG_TAG, errorMsg );
 				return false;
 			}catch (Exception e) {
 				errorMsg = getResources().getString(R.string.unable_to_get_data);			
-				Log.e(this.getClass().getSimpleName(), errorMsg);
+				Log.e(DogUtil.DEBUG_TAG, errorMsg);
 				e.printStackTrace();
 				return false;
 			}
@@ -450,7 +424,7 @@ public class RatingsActivity extends Activity {
 		@Override
 		public void characters(char ch[], int start, int length) {
 			String value = new String(ch, start, length);
-			//Log.e("VALUES", value);
+
 			if(value == null || value.length()<=0)
 
 				return;

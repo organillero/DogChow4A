@@ -339,7 +339,7 @@ public class RouteNaming extends Activity {
 	}
 
 	public void share(){
-		Log.d("RouteNaming","have token "+facebook.isSessionValid());
+		Log.d(DogUtil.DEBUG_TAG,"have token "+facebook.isSessionValid());
 		if (!facebook.isSessionValid()) {
 			loginAndSend();
 		}else{	
@@ -462,21 +462,21 @@ public class RouteNaming extends Activity {
 			}
 			catch (UnknownHostException e) {
 				errorMsg = getResources().getString(R.string.error_in_save);
-				Log.e(this.getClass().getSimpleName(), errorMsg);
+				Log.e(DogUtil.DEBUG_TAG, errorMsg);
 				e.printStackTrace();				
 				return false;
 			}catch (UnknownServiceException e) {
 				errorMsg = getResources().getString(R.string.error_in_save);
-				Log.e(this.getClass().getSimpleName(),  getResources().getString(R.string.service_unavailable));
+				Log.e(DogUtil.DEBUG_TAG,  getResources().getString(R.string.service_unavailable));
 				return false;
 			}catch (MalformedURLException e) {
 				errorMsg = getResources().getString(R.string.error_in_save);
 				e.printStackTrace();
-				Log.e(this.getClass().getSimpleName(), errorMsg );
+				Log.e(DogUtil.DEBUG_TAG, errorMsg );
 				return false;
 			}catch (Exception e) {
 				errorMsg = getResources().getString(R.string.error_in_save);
-				Log.e(this.getClass().getSimpleName(), errorMsg);
+				Log.e(DogUtil.DEBUG_TAG, errorMsg);
 				return false;
 			}
 
@@ -591,7 +591,7 @@ public class RouteNaming extends Activity {
 		@Override
 		public void characters(char ch[], int start, int length) {
 			String value = new String(ch, start, length);
-			//Log.e("VALUES", value);
+
 			if(value == null || value.length()<=0)
 				return;
 			if (isreturn){
@@ -666,7 +666,7 @@ public class RouteNaming extends Activity {
 				try {
 					facebookConnector.postMessageOnWall(getString(R.string.dogchow), facebookConnector.getAccessToken(), getFacebookMsg());
 				} catch (Exception ex) {
-					Log.e(TAG, "Error sending msg: ",ex);
+					Log.e(DogUtil.DEBUG_TAG, "Error sending msg: ",ex);
 				}
 			}
 		};

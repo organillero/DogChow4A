@@ -43,7 +43,6 @@ import com.facebook.android.Util;
 
 public class RegisterScreen extends Activity{
 
-	private Button fbBtn,manualBtn;
 	Intent i; 
 	Facebook authenticatedFacebook = new Facebook(DogUtil.FACEBOOK_APPID);
 
@@ -72,8 +71,6 @@ public class RegisterScreen extends Activity{
 		txtHomeBtn.setVisibility(View.INVISIBLE);
 		txtTitle.setText(getResources().getString(R.string.register));
 
-		fbBtn = (Button)findViewById(R.id.loginBtn);
-		manualBtn = (Button)findViewById(R.id.registerBtn);
 		pb = (ProgressBar)findViewById(R.id.register_progress);
 		pb.setVisibility(View.INVISIBLE);
 
@@ -84,24 +81,15 @@ public class RegisterScreen extends Activity{
 				finish();
 			}
 		});
-		
-		fbBtn.setOnClickListener(new OnClickListener() {
-			public void onClick(View v) {				
-				fbLogin();
-			}
-		});
+	}
 
-		manualBtn.setOnClickListener(new OnClickListener() {
+    public void onClickLoginButton(View view) {
+        fbLogin();
+    }
 
-			public void onClick(View v) {
-				i =new Intent(RegisterScreen.this,ManualRegister.class);
-				//i.setFlags(Intent.FLAG_ACTIVITY_NO_HISTORY);
-				startActivity(i);
-			}
-		});
-
-
-	} 
+    public void onClickRegisterButton(View view) {
+        startActivity(new Intent(this, ManualRegister.class));
+    }
 
 	@Override
 	protected void onResume() {
@@ -129,7 +117,6 @@ public class RegisterScreen extends Activity{
 		public void run() {
 			try {
 				isWindowOpen = true;
-				//Log.i("Register-Screen", " resultData"+resultData);
 				// process the response here: executed in background thread)				
 				final JSONObject json = Util.parseJson(resultData);
 
@@ -264,16 +251,11 @@ public class RegisterScreen extends Activity{
 			SessionStore.restore(mFacebook, this);
 			SessionEvents.addAuthListener(new SampleAuthListener());
 			SessionEvents.addLogoutListener(new SampleLogoutListener());
-			//Log.i("Register-Screen", "Expires: "+mFacebook.getAccessExpires());
-			//Log.i("Register-Screen", "Token "+mFacebook.getAccessToken());
-			//Log.i("Register-Screen", "Session valid "+mFacebook.isSessionValid());
 			
 			if(!mFacebook.isSessionValid()){
-				//Log.i("Register-Screen", "Start to authorize "+mFacebook);
 				isWindowOpen = false;
 				SessionStore.clear(getApplicationContext());
 				mFacebook.authorize(RegisterScreen.this, ac.getPermissions(),Facebook.FORCE_DIALOG_AUTH, new UserInfoListener());
-				//Log.i("Register-Screen", "Start to authorized "+ac.getPermissions());
 			}else{
 				i =new Intent(RegisterScreen.this, LoginMainScreen.class); 
 				startActivity(i);
@@ -291,13 +273,13 @@ public class RegisterScreen extends Activity{
 	public class SampleAuthListener implements AuthListener {
 
 		public void onAuthSucceed() {
-			Log.i("Register-Screen", "Authendication success");
+			Log.i(DogUtil.DEBUG_TAG, "Authendication success");
 			progressTitle();
 			isWindowOpen = true;
 		}
 
 		public void onAuthFail(String error) {
-			Log.i("Register-Screen", "Authendication fails : "+error);
+			Log.i(DogUtil.DEBUG_TAG, "Authendication fails : "+error);
 			progressTitle();
 			isWindowOpen = true;
 		}
@@ -305,11 +287,11 @@ public class RegisterScreen extends Activity{
 
 	public class SampleLogoutListener implements LogoutListener {
 		public void onLogoutBegin() {
-			Log.i("Register-Screen", "Login begins");
+			Log.i(DogUtil.DEBUG_TAG, "Login begins");
 		}
 
 		public void onLogoutFinish() {
-			Log.i("Register-Screen", "Login finished");
+			Log.i(DogUtil.DEBUG_TAG, "Login finished");
 			progressTitle();
 			isWindowOpen = true;
 		}
@@ -322,7 +304,6 @@ public class RegisterScreen extends Activity{
 		public void onComplete(Bundle values) {
 			try{
 				isWindowOpen = true;
-				//Log.i("Register-Screen", "Values: "+values);
 				handler.post(new Runnable() {
 					
 					@Override
@@ -342,20 +323,20 @@ public class RegisterScreen extends Activity{
 		public void onCancel() {
 			isWindowOpen = true;
 			progressTitle();
-			Log.i("Register-Screen", "Fb cancelled in authentication");
+			Log.i(DogUtil.DEBUG_TAG, "Fb cancelled in authentication");
 		}
 
 		public void onError(DialogError e) {
 			isWindowOpen = true;
 			progressTitle();
-			Log.i("Register-Screen", "Fb Dialog error in authentication");
+			Log.i(DogUtil.DEBUG_TAG, "Fb Dialog error in authentication");
 			e.printStackTrace();
 		}
 
 		public void onFacebookError(FacebookError e) {
 			isWindowOpen = true;
 			progressTitle();
-			Log.i("Register-Screen", "Fb Facebook error in authentication");
+			Log.i(DogUtil.DEBUG_TAG, "Fb Facebook error in authentication");
 			e.printStackTrace();			
 		}
 		
@@ -365,7 +346,6 @@ public class RegisterScreen extends Activity{
 	public class FacebookUserRequestListener extends BaseRequestListener {
 
 		public void onComplete(final String response, final Object state) {	
-			//Log.i("Register-Screen", "response: "+response + " state"+state);
 			isWindowOpen = true;
 			RegisterTask registerTask = new RegisterTask();
 			registerTask.resultData = response;
@@ -378,7 +358,7 @@ public class RegisterScreen extends Activity{
 			super.onFacebookError(e, state);
 			isWindowOpen = true;
 			progressTitle();
-			Log.e("Register-Screen", "Error in Facebook authorization");
+			Log.e(DogUtil.DEBUG_TAG, "Error in Facebook authorization");
 			e.printStackTrace();
 		}
 		
@@ -389,7 +369,7 @@ public class RegisterScreen extends Activity{
 			super.onFileNotFoundException(e, state);
 			isWindowOpen = true;
 			progressTitle();
-			Log.e("Register-Screen", "Error in Facebook authorization due to file doesn\'t exist");
+			Log.e(DogUtil.DEBUG_TAG, "Error in Facebook authorization due to file doesn\'t exist");
 			e.printStackTrace();
 		}
 		
@@ -399,7 +379,7 @@ public class RegisterScreen extends Activity{
 			super.onIOException(e, state);
 			isWindowOpen = true;
 			progressTitle();
-			Log.e("Register-Screen", "Error in Facebook authorization due to network");
+			Log.e(DogUtil.DEBUG_TAG, "Error in Facebook authorization due to network");
 			e.printStackTrace();
 		}
 		
@@ -410,7 +390,7 @@ public class RegisterScreen extends Activity{
 			super.onMalformedURLException(e, state);
 			isWindowOpen = true;
 			progressTitle();
-			Log.e("Register-Screen", "Error in Facebook authorization due to url");
+			Log.e(DogUtil.DEBUG_TAG, "Error in Facebook authorization due to url");
 			e.printStackTrace();
 		}
 		
@@ -430,7 +410,7 @@ public class RegisterScreen extends Activity{
 	protected void onActivityResult(int requestCode, int resultCode, Intent data) {
 		// TODO Auto-generated method stub
 		super.onActivityResult(requestCode, resultCode, data);
-		Log.i("Register-Screen", ""+resultCode + " "+resultCode + " "+data);
+		Log.i(DogUtil.DEBUG_TAG, ""+resultCode + " "+resultCode + " "+data);
 		mFacebook.authorizeCallback(requestCode, resultCode, data);
 	}
 	

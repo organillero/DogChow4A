@@ -41,6 +41,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_margin="10dip"
+            android:onClick="onClickLoginButton"
             android:background="@drawable/i_fb_register" >
         </Button>
 
@@ -49,6 +50,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_margin="20dip"
+            android:onClick="onClickRegisterButton"
             android:background="@drawable/i_manual_register" >
         </Button>
 

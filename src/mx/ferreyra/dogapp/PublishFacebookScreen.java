@@ -36,8 +36,6 @@ public class PublishFacebookScreen extends Activity{
 	private TextView shareText;
 	private ProgressBar titleBar;
 
-	private Button publishText, logoutFb;
-
 	public boolean isWindowOpen = true;
 
 	private static final String[] PERMISSIONS = new String[] {Utilities.PERMISSION_PUBLISH_STREAM};
@@ -74,26 +72,6 @@ public class PublishFacebookScreen extends Activity{
 			}
 		});
 
-		publishText = (Button)findViewById(R.id.publish);
-		publishText.setOnClickListener(new OnClickListener() {
-
-			@Override
-			public void onClick(View v) {
-				titleBar.setVisibility(View.VISIBLE);
-				share();
-			}
-		});
-
-		logoutFb = (Button)findViewById(R.id.logout_fb);
-		logoutFb.setOnClickListener(new OnClickListener() {
-
-			@Override
-			public void onClick(View v) {
-				titleBar.setVisibility(View.VISIBLE);
-				logoutFb();
-			}
-		});		
-
 		facebook = new Facebook(DogUtil.FACEBOOK_APPID);
 		SessionStore.restore(facebook, getApplicationContext());
 		String facebookMessage = ((DogUtil)getApplication()).getRouteName();
@@ -104,11 +82,21 @@ public class PublishFacebookScreen extends Activity{
 		+"\n"+ getString(R.string.share_text) + "\n"+getString(R.string.share_android)+" "+getString(R.string.share_android_link) + " \n" +getString(R.string.share_iphone) 
 		+ " "+ getString(R.string.share_iphone_link);
 		
-		Log.d("Publish", "Message to post: "+messageToPost);
+		Log.d(DogUtil.DEBUG_TAG, "Message to post: "+messageToPost);
 
 		shareText.setText(getFacebookMsgParse());
 
 	} 
+
+    public void onClickPublishButton(View view) {
+        this.titleBar.setVisibility(View.VISIBLE);
+        share();
+    }
+
+    public void onClickLogoutButton(View view) {
+	this.titleBar.setVisibility(View.VISIBLE);
+	logoutFb();
+    }
 
 	@Override
 	protected void onResume() {
@@ -177,7 +165,6 @@ public class PublishFacebookScreen extends Activity{
 						});
 					}else
 						try {
-							//Log.d("Publish","Fb response"+response);
 							JSONObject myjson = new JSONObject(response);
 							final String errorMessage = myjson.getString("error_msg");								
 							handler.post(new Runnable() {
@@ -273,7 +260,7 @@ public class PublishFacebookScreen extends Activity{
 				@Override
 				public void onComplete(final String response, Object state) {
 					setTitleInvisible();
-					Log.i("Publish", "response: "+response);
+					Log.i(DogUtil.DEBUG_TAG, "response: "+response);
 					
 					handler.post(new Runnable() {					
 						@Override

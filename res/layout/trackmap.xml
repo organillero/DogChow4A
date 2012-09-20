@@ -138,6 +138,7 @@
         android:layout_centerHorizontal="true"
         android:layout_marginLeft="10dp"
         android:layout_marginTop="36dp"
+        android:onClick="onClickButton1Button"
         android:background="@drawable/i_mapbtn" >
     </Button>
 
@@ -148,6 +149,7 @@
         android:layout_alignBaseline="@+id/button1"
         android:layout_alignBottom="@+id/button1"
         android:layout_toRightOf="@id/button1"
+        android:onClick="onClickButton2Button"
         android:background="@drawable/i_statsbtn" >
     </Button>
 
@@ -178,7 +180,7 @@
         android:layout_alignBottom="@+id/button4"
         android:layout_marginLeft="6dp"
         android:layout_toRightOf="@id/button4"
-         >
+        android:onClick="onClickButton5Button">
     </Button>
 
     <Button

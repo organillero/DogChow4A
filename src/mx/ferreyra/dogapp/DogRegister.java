@@ -97,7 +97,7 @@ public class DogRegister extends FragmentActivity {
 	private Bitmap dogImage;
 
 	@Override
-	protected void onCreate(android.os.Bundle savedInstanceState) {
+	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.register_dog);
 
@@ -112,19 +112,12 @@ public class DogRegister extends FragmentActivity {
 		dogActivityField = (Button) findViewById(R.id.dog_activity_field);
 		dogPhoto = (ImageView) findViewById(R.id.dog_photo);
 		dogBirthday = (Button) findViewById(R.id.dog_birthday);
-		
-		btRemoveImage = (ImageView) findViewById(R.id.bt_remove);
 
 		//Vistas del dueno
 		ownerNameField = (EditText) findViewById(R.id.owner_name_field);
 		ownerGenderField = (Button) findViewById(R.id.owner_gender_field);
 		ownerStateField = (Button) findViewById(R.id.owner_state);
 		ownerBirthDay = (Button) findViewById(R.id.owner_birthday);
-
-
-		//perro
-		dogPhoto.setOnClickListener(this.photoListener);
-		btRemoveImage.setOnClickListener(this.removeImageListener);
 	};
 
 
@@ -134,19 +127,15 @@ public class DogRegister extends FragmentActivity {
 	 * */
 
     public void onClickDogGenderFieldButton(View view) {
-        int version = Build.VERSION.SDK_INT;
         AlertDialog.Builder builder;
         checkAndHideKeyboard(null);
-        if(version>=11){
-            builder = new AlertDialog.Builder(context,AlertDialog.THEME_HOLO_LIGHT);
-        } else
-            builder = new AlertDialog.Builder(context);
-
+	builder = Build.VERSION.SDK_INT>=11 ?
+	    new AlertDialog.Builder(context,AlertDialog.THEME_HOLO_LIGHT) :
+	    new AlertDialog.Builder(context);
         builder.setTitle("Genero");
         builder.setSingleChoiceItems(Recursos.GENDER,  dogGender, new DialogInterface.OnClickListener() {
                 @Override
                 public void onClick(DialogInterface dialog, int item) {
-                    //Registro.this.tvSexo.setText(Recursos.GENDER[item]);
                     dogGenderField.setHint(Recursos.GENDER[item]);
                     dogGender = item;
                     dialog.dismiss();
@@ -156,18 +145,15 @@ public class DogRegister extends FragmentActivity {
     }
 
     public void onClickDogLifeStyleFieldButton(View view) {
-        int version=Build.VERSION.SDK_INT;
         AlertDialog.Builder builder;
         checkAndHideKeyboard(null);
-        if(version>=11){
-            builder = new AlertDialog.Builder(context,AlertDialog.THEME_HOLO_LIGHT);
-        } else
-            builder = new AlertDialog.Builder(context);
+	builder = Build.VERSION.SDK_INT>=11 ?
+	    new AlertDialog.Builder(context,AlertDialog.THEME_HOLO_LIGHT) :
+	    new AlertDialog.Builder(context);
         builder.setTitle("Tipo de Vida");
         builder.setSingleChoiceItems(Recursos.LIFE_STYLE,  dogLifeStyle, new DialogInterface.OnClickListener() {
                 @Override
                 public void onClick(DialogInterface dialog, int item) {
-                    //Registro.this.tvSexo.setText(Recursos.GENDER[item]);
                     dogLifeStyleField.setHint(Recursos.LIFE_STYLE[item]);
                     dogLifeStyle = item;
                     dialog.dismiss();
@@ -177,13 +163,11 @@ public class DogRegister extends FragmentActivity {
     }
 
     public void onClickDogActivityFieldButton(View view) {
-        int version=Build.VERSION.SDK_INT;
         AlertDialog.Builder builder;
         checkAndHideKeyboard(null);
-        if(version>=11){
-            builder = new AlertDialog.Builder(context,AlertDialog.THEME_HOLO_LIGHT);
-        } else
-            builder = new AlertDialog.Builder(context);
+	builder = Build.VERSION.SDK_INT>=11 ?
+	    new AlertDialog.Builder(context,AlertDialog.THEME_HOLO_LIGHT) :
+	    new AlertDialog.Builder(context);
         builder.setTitle("Actividad F\u00edsica");
         builder.setSingleChoiceItems(Recursos.ACTIVITY,  dogActivity, new DialogInterface.OnClickListener() {
                 @Override
@@ -315,18 +299,15 @@ public class DogRegister extends FragmentActivity {
 	};
 
     public void onClickOwnerGenderButton(View view) {
-        int version=Build.VERSION.SDK_INT;
         AlertDialog.Builder builder;
         checkAndHideKeyboard(null);
-        if(version>=11){
-            builder = new AlertDialog.Builder(context,AlertDialog.THEME_HOLO_LIGHT);
-        } else
-            builder = new AlertDialog.Builder(context);
+	builder = Build.VERSION.SDK_INT>=11 ?
+	    new AlertDialog.Builder(context,AlertDialog.THEME_HOLO_LIGHT) :
+	    new AlertDialog.Builder(context);
         builder.setTitle("Genero");
         builder.setSingleChoiceItems(Recursos.GENDER_OWNER,  ownerGender, new DialogInterface.OnClickListener() {
                 @Override
                 public void onClick(DialogInterface dialog, int item) {
-                    //Registro.this.tvSexo.setText(Recursos.GENDER[item]);
                     ownerGenderField.setHint(Recursos.GENDER_OWNER[item]);
                     ownerGender = item;
                     dialog.dismiss();
@@ -336,13 +317,11 @@ public class DogRegister extends FragmentActivity {
     }
 
     public void onClickOwnerStateButton(View view) {
-        int version=Build.VERSION.SDK_INT;
         AlertDialog.Builder builder;
         checkAndHideKeyboard(null);
-        if(version>=11)
-            builder = new AlertDialog.Builder(context,AlertDialog.THEME_HOLO_LIGHT);
-        else
-            builder = new AlertDialog.Builder(context);
+	builder = Build.VERSION.SDK_INT>=11 ?
+	    new AlertDialog.Builder(context,AlertDialog.THEME_HOLO_LIGHT) :
+	    new AlertDialog.Builder(context);
         builder.setTitle("Estado");
         builder.setSingleChoiceItems(Recursos.STATES,  ownerState, new DialogInterface.OnClickListener() {
                 @Override
@@ -356,27 +335,15 @@ public class DogRegister extends FragmentActivity {
         builder.create().show();
     }
 
-	android.view.View.OnClickListener photoListener = new View.OnClickListener() {
+    public void onClickDogPhotoImageView(View view) {
+	getPhoto(view);
+    }
 
-		@Override
-		public void onClick(View v) {
-			getPhoto(v);
-		}
-	};
-
-
-	private OnClickListener removeImageListener = new OnClickListener(){
-
-		@Override
-		public void onClick(View v) {
-
-			dogImage = null;
-			dogPhoto.setImageResource(R.drawable.bg_avatar_camera);
-			btRemoveImage.setVisibility(View.INVISIBLE);
-
-		}
-
-	};
+    public void onClickRemoveImageView(View view) {
+        dogImage = null;
+        dogPhoto.setImageResource(R.drawable.bg_avatar_camera);
+        btRemoveImage.setVisibility(View.INVISIBLE);
+    }
 
 	public void getPhoto (View view){
 
@@ -386,7 +353,6 @@ public class DogRegister extends FragmentActivity {
 		builder.setTitle("Tomar Fotograf\u00eda");
 		builder.setItems(items, new DialogInterface.OnClickListener() {
 			public void onClick(DialogInterface dialog, int item) {
-
 				if (item == 0)
 					getPhotofromAlbum();
 				else if (item == 1)
@@ -399,36 +365,25 @@ public class DogRegister extends FragmentActivity {
 	}
 
 
-	private void getPhotofromAlbum(){
+    private void getPhotofromAlbum() {
+        Intent intent = new Intent(Intent.ACTION_GET_CONTENT);
+        intent.setType("image/*");
+        startActivityForResult(intent, 1);
+    }
 
-		int actionCode = 1;
-		final String action = Intent.ACTION_GET_CONTENT;
+    private void takePhoto() {
+        final String action = MediaStore.ACTION_IMAGE_CAPTURE;
+        if(isIntentAvailable(context, action))
+            startActivityForResult(new Intent(action), 0);
+    }
 
-		Intent intent = new Intent(action);  
-		intent.setType("image/*");
-		startActivityForResult(intent, actionCode);
-
-
-	}
-
-	private void takePhoto(){
-
-		int actionCode = 0;
-		final String action = MediaStore.ACTION_IMAGE_CAPTURE;
-
-		if (isIntentAvailable(context, action)){
-			Intent takePictureIntent = new Intent(action);
-			startActivityForResult(takePictureIntent, actionCode);
-		}
-	}
-
-	public static boolean isIntentAvailable(Context context, String action) {
-		final PackageManager packageManager = context.getPackageManager();
-		final Intent intent = new Intent(action);
-		List<ResolveInfo> list =
-				packageManager.queryIntentActivities(intent, PackageManager.MATCH_DEFAULT_ONLY);
-		return list.size() > 0;
-	}
+    public static boolean isIntentAvailable(Context context, String action) {
+        List<ResolveInfo> list =
+            context.getPackageManager()
+            .queryIntentActivities(new Intent(action),
+                                   PackageManager.MATCH_DEFAULT_ONLY);
+        return list.size() > 0;
+    }
 
 
 	@Override
@@ -437,28 +392,21 @@ public class DogRegister extends FragmentActivity {
 
 		Bitmap mBitmap = null;
 		if (resultCode == Activity.RESULT_OK && intent != null){
-			if (requestCode == 0 ){
-				Bundle extras = intent.getExtras();
-				mBitmap = (Bitmap) extras.get("data");
+                    if(requestCode == 0)
+                        mBitmap = (Bitmap)intent.getExtras().get("data");
+                    else if(requestCode == 1){
+                        try {
+                            mBitmap = Media.getBitmap(context.getContentResolver(), intent.getData());
+                        }catch (Exception e) {
+                            e.printStackTrace();
+                        }
+                    }
 
-			}
-			else if (requestCode == 1){
-				Uri chosenImageUri = intent.getData();
-				try { mBitmap = Media.getBitmap(context.getContentResolver(), chosenImageUri);}
-				catch (Exception e) {e.printStackTrace();}
-			}
-
-			if (mBitmap != null){
-
-				//UtilsBitmap.resize(mBitmap, 100, 100);
-				dogImage = UtilsBitmap.resize(mBitmap, 100, 100);
-				dogPhoto.setImageBitmap( dogImage );
-
-				
-				
-				btRemoveImage.setVisibility(View.VISIBLE);
-				//this.avatar = saveImageToInternalStorage(mBitmap);
-			}
+                    if (mBitmap != null){
+                        dogImage = UtilsBitmap.resize(mBitmap, 100, 100);
+                        dogPhoto.setImageBitmap(dogImage);
+                        btRemoveImage.setVisibility(View.VISIBLE);
+                    }
 		}
 	}
 
@@ -515,8 +463,6 @@ public class DogRegister extends FragmentActivity {
 		protected void onPostExecute(Integer result) {
 			super.onPostExecute(result);
 			dialog.dismiss();
-			//dispatchResult(result);
-
 			UI.showAlertDialog("Result",
 					   "Result => " + result,
 					   "OK", context, null);

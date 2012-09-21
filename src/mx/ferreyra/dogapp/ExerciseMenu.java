@@ -374,13 +374,21 @@ public class ExerciseMenu extends Activity{
 		DogUtil.TRACKER_VALUE++;
 	}
 
-	public void onClickDogWelfare(View v) {
-		if(app.getCurrentUserId()==null) {
-			startActivityForResult(new Intent(this, PreSignup.class), DogUtil.DOGWELFARE);
-		} else {
-			startActivity(new Intent(this, DogProfile.class));
-		}
-	}
+    public void onClickDogWelfare(View v) {
+        if(app.getCurrentUserId()==null) {
+            // User not logged
+            startActivityForResult(new Intent(this, PreSignup.class), DogUtil.DOGWELFARE);
+        } else {
+            // User logged
+            if(app.getCurrentDogId()==null) {
+                // Show dog registration form
+                startActivity(new Intent(this, DogRegister.class));
+            } else {
+                // Show dog profile
+                startActivity(new Intent(this, DogProfile.class));
+            }
+        }
+    }
 
 	public void onClickTButtonLeftButton(View v) {
 		finish();

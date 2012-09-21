@@ -463,9 +463,18 @@ public class DogRegister extends FragmentActivity {
 		protected void onPostExecute(Integer result) {
 			super.onPostExecute(result);
 			dialog.dismiss();
-			UI.showAlertDialog("Result",
-					   "Result => " + result,
-					   "OK", context, null);
+                        if(result!=null && result >=0) {
+                            // Registration successful
+                            DogUtil.getInstance().saveCurrentDogId(result);
+                            UI.showAlertDialog("Registro exitoso",
+                                               "Tu perro ha sido registrado",
+                                               "OK", context, null);
+                        } else {
+                            // Error in registration
+                            UI.showAlertDialog("Ups!",
+                                               "Ha ocurrido un error en el registro",
+                                               "OK", context, null);
+                        }
 		}
 	}
 

@@ -121,9 +121,10 @@
         android:layout_above="@+id/edit_profile_button"
         android:layout_alignParentLeft="true"
         android:layout_alignParentRight="true"
-        android:layout_marginLeft="20dp"
-        android:layout_marginRight="20dp"
-        android:layout_below="@+id/TextView02" />
+        android:layout_below="@+id/TextView02"
+        android:layout_margin="20sp"
+        android:gravity="center_horizontal"
+        android:textSize="16sp" />
 
     <Button
         android:id="@+id/edit_profile_button"

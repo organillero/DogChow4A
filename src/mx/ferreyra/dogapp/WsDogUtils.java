@@ -401,13 +401,13 @@ public class WsDogUtils {
         return values;
     }
 
-    public String[][] getDuenosMascotasByIdUsuario(Map parameters)
+    public String[][] getDuenosMascotasByIdUsuario(int userId)
         throws IOException, XmlPullParserException {
         String method = "getDuenosMascotasByIdUsuario";
         String action = "http://tempuri.org/getDuenosMascotasByIdUsuario";
 
         SoapObject request = new SoapObject(namespace, method);
-        request.addProperty("idUsuario",(Integer)parameters.get("user_id"));
+        request.addProperty("idUsuario", userId);
 
         SoapSerializationEnvelope envelope = new SoapSerializationEnvelope(SoapEnvelope.VER11);
         envelope.setOutputSoapObject(request);

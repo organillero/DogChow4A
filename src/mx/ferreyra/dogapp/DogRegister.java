@@ -503,7 +503,10 @@ public class DogRegister extends FragmentActivity {
         protected Integer doInBackground(Void... params) {
             WsDogUtils wsDogUtils = new WsDogUtils(context);
             try {
-                return wsDogUtils.insertDuenoMascota(map);
+                if (DogUtil.getInstance().getCurrentDogId() != null && DogUtil.getInstance().getCurrentDogId() >0)
+                    return wsDogUtils.editDuenoMascota(map)  ;  
+                else
+                    return wsDogUtils.insertDuenoMascota(map);
             } catch (Exception e) {
                 return null;
             }
@@ -515,12 +518,12 @@ public class DogRegister extends FragmentActivity {
 
             dialog.dismiss();
 
-            
+
             Intent intent = new Intent();
             intent.putExtra("ID_PET", result);
-            
+
             DogUtil.getInstance().saveCurrentDogId(result);
-            
+
             setResult(Activity.RESULT_OK, intent);
             finish();
 

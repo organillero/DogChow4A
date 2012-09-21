@@ -26,12 +26,18 @@ public class WsDogUtils {
         this.context = context;
     }
 
-    public String[][] parseEditDuenoMascota(SoapObject result) {
-        // TODO implement this method
-        return null;
+    public Integer parseEditDuenoMascota(SoapObject result) {
+        if (result == null)
+            return null;
+
+        SoapObject root = (SoapObject)result.getProperty(0);
+        SoapObject diffgram = (SoapObject)root.getProperty(1);
+        SoapObject newDataSet = (SoapObject)diffgram.getProperty(0);
+        SoapObject table = (SoapObject)newDataSet.getProperty(0);
+        return Integer.valueOf(table.getPropertyAsString(0));
     }
 
-    public String[][] editDuenoMascota(Map parameters)
+    public Integer editDuenoMascota(Map parameters)
         throws IOException, XmlPullParserException {
         String method = "editDuenoMascota";
         String action = "http://tempuri.org/editDuenoMascota";

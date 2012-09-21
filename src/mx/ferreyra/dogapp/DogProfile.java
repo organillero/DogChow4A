@@ -39,9 +39,9 @@ public class DogProfile extends Activity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         context = this;
-        if (DogUtil.getInstance().getCurrentDogId() == null) {
-            startActivityForResult(new Intent(this, DogRegister.class),DogUtil.DOG_PROFILE);
-        }
+
+        Integer tmp = DogUtil.getInstance().getCurrentDogId();
+
 
         setContentView(R.layout.profile_dog);
 
@@ -127,7 +127,9 @@ public class DogProfile extends Activity {
 
                 return dogProfilePojo;
             } catch (Exception e) {
+                // if (DogUtil.getInstance().getCurrentDogId() == null) {
                 return null;
+                //}
             }
         }
 
@@ -146,6 +148,9 @@ public class DogProfile extends Activity {
                 dogImage.setImageBitmap(result.getMascotaImagen());
             } 
 
+            else {
+                startActivityForResult(new Intent(context, DogRegister.class),DogUtil.DOG_PROFILE);
+            }
 
 
 
@@ -172,8 +177,8 @@ public class DogProfile extends Activity {
             if (requestCode == DogUtil.DOG_PROFILE || requestCode ==  DogUtil.DOG_EDIT_PROFILE) {
 
                 //Bundle extras = intent.getExtras();
-                
-                
+
+
                 if (DogUtil.getInstance().getCurrentDogId() !=  null  && DogUtil.getInstance().getCurrentDogId()>0) {
                     DogProfileAsync async =  new DogProfileAsync (context);
                     async.execute();

@@ -72,6 +72,7 @@ public class DogUtil extends Application {
 
         // Loading preferences
         loadCurrentUserId();
+        loadCurrentDogId();
 
         initFacebook();
         if(gTracker == null){
@@ -163,6 +164,13 @@ public class DogUtil extends Application {
         this.currentUserId = possible>=0 ? possible : null;
     }
 
+    public void loadCurrentDogId() {
+        SharedPreferences pref = getSharedPreferences(getString(R.string.preferences_name), 0);
+        int possible = pref.getInt(getString(R.string.preference_dog_id), -1);
+        this.currentDogId = possible>=0 ? possible : null;
+    }
+
+    
     public void deleteCurrentUserId(){
         SharedPreferences pref = getSharedPreferences(getString(R.string.preferences_name), 0);
         Editor e = pref.edit();

@@ -168,6 +168,7 @@ public class DogUtil extends Application {
         SharedPreferences pref = getSharedPreferences(getString(R.string.preferences_name), 0);
         Editor e = pref.edit();
         e.putInt(getString(R.string.preference_user_id), userId);
+        e.putString(Utilities.USER_ID, userId.toString());
         e.commit();
 
         // Reload value
@@ -182,6 +183,15 @@ public class DogUtil extends Application {
         SharedPreferences pref = getSharedPreferences(getString(R.string.preferences_name), 0);
         int possible = pref.getInt(getString(R.string.preference_dog_id), -1);
         this.currentDogId = possible>=0 ? possible : null;
+    }
+
+    public void deleteCurrentUserId(){
+        SharedPreferences pref = getSharedPreferences(getString(R.string.preferences_name), 0);
+        Editor e = pref.edit();
+        e.remove(getString(R.string.preference_user_id));
+        e.remove(Utilities.USER_ID);
+        e.commit();
+        currentUserId = null;
     }
 
     public void saveCurrentDogId(Integer dogId) {

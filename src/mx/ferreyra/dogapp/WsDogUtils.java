@@ -26,49 +26,11 @@ public class WsDogUtils {
         this.context = context;
     }
 
-    public Integer parseEditDuenoMascota(SoapObject result) {
-        if (result == null)
-            return null;
-
-        SoapObject root = (SoapObject)result.getProperty(0);
-        SoapObject diffgram = (SoapObject)root.getProperty(1);
-        SoapObject newDataSet = (SoapObject)diffgram.getProperty(0);
-        SoapObject table = (SoapObject)newDataSet.getProperty(0);
-        return Integer.valueOf(table.getPropertyAsString(0));
-    }
-
     public Integer editDuenoMascota(Map parameters)
         throws IOException, XmlPullParserException {
-        String method = "editDuenoMascota";
-        String action = "http://tempuri.org/editDuenoMascota";
-
-        SoapObject request = new SoapObject(namespace, method);
-        request.addProperty("idUsuario",(String)parameters.get("idUsuario"));
-        request.addProperty("duenoNombre",(String)parameters.get("duenoNombre"));
-        request.addProperty("duenoIdGenero",(String)parameters.get("duenoIdGenero"));
-        request.addProperty("duenoFechaCumpleanos",(String)parameters.get("duenoFechaCumpleanos"));
-        request.addProperty("duenoIdEstado",(String)parameters.get("duenoIdEstado"));
-        request.addProperty("mascotaNombre",(String)parameters.get("mascotaNombre"));
-        request.addProperty("mascotaRaza",(String)parameters.get("mascotaRaza"));
-        request.addProperty("mascotaIdGenero",(String)parameters.get("mascotaIdGenero"));
-        request.addProperty("mascotaIdTipoVida",(String)parameters.get("mascotaIdTipoVida"));
-        request.addProperty("mascotaFechaCumpleanos",(String)parameters.get("mascotaFechaCumpleanos"));
-        request.addProperty("mascotaIdActividadFisica",(String)parameters.get("mascotaIdActividadFisica"));
-        request.addProperty("mascotaImagen",(String)parameters.get("mascotaImagen"));
-        request.addProperty("comentarios1",(String)parameters.get("comentarios1"));
-        request.addProperty("comentarios2",(String)parameters.get("comentarios2"));
-
-        SoapSerializationEnvelope envelope = new SoapSerializationEnvelope(SoapEnvelope.VER11);
-        envelope.setOutputSoapObject(request);
-        envelope.dotNet = true;
-
-        HttpTransportSE androidHttpTransport = new HttpTransportSE(url);
-
-        androidHttpTransport.debug = true;
-        androidHttpTransport.call(action, envelope);
-
-        SoapObject result = (SoapObject)envelope.bodyIn;
-        return parseEditDuenoMascota(result);
+        return genericDuenoMascota("editDuenoMascota",
+                                   "http://tempuri.org/editDuenoMascota",
+                                   parameters);
     }
 
     /**
@@ -590,22 +552,15 @@ public class WsDogUtils {
         return parseGetTrainingSpot(result);
     }
 
-    public Integer parseInsertDuenoMascota(SoapObject result) {
-        if (result == null)
-            return null;
-
-        SoapObject root = (SoapObject)result.getProperty(0);
-        SoapObject diffgram = (SoapObject)root.getProperty(1);
-        SoapObject newDataSet = (SoapObject)diffgram.getProperty(0);
-	SoapObject table = (SoapObject)newDataSet.getProperty(0);
-	return Integer.valueOf(table.getPropertyAsString(0));
-    }
-
     public Integer insertDuenoMascota(Map parameters)
         throws IOException, XmlPullParserException {
-        String method = "insertDuenoMascota";
-        String action = "http://tempuri.org/insertDuenoMascota";
+        return genericDuenoMascota("insertDuenoMascota",
+                                   "http://tempuri.org/insertDuenoMascota",
+                                   parameters);
+    }
 
+    public Integer genericDuenoMascota(String method, String action, Map parameters)
+        throws IOException, XmlPullParserException {
         SoapObject request = new SoapObject(namespace, method);
         request.addProperty("idUsuario",(String)parameters.get("idUsuario"));
         request.addProperty("duenoNombre",(String)parameters.get("duenoNombre"));
@@ -627,10 +582,16 @@ public class WsDogUtils {
         envelope.dotNet = true;
 
         HttpTransportSE androidHttpTransport = new HttpTransportSE(url);
+        androidHttpTransport.debug = true;
         androidHttpTransport.call(action, envelope);
 
-        SoapObject result = (SoapObject)envelope.bodyIn;
-        return parseInsertDuenoMascota(result);
+        if((envelope.bodyIn) instanceof SoapObject) {
+            // Soap object response
+            return parseGenericReturnSoapObject((SoapObject)envelope.bodyIn);
+        } else {
+            // Soap fault response
+            return null;
+        }
     }
 
     /**
@@ -1022,5 +983,16 @@ public class WsDogUtils {
 
         SoapObject result = (SoapObject)envelope.bodyIn;
         return parseUserRecoveryPWD(result);
+    }
+
+    public Integer parseGenericReturnSoapObject(SoapObject result) {
+        if (result == null)
+            return null;
+
+        SoapObject root = (SoapObject)result.getProperty(0);
+        SoapObject diffgram = (SoapObject)root.getProperty(1);
+        SoapObject dataSet = (SoapObject)diffgram.getProperty(0);
+        SoapObject table = (SoapObject)dataSet.getProperty(0);
+        return Integer.valueOf(table.getPropertyAsString(0));
     }
 }

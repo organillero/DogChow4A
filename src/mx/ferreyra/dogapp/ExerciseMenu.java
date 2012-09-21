@@ -94,7 +94,7 @@ public class ExerciseMenu extends Activity{
 				if (DogUtil.getInstance().getCurrentUserId() != null){
 
 					DogUtil.getInstance().deleteCurrentUserId();
-					UI.showAlertDialog(null, "Se ha cerrado se la sesi—n actual.", "OK", context, null);
+					UI.showAlertDialog(null, "Se ha cerrado se la sesi\u00f3n actual.", "OK", context, null);
 				}
 			}
 		});

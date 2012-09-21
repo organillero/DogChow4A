@@ -87,6 +87,7 @@
             android:layout_marginTop="10dp"
             android:background="@drawable/bg_camera"
             android:contentDescription="@null"
+            android:onClick="onClickDogPhotoImageView"
             android:src="@drawable/bg_avatar_camera" />
 
         <ImageButton
@@ -100,6 +101,7 @@
             android:background="@null"
             android:contentDescription="@null"
             android:src="@drawable/bt_remove"
+            android:onClick="onClickRemoveImageView"
             android:visibility="invisible" />
 
         <TextView

@@ -192,6 +192,9 @@ public class DogProfile extends Activity {
             }
 
         }
+        else {
+            finish();
+        }
 
 
     }

@@ -17,11 +17,11 @@ public class Starting extends Activity {
 	private TextView textView2;
 	private TextView textView3;
 	private TextView textView4; 
-	private String text = "<html><body bgcolor=\"#5c5c5c\"><b>Si estás empezando a correr con tu perro, " +
+	private String text = "<html><body bgcolor=\"#5c5c5c\"><b>Si est\u00e1 empezando a correr con tu perro, " +
 			"<font color=\"#0f7243\">haz ejercicio poco a poco&nbsp;</font>" +
 			"para que se acostumbre a correr en la calle.</b>";
 
-	private String text2 = "<font color=\"#0f7243\"><b>Procura no alimentarlo 45 min. antes,&nbsp;</font>ni después de correr.</b>";
+	private String text2 = "<font color=\"#0f7243\"><b>Procura no alimentarlo 45 min. antes,&nbsp;</font>ni despu\u00e9s de correr.</b>";
 
 
 	private String text3 = "<font color=\"#0f7243\"><b>Evita correr sobre el cemento&nbsp;</font>cuando haga mucho calor.</b>";

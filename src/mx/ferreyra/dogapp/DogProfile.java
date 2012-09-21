@@ -39,8 +39,8 @@ public class DogProfile extends Activity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         context = this;
-        if (DogUtil.getInstance().getCurrentUserId() == null) {
-            startActivityForResult(new Intent(this, PreSignup.class),DogUtil.DOG_PROFILE);
+        if (DogUtil.getInstance().getCurrentDogId() == null) {
+            startActivityForResult(new Intent(this, DogRegister.class),DogUtil.DOG_PROFILE);
         }
 
         setContentView(R.layout.profile_dog);
@@ -169,28 +169,23 @@ public class DogProfile extends Activity {
         super.onActivityResult(requestCode, resultCode, intent);
 
         if (resultCode == Activity.RESULT_OK && intent != null) {
-            if (requestCode == DogUtil.DOG_PROFILE) {
+            if (requestCode == DogUtil.DOG_PROFILE || requestCode ==  DogUtil.DOG_EDIT_PROFILE) {
 
-                Bundle extras = intent.getExtras();
-                Integer idPet = (Integer) extras.get("ID_PET");
-
-                if (idPet < 0) {
-                    UI.showAlertDialog("Upss!!",
-                            "Ocurrio un error al registro al perro", "OK",
-                            context, null);
-
-                }
-            }
-            else if  (requestCode == DogUtil.DOG_EDIT_PROFILE) {
-                Bundle extras = intent.getExtras();
-                Integer idPet = (Integer) extras.get("ID_PET");
-
-                if (idPet > 0) {
+                //Bundle extras = intent.getExtras();
+                
+                
+                if (DogUtil.getInstance().getCurrentDogId() !=  null  && DogUtil.getInstance().getCurrentDogId()>0) {
                     DogProfileAsync async =  new DogProfileAsync (context);
                     async.execute();
                 }
 
+                else {
+                    UI.showAlertDialog("Ups!",
+                            "Ha ocurrido un error",
+                            "OK", context, null);
+                }
             }
+
         }
 
 

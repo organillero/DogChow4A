@@ -225,5 +225,6 @@
     <!-- DogChow applcation -->
     <string name="preferences_name">dogapp</string>
     <string name="preference_user_id">userid_new</string>
+    <string name="preference_dog_id">dogid</string>
 
 </resources>

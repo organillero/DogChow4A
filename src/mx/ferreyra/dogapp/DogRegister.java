@@ -120,16 +120,16 @@ public class DogRegister extends FragmentActivity {
 
 
         btRemoveImage = (ImageButton) findViewById(R.id.bt_remove);
-        
+
 
         Bundle extras = getIntent().getExtras();
         if (extras != null) {
             dogProfilePojo = (DogProfilePojo) extras.get("DOG_PROFILE_POJO");
 
-    
 
-            
-            
+
+
+
             dogNameField.setText(dogProfilePojo.mascotaNombre);
             dogBreedField.setText(dogProfilePojo.mascotaRaza);
 
@@ -153,19 +153,19 @@ public class DogRegister extends FragmentActivity {
 
 
             ownerNameField.setText(dogProfilePojo.duenoNombre);
-           
+
             ownerGenderField.setHint(Recursos.GENDER_OWNER[dogProfilePojo.duenoIdGenero-1]);
             ownerGender = dogProfilePojo.duenoIdGenero-1;
-            
+
             ownerBirthDay.setHint(formater.format( dogProfilePojo.duenoFechaCumpleanos ));
             ownerYear = dogProfilePojo.duenoFechaCumpleanos.getYear()-100+2000;
             ownerMonth = dogProfilePojo.duenoFechaCumpleanos.getMonth();
             ownerDay = dogProfilePojo.duenoFechaCumpleanos.getDate();
-            
+
             ownerStateField.setHint(Recursos.STATES[dogProfilePojo.duenoIdEstado-1]);
             ownerState = dogProfilePojo.duenoIdEstado-1;
-            
-            
+
+
         }
 
     };
@@ -263,8 +263,8 @@ public class DogRegister extends FragmentActivity {
         map.put("duenoNombre", dogNameField.getText().toString());
         map.put("mascotaRaza", dogBreedField.getText().toString());
         map.put("mascotaIdGenero", String.valueOf(dogGender+1));
-        map.put("mascotaIdTipoVida", String.valueOf(dogLifeStyle));
-        map.put("mascotaIdActividadFisica", String.valueOf(dogActivity));
+        map.put("mascotaIdTipoVida", String.valueOf(dogLifeStyle+1));
+        map.put("mascotaIdActividadFisica", String.valueOf(dogActivity+1));
         map.put("mascotaImagen", encodedImageStr);
         map.put("mascotaFechaCumpleanos", dogYear + "-" + (dogMonth<10 ? "0"+dogMonth : dogMonth) + "-"+ dogDay);
 
@@ -512,10 +512,18 @@ public class DogRegister extends FragmentActivity {
         @Override
         protected void onPostExecute(Integer result) {
             super.onPostExecute(result);
+
             dialog.dismiss();
-            UI.showAlertDialog("Result",
-                    "Result => " + result,
-                    "OK", context, null);
+
+            
+            Intent intent = new Intent();
+            intent.putExtra("ID_PET", result);
+            
+            DogUtil.getInstance().saveCurrentDogId(result);
+            
+            setResult(Activity.RESULT_OK, intent);
+            finish();
+
         }
     }
 

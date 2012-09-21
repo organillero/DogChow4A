@@ -43,7 +43,7 @@
         android:padding="6dp"
         android:text="@string/breed"
         android:textColor="#666666"
-        android:textSize="16sp"
+        android:textSize="20sp"
         android:textStyle="bold" />
 
     <TextView
@@ -53,7 +53,6 @@
         android:layout_above="@+id/TextView01"
         android:layout_toRightOf="@+id/textView2"
         android:padding="6dp"
-        android:text="@string/a"
         android:textColor="#666666"
         android:textSize="14sp"
         android:textStyle="bold" />
@@ -67,7 +66,7 @@
         android:padding="6dp"
         android:text="@string/gender"
         android:textColor="#666666"
-        android:textSize="16sp"
+        android:textSize="20sp"
         android:textStyle="bold" />
 
     <TextView
@@ -77,7 +76,6 @@
         android:layout_alignBaseline="@+id/TextView01"
         android:layout_toRightOf="@+id/TextView01"
         android:padding="6dp"
-        android:text="@string/a"
         android:textColor="#666666"
         android:textSize="14sp"
         android:textStyle="bold" />
@@ -89,7 +87,6 @@
         android:layout_alignLeft="@+id/TextView01"
         android:layout_below="@+id/TextView01"
         android:padding="6dp"
-        android:text="@string/a"
         android:textColor="#666666"
         android:textSize="14sp"
         android:textStyle="bold" />
@@ -101,7 +98,6 @@
         android:layout_alignLeft="@+id/tvLyfeStyle"
         android:layout_below="@+id/tvLyfeStyle"
         android:padding="6dp"
-        android:text="@string/a"
         android:textColor="#666666"
         android:textSize="14sp"
         android:textStyle="bold" />
@@ -115,7 +111,7 @@
         android:padding="6dp"
         android:text="@string/tips"
         android:textColor="#666666"
-        android:textSize="14sp"
+        android:textSize="20sp"
         android:textStyle="bold" />
 
     <TextView
@@ -125,10 +121,9 @@
         android:layout_above="@+id/edit_profile_button"
         android:layout_alignParentLeft="true"
         android:layout_alignParentRight="true"
-        android:layout_marginLeft="10dp"
-        android:layout_marginRight="10dp"
-        android:layout_below="@+id/TextView02"
-        android:text="@string/a" />
+        android:layout_marginLeft="20dp"
+        android:layout_marginRight="20dp"
+        android:layout_below="@+id/TextView02" />
 
     <Button
         android:id="@+id/edit_profile_button"
@@ -136,7 +131,7 @@
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
         android:layout_centerHorizontal="true"
-        android:layout_margin="20dp"
+        android:layout_margin="30dp"
         android:background="@drawable/bt_send"
         android:contentDescription="@null"
         android:text="@string/edit_profile"

@@ -83,6 +83,9 @@
             android:name=".DogRegister"
             android:screenOrientation="portrait" />
         <activity
+            android:name=".DogProfile"
+            android:screenOrientation="portrait" />
+        <activity
             android:name=".PreSignup"
             android:screenOrientation="portrait" />
         <activity

@@ -235,7 +235,7 @@ public class RouteNaming extends Activity {
 					SharedPreferences preferences = getSharedPreferences(Utilities.DOGCHOW, 0);				
 
 					if(preferences != null){
-						String userId = preferences.getString(Utilities.USER_ID, "-1");
+						String userId = DogUtil.getInstance().getCurrentUserId().toString();//preferences.getString(Utilities.USER_ID, "-1");
 						if(userId != null && !userId.equals("")){
 							SoapParseInsertRoute insertRoute = new SoapParseInsertRoute();
 							insertRoute.execute("");
@@ -442,7 +442,7 @@ public class RouteNaming extends Activity {
 				request.addProperty("distance", String.valueOf(distance));
 				request.addProperty("timeTaken", time);
 				request.addProperty("difficulty", level.name());
-				request.addProperty("userId",  Integer.parseInt(getSharedPreferences("dogapp", 0).getString("userid", "-1")));
+				request.addProperty("userId",  DogUtil.getInstance().getCurrentUserId().toString()/*Integer.parseInt(getSharedPreferences("dogapp", 0).getString("userid", "-1"))*/);
 
 
 				SoapSerializationEnvelope envelope = new SoapSerializationEnvelope(
@@ -725,7 +725,11 @@ public class RouteNaming extends Activity {
 				SharedPreferences preferences = getSharedPreferences(Utilities.DOGCHOW, 0);				
 
 				if(preferences != null){
-					String userId = preferences.getString(Utilities.USER_ID, "-1");
+					
+					
+					
+					
+					String userId = DogUtil.getInstance().getCurrentUserId().toString();//preferences.getString(Utilities.USER_ID, "-1");
 					if(userId != null && !userId.equals("")){
 						SoapParseInsertRoute insertRoute = new SoapParseInsertRoute();
 						insertRoute.execute("");

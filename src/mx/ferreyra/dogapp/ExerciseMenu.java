@@ -5,6 +5,7 @@ import java.io.IOException;
 import java.net.MalformedURLException;
 
 import mx.ferreyra.dogapp.AppData.USER_LOGIN_TYPE;
+import mx.ferreyra.dogapp.ui.UI;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -26,6 +27,7 @@ import android.os.Handler;
 import android.provider.Settings;
 import android.util.Log;
 import android.view.View;
+import android.view.View.OnClickListener;
 import android.view.Window;
 import android.widget.Button;
 import android.widget.ProgressBar;
@@ -56,10 +58,15 @@ public class ExerciseMenu extends Activity{
 
 	//get gps strength in android
 	LocationManager locMgr;
+	private Context context;
+
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
+
+		context = this;
+
 		requestWindowFeature(Window.FEATURE_CUSTOM_TITLE);
 		setContentView(R.layout.exercisemenu);
 		getWindow().setFeatureInt(Window.FEATURE_CUSTOM_TITLE, R.layout.title_bar);
@@ -78,6 +85,19 @@ public class ExerciseMenu extends Activity{
 		progress_title = (ProgressBar)findViewById(R.id.progress_title);
 		analyticsTracker = ((DogUtil)getApplication()).getTracker();
 		title_txt = (TextView)findViewById(R.id.title_txt);
+
+
+		title_right.setOnClickListener(new OnClickListener() {
+
+			@Override
+			public void onClick(View v) {
+				if (DogUtil.getInstance().getCurrentUserId() != null){
+
+					DogUtil.getInstance().deleteCurrentUserId();
+					UI.showAlertDialog(null, "Se ha cerrado se la sesi—n actual.", "OK", context, null);
+				}
+			}
+		});
 
 		title_txt.setText(getString(R.string.exercise_title));
 	}
@@ -358,7 +378,7 @@ public class ExerciseMenu extends Activity{
 		if(app.getCurrentUserId()==null) {
 			startActivityForResult(new Intent(this, PreSignup.class), DogUtil.DOGWELFARE);
 		} else {
-			startActivity(new Intent(this, DogRegister.class));
+			startActivity(new Intent(this, DogProfile.class));
 		}
 	}
 
@@ -435,7 +455,7 @@ public class ExerciseMenu extends Activity{
 				startActivity(i);
 			}
 			else if (requestCode == DogUtil.DOGWELFARE){
-				startActivity(new Intent(this, DogRegister.class));
+				startActivity(new Intent(this, DogProfile.class));
 			}
 
 		}

@@ -2,17 +2,16 @@ package mx.ferreyra.dogapp;
 
 import java.io.IOException;
 import java.util.Date;
-import java.util.HashMap;
 import java.util.Map;
-
-import org.xmlpull.v1.XmlPullParserException;
 
 import mx.ferreyra.dogapp.org.ksoap2.SoapEnvelope;
 import mx.ferreyra.dogapp.org.ksoap2.serialization.SoapObject;
 import mx.ferreyra.dogapp.org.ksoap2.serialization.SoapSerializationEnvelope;
 import mx.ferreyra.dogapp.org.ksoap2.transport.HttpTransportSE;
+
+import org.xmlpull.v1.XmlPullParserException;
+
 import android.content.Context;
-import android.widget.Toast;
 
 /**
  * @author Israel Buitron
@@ -401,7 +400,7 @@ public class WsDogUtils {
         return values;
     }
 
-    public String[][] getDuenosMascotasByIdUsuario(int userId)
+    public String[][] getDuenosMascotasByIdUsuario(Integer userId)
         throws IOException, XmlPullParserException {
         String method = "getDuenosMascotasByIdUsuario";
         String action = "http://tempuri.org/getDuenosMascotasByIdUsuario";

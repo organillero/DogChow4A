@@ -74,6 +74,8 @@ public class Report extends Activity{
 		SharedPreferences pref = getSharedPreferences(Utilities.DOGCHOW, 0);
 		String userId = pref.getString(Utilities.USER_ID, "");
 
+		String tmpString = DogUtil.getInstance().getCurrentUserId().toString();
+		
 
 		if(userId == null || userId.equals("") || !DogUtil.checkNumber(userId)){
 			Toast.makeText(getApplicationContext(), getString(R.string.unable_to_process), Toast.LENGTH_SHORT).show();

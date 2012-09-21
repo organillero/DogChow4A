@@ -136,6 +136,7 @@
         android:background="@drawable/bt_send"
         android:contentDescription="@null"
         android:text="@string/edit_profile"
+        android:onClick="editProfile"
         android:textColor="@android:color/white" />
 
 </RelativeLayout>

@@ -24,6 +24,8 @@ public class DogUtil extends Application {
 	public static final int NEW_ROUTE = 0x04;
 	
 	public static final int DOG_PROFILE = 0x05;
+	
+	public static final int DOG_EDIT_PROFILE = 0x06;
 
 	/**
 	 * Id for user logged.

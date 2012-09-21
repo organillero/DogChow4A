@@ -17,6 +17,7 @@ import android.graphics.BitmapFactory;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.util.Base64;
+import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -39,8 +40,7 @@ public class DogProfile extends Activity {
         super.onCreate(savedInstanceState);
         context = this;
         if (DogUtil.getInstance().getCurrentUserId() == null) {
-            startActivityForResult(new Intent(this, PreSignup.class),
-                    DogUtil.DOG_PROFILE);
+            startActivityForResult(new Intent(this, PreSignup.class),DogUtil.DOG_PROFILE);
         }
 
         setContentView(R.layout.profile_dog);
@@ -52,11 +52,21 @@ public class DogProfile extends Activity {
         dogTip = (TextView) findViewById(R.id.tvTip);
 
         dogImage = (ImageView) findViewById(R.id.imageView1);
-        
+
         DogProfileAsync async =  new DogProfileAsync (context);
         async.execute();
 
     }
+
+    public void editProfile(View v){
+
+        Intent intent = new Intent(this, DogRegister.class);
+        intent.putExtra("DOG_PROFILE_POJO", dogProfilePojo);
+
+        startActivityForResult(intent, DogUtil.DOG_EDIT_PROFILE);
+        return;
+    }
+
 
     protected class DogProfileAsync extends
     AsyncTask<Void, Integer, DogProfilePojo> {
@@ -107,14 +117,14 @@ public class DogProfile extends Activity {
                 dogProfilePojo.mascotaIdTipoVida = Integer.valueOf(result[0][9]);
                 dogProfilePojo.mascotaIdActividadFisica = Integer.valueOf(result[0][10]);
                 dogProfilePojo.mascotaFechaCumpleanos = sdf.parse(result[0][11]);
-                byte[] bytes = Base64.decode(result[0][12], Base64.DEFAULT);
-                InputStream is = new ByteArrayInputStream(bytes);
-                Bitmap bmp = BitmapFactory.decodeStream(is);
+                //                byte[] bytes = Base64.decode(result[0][12], Base64.DEFAULT);
+                //                InputStream is = new ByteArrayInputStream(bytes);
+                //                Bitmap bmp = BitmapFactory.decodeStream(is);
 
-                dogProfilePojo.mascotaImagen = bmp;
-                
+                dogProfilePojo.setMascotaImagen ( result[0][12]);
+
                 dogProfilePojo.tip = result[0][16];
-                
+
                 return dogProfilePojo;
             } catch (Exception e) {
                 return null;
@@ -133,7 +143,7 @@ public class DogProfile extends Activity {
                 dogLifeStyle.setText(Recursos.LIFE_STYLE[result.mascotaIdTipoVida-1]);
                 dogBirthDay.setText(formater.format(result.mascotaFechaCumpleanos));
                 dogTip.setText(result.tip);
-                dogImage.setImageBitmap(result.mascotaImagen);
+                dogImage.setImageBitmap(result.getMascotaImagen());
             } 
 
 
@@ -159,7 +169,7 @@ public class DogProfile extends Activity {
         super.onActivityResult(requestCode, resultCode, intent);
 
         if (resultCode == Activity.RESULT_OK && intent != null) {
-            if (requestCode == DogUtil.NEW_ROUTE) {
+            if (requestCode == DogUtil.DOG_PROFILE) {
 
                 Bundle extras = intent.getExtras();
                 Integer idPet = (Integer) extras.get("ID_PET");
@@ -171,7 +181,18 @@ public class DogProfile extends Activity {
 
                 }
             }
+            else if  (requestCode == DogUtil.DOG_EDIT_PROFILE) {
+                Bundle extras = intent.getExtras();
+                Integer idPet = (Integer) extras.get("ID_PET");
+
+                if (idPet > 0) {
+                    DogProfileAsync async =  new DogProfileAsync (context);
+                    async.execute();
+                }
+
+            }
         }
+
 
     }
 }

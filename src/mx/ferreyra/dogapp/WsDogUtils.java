@@ -49,23 +49,7 @@ public class WsDogUtils {
      * </code></p>
      */
     public String[][] parseGetCatActividadFisica(SoapObject result) {
-        if (result == null)
-            return null;
-
-        SoapObject root = (SoapObject)result.getProperty(0);
-        SoapObject diffgram = (SoapObject)root.getProperty(1);
-        SoapObject newDataSet = (SoapObject)diffgram.getProperty(0);
-        int count = newDataSet.getPropertyCount();
-        String[][] values = new String[count][2];
-
-        for(int i=0; i<newDataSet.getPropertyCount(); i++) {
-            SoapObject table = (SoapObject)newDataSet.getProperty(i);
-
-            values[i][0] = table.getPropertyAsString(0);
-            values[i][1] = table.getPropertyAsString(1);
-        }
-
-        return values;
+	return parseGenericMatrixSoapObject(result, 2);
     }
 
     public String[][] getCatActividadFisica()
@@ -102,22 +86,7 @@ public class WsDogUtils {
      * </code></p>
      */
     public String[][] parseGetCatEstados(SoapObject result) {
-        if (result == null)
-            return null;
-
-        SoapObject root = (SoapObject)result.getProperty(0);
-        SoapObject diffgram = (SoapObject)root.getProperty(1);
-        SoapObject newDataSet = (SoapObject)diffgram.getProperty(0);
-        int count = newDataSet.getPropertyCount();
-        String[][] values = new String[count][2];
-
-        for(int i=0; i<newDataSet.getPropertyCount(); i++) {
-            SoapObject table = (SoapObject)newDataSet.getProperty(i);
-            values[i][0] = table.getPropertyAsString(0);
-            values[i][1] = table.getPropertyAsString(1);
-        }
-
-        return values;
+	return parseGenericMatrixSoapObject(result, 2);
     }
 
     public String[][] getCatEstados()
@@ -155,24 +124,7 @@ public class WsDogUtils {
      * </code></p>
      */
     public String[][] parseGetCatGenero(SoapObject result) {
-        if (result == null)
-            return null;
-
-        SoapObject root = (SoapObject)result.getProperty(0);
-        SoapObject diffgram = (SoapObject)root.getProperty(1);
-        SoapObject newDataSet = (SoapObject)diffgram.getProperty(0);
-        int count = newDataSet.getPropertyCount();
-        String[][] values = new String[count][3];
-
-        for(int i=0; i<count; i++) {
-            SoapObject table = (SoapObject)newDataSet.getProperty(i);
-
-            values[i][0] = table.getPropertyAsString(0);
-            values[i][1] = table.getPropertyAsString(1);
-            values[i][2] = table.getPropertyAsString(2);
-        }
-
-        return values;
+	return parseGenericMatrixSoapObject(result, 3);
     }
 
     public String[][] getCatGenero()
@@ -209,23 +161,7 @@ public class WsDogUtils {
      * </code></p>
      */
     public String[][] parseGetCatTipoVida(SoapObject result) {
-        if (result == null)
-            return null;
-
-        SoapObject root = (SoapObject)result.getProperty(0);
-        SoapObject diffgram = (SoapObject)root.getProperty(1);
-        SoapObject newDataSet = (SoapObject)diffgram.getProperty(0);
-        int count = newDataSet.getPropertyCount();
-        int columns = 17;
-        String[][] values = new String[count][columns];
-
-        for(int i=0; i<newDataSet.getPropertyCount(); i++) {
-            SoapObject table = (SoapObject)newDataSet.getProperty(i);
-            for(int j=0; j<columns; j++)
-                values[i][j] = table.getPropertyAsString(j);
-        }
-
-        return values;
+	return parseGenericMatrixSoapObject(result, 17);
     }
 
     public String[][] getCatTipoVida()
@@ -278,23 +214,7 @@ public class WsDogUtils {
      * </code></p>
      */
     public String[][] parseGetDuenosMascotas(SoapObject result) {
-        if (result == null)
-            return null;
-
-        SoapObject root = (SoapObject)result.getProperty(0);
-        SoapObject diffgram = (SoapObject)root.getProperty(1);
-        SoapObject newDataSet = (SoapObject)diffgram.getProperty(0);
-        int count = newDataSet.getPropertyCount();
-        int columns = 17;
-        String[][] values = new String[count][columns];
-
-        for(int i=0; i<count; i++) {
-            SoapObject table = (SoapObject)newDataSet.getProperty(i);
-            for(int j=0; j<columns; j++)
-                values[i][j] = table.getPropertyAsString(j);
-        }
-
-        return values;
+        return parseGenericMatrixSoapObject(result, 17);
     }
 
     public String[][] getDuenosMascotas()
@@ -347,26 +267,7 @@ public class WsDogUtils {
      * </code></p>
      */
     public String[][] parseGetDuenosMascotasByIdUsuario(SoapObject result) {
-        if (result == null)
-            return null;
-
-        SoapObject root = (SoapObject)result.getProperty(0);
-        SoapObject diffgram = (SoapObject)root.getProperty(1);
-        SoapObject newDataSet = (SoapObject)diffgram.getProperty(0);
-        int count = newDataSet.getPropertyCount();
-        if(count==0)
-            return null;
-
-        int columns = 17;
-        String[][] values = new String[count][columns];
-
-        for(int i=0; i<count; i++) {
-            SoapObject table = (SoapObject)newDataSet.getProperty(i);
-            for(int j=0; j<columns; j++)
-                values[i][j] = table.getPropertyAsString(j);
-        }
-
-        return values;
+        return parseGenericMatrixSoapObject(result, 17);
     }
 
     public String[][] getDuenosMascotasByIdUsuario(Integer userId)
@@ -405,26 +306,7 @@ public class WsDogUtils {
      * </code></p>
      */
     public String[][] parseGetStats(SoapObject result) {
-        if (result == null)
-            return null;
-
-        SoapObject root = (SoapObject)result.getProperty(0);
-        SoapObject diffgram = (SoapObject)root.getProperty(1);
-        SoapObject documentElement = (SoapObject)diffgram.getProperty(0);
-        int count = documentElement.getPropertyCount();
-        if(count==0)
-            return null;
-
-        int columns = 3;
-        String[][] values = new String[count][columns];
-
-        for(int i=0; i<count; i++) {
-            SoapObject dtRegister = (SoapObject)documentElement.getProperty(i);
-            for(int j=0; j<columns; j++)
-                values[i][j] = dtRegister.getPropertyAsString(j);
-        }
-
-        return values;
+        return parseGenericMatrixSoapObject(result, 3);
     }
 
     public String[][] getStats(Map parameters)
@@ -462,26 +344,7 @@ public class WsDogUtils {
      * </code></p>
      */
     public String[][] parseGetTipsByIdUsuario(SoapObject result) {
-        if (result == null)
-            return null;
-
-        SoapObject root = (SoapObject)result.getProperty(0);
-        SoapObject diffgram = (SoapObject)root.getProperty(1);
-        SoapObject newDataSet = (SoapObject)diffgram.getProperty(0);
-        int count = newDataSet.getPropertyCount();
-        if(count==0)
-            return null;
-
-        int columns = 2;
-        String[][] values = new String[count][columns];
-
-        for(int i=0; i<count; i++) {
-            SoapObject table = (SoapObject)newDataSet.getProperty(i);
-            for(int j=0; j<columns; j++)
-                values[i][j] = table.getPropertyAsString(j);
-        }
-
-        return values;
+        return parseGenericMatrixSoapObject(result, 2);
     }
 
     public String[][] getTipsByIdUsuario(Map parameters)
@@ -510,26 +373,7 @@ public class WsDogUtils {
      * otherwise return <code>String</code> matrix with elements parsed.
      */
     public String[][] parseGetTrainingSpot(SoapObject result) {
-        if (result == null)
-            return null;
-
-        SoapObject root = (SoapObject)result.getProperty(0);
-        SoapObject diffgram = (SoapObject)root.getProperty(1);
-        SoapObject newDataSet = (SoapObject)diffgram.getProperty(0);
-        int count = newDataSet.getPropertyCount();
-        if(count==0)
-            return null;
-
-        int columns = 11;
-        String[][] values = new String[count][columns];
-
-        for(int i=0; i<count; i++) {
-            SoapObject table = (SoapObject)newDataSet.getProperty(i);
-            for(int j=0; j<columns; j++)
-                values[i][j] = table.getPropertyAsString(j);
-        }
-
-        return values;
+        return parseGenericMatrixSoapObject(result, 11);
     }
 
     public String[][] getTrainingSpot(Map parameters)
@@ -609,26 +453,7 @@ public class WsDogUtils {
      * </code></p>
      */
     public String[][] parseInsertIphoneID(SoapObject result) {
-        if (result == null)
-            return null;
-
-        SoapObject root = (SoapObject)result.getProperty(0);
-        SoapObject diffgram = (SoapObject)root.getProperty(1);
-        SoapObject documentElement = (SoapObject)diffgram.getProperty(0);
-        int count = documentElement.getPropertyCount();
-        if(count==0)
-            return null;
-
-        int columns = 1;
-        String[][] values = new String[count][columns];
-
-        for(int i=0; i<count; i++) {
-            SoapObject dtRegister = (SoapObject)documentElement.getProperty(i);
-            for(int j=0; j<columns; j++)
-                values[i][j] = dtRegister.getPropertyAsString(j);
-        }
-
-        return values;
+        return parseGenericMatrixSoapObject(result, 1);
     }
 
     public String[][] insertIphoneID(Map parameters)
@@ -665,26 +490,7 @@ public class WsDogUtils {
      * </code></p>
      */
     public String[][] parseInsertRating(SoapObject result) {
-        if (result == null)
-            return null;
-
-        SoapObject root = (SoapObject)result.getProperty(0);
-        SoapObject diffgram = (SoapObject)root.getProperty(1);
-        SoapObject documentElement = (SoapObject)diffgram.getProperty(0);
-        int count = documentElement.getPropertyCount();
-        if(count==0)
-            return null;
-
-        int columns = 1;
-        String[][] values = new String[count][columns];
-
-        for(int i=0; i<count; i++) {
-            SoapObject dtRegister = (SoapObject)documentElement.getProperty(i);
-            for(int j=0; j<columns; j++)
-                values[i][j] = dtRegister.getPropertyAsString(j);
-        }
-
-        return values;
+        return parseGenericMatrixSoapObject(result, 1);
     }
 
     public String[][] insertRating(Map parameters)
@@ -722,26 +528,7 @@ public class WsDogUtils {
      * </code></p>
      */
     public String[][] parseInsertRoute(SoapObject result) {
-        if (result == null)
-            return null;
-
-        SoapObject root = (SoapObject)result.getProperty(0);
-        SoapObject diffgram = (SoapObject)root.getProperty(1);
-        SoapObject documentElement = (SoapObject)diffgram.getProperty(0);
-        int count = documentElement.getPropertyCount();
-        if(count==0)
-            return null;
-
-        int columns = 1;
-        String[][] values = new String[count][columns];
-
-        for(int i=0; i<count; i++) {
-            SoapObject dtRegister = (SoapObject)documentElement.getProperty(i);
-            for(int j=0; j<columns; j++)
-                values[i][j] = dtRegister.getPropertyAsString(j);
-        }
-
-        return values;
+        return parseGenericMatrixSoapObject(result, 1);
     }
 
     public String[][] insertRoute(Map parameters)
@@ -786,26 +573,7 @@ public class WsDogUtils {
      * </code></p>
      */
     public String[][] parseInsertUserIphone(SoapObject result) {
-        if (result == null)
-            return null;
-
-        SoapObject root = (SoapObject)result.getProperty(0);
-        SoapObject diffgram = (SoapObject)root.getProperty(1);
-        SoapObject documentElement = (SoapObject)diffgram.getProperty(0);
-        int count = documentElement.getPropertyCount();
-        if(count==0)
-            return null;
-
-        int columns = 1;
-        String[][] values = new String[count][columns];
-
-        for(int i=0; i<count; i++) {
-            SoapObject dtRegister = (SoapObject)documentElement.getProperty(i);
-            for(int j=0; j<columns; j++)
-                values[i][j] = dtRegister.getPropertyAsString(j);
-        }
-
-        return values;
+        return parseGenericMatrixSoapObject(result, 1);
     }
 
     public String[][] insertUserIphone(Map parameters)
@@ -845,18 +613,7 @@ public class WsDogUtils {
      * </code></p>
      */
     public Integer parseInsertUsers(SoapObject result) {
-        if (result == null)
-            return null;
-
-        SoapObject root = (SoapObject)result.getProperty(0);
-        SoapObject diffgram = (SoapObject)root.getProperty(1);
-        SoapObject documentElement = (SoapObject)diffgram.getProperty(0);
-        int count = documentElement.getPropertyCount();
-        if(count==0)
-            return null;
-
-        SoapObject dtRegister = (SoapObject)documentElement.getProperty(0);
-        return Integer.parseInt(dtRegister.getPropertyAsString(0));
+        return parseGenericReturnSoapObject(result);
     }
 
     public Integer insertUsers(String username, String password, boolean isFacebook)
@@ -895,18 +652,7 @@ public class WsDogUtils {
      * </code></p>
      */
     public Integer parseUserLogin(SoapObject result) {
-        if (result == null)
-            return null;
-
-        SoapObject root = (SoapObject)result.getProperty(0);
-        SoapObject diffgram = (SoapObject)root.getProperty(1);
-        SoapObject documentElement = (SoapObject)diffgram.getProperty(0);
-        int count = documentElement.getPropertyCount();
-        if(count==0)
-            return null;
-
-        SoapObject dtRegister = (SoapObject)documentElement.getProperty(0);
-        return Integer.parseInt(dtRegister.getPropertyAsString(0));
+        return parseGenericReturnSoapObject(result);
     }
 
     public Integer userLogin(String username, String password)
@@ -944,26 +690,7 @@ public class WsDogUtils {
      * </code></p>
      */
     public String[][] parseUserRecoveryPWD(SoapObject result) {
-        if (result == null)
-            return null;
-
-        SoapObject root = (SoapObject)result.getProperty(0);
-        SoapObject diffgram = (SoapObject)root.getProperty(1);
-        SoapObject documentElement = (SoapObject)diffgram.getProperty(0);
-        int count = documentElement.getPropertyCount();
-        if(count==0)
-            return null;
-
-        int columns = 1;
-        String[][] values = new String[count][columns];
-
-        for(int i=0; i<count; i++) {
-            SoapObject dtRegister = (SoapObject)documentElement.getProperty(i);
-            for(int j=0; j<columns; j++)
-                values[i][j] = dtRegister.getPropertyAsString(j);
-        }
-
-        return values;
+        return parseGenericMatrixSoapObject(result, 1);
     }
 
     public String[][] userRecoveryPWD(Map parameters)
@@ -994,5 +721,24 @@ public class WsDogUtils {
         SoapObject dataSet = (SoapObject)diffgram.getProperty(0);
         SoapObject table = (SoapObject)dataSet.getProperty(0);
         return Integer.valueOf(table.getPropertyAsString(0));
+    }
+
+    public String[][] parseGenericMatrixSoapObject(SoapObject result, int columns) {
+        if (result == null)
+            return null;
+
+        SoapObject root = (SoapObject)result.getProperty(0);
+        SoapObject diffgram = (SoapObject)root.getProperty(1);
+        SoapObject dataSet = (SoapObject)diffgram.getProperty(0);
+        int count = dataSet.getPropertyCount();
+        String[][] values = new String[count][columns];
+
+        for(int i=0; i<count; i++) {
+            SoapObject table = (SoapObject)dataSet.getProperty(i);
+	    for(int j=0; j<columns; j++)
+		values[i][j] = table.getPropertyAsString(j);
+        }
+
+        return values;
     }
 }

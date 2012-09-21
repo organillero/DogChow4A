@@ -1,114 +1,177 @@
 package mx.ferreyra.dogapp;
 
+import java.io.ByteArrayInputStream;
+import java.io.InputStream;
+import java.text.SimpleDateFormat;
 import java.util.Map;
 
+import mx.ferreyra.dogapp.pojos.DogProfilePojo;
+import mx.ferreyra.dogapp.recursos.Recursos;
 import mx.ferreyra.dogapp.ui.UI;
 import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.util.Base64;
 import android.widget.ImageView;
 import android.widget.TextView;
 
 public class DogProfile extends Activity {
 
-	private Context context;
+    private Context context;
 
-	private TextView dogBreed;
-	private TextView dogGender;
-	private TextView dogLifeStyle;
-	private TextView dogBirthDay;
-	private TextView dogTip;
-	
-	private ImageView dogImage;
+    private TextView dogBreed;
+    private TextView dogGender;
+    private TextView dogLifeStyle;
+    private TextView dogBirthDay;
+    private TextView dogTip;
 
+    private ImageView dogImage;
 
-	@Override
-	protected void onCreate(Bundle savedInstanceState) {
-		super.onCreate(savedInstanceState);
-		context = this;
-		if(DogUtil.getInstance().getCurrentUserId()==null) {
-			startActivityForResult(new Intent(this, PreSignup.class), DogUtil.DOG_PROFILE);
-		}
+    private DogProfilePojo dogProfilePojo;
 
-		setContentView(R.layout.profile_dog);
-		
-		dogBreed = (TextView) findViewById(R.id.tvBreed);
-		dogGender = (TextView) findViewById(R.id.tvGender);
-		dogLifeStyle = (TextView) findViewById(R.id.tvLyfeStyle);
-		dogBirthDay = (TextView) findViewById(R.id.tvDate);
-		dogBirthDay = (TextView) findViewById(R.id.tvDate);
-		dogTip = (TextView) findViewById(R.id.tvDate);
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        context = this;
+        if (DogUtil.getInstance().getCurrentUserId() == null) {
+            startActivityForResult(new Intent(this, PreSignup.class),
+                    DogUtil.DOG_PROFILE);
+        }
 
+        setContentView(R.layout.profile_dog);
 
+        dogBreed = (TextView) findViewById(R.id.tvBreed);
+        dogGender = (TextView) findViewById(R.id.tvGender);
+        dogLifeStyle = (TextView) findViewById(R.id.tvLyfeStyle);
+        dogBirthDay = (TextView) findViewById(R.id.tvDate);
+        dogTip = (TextView) findViewById(R.id.tvTip);
 
-	}
+        dogImage = (ImageView) findViewById(R.id.imageView1);
+        
+        DogProfileAsync async =  new DogProfileAsync (context);
+        async.execute();
 
+    }
 
-	protected class DogRegisterAsync extends AsyncTask<Void, Integer, String[][]> {
-		private Context context;
-		private ProgressDialog dialog;
-		private Map<String, String> map;
+    protected class DogProfileAsync extends
+    AsyncTask<Void, Integer, DogProfilePojo> {
+        private final Context context;
+        private ProgressDialog dialog;
+        private Map<String, String> map;
 
-		public DogRegisterAsync(Context context) {
-			this.context = context;
-		}
+        public DogProfileAsync(Context context) {
+            this.context = context;
+        }
 
-		/*
-		public void setMap (Map<String, String> map ){
-			this.map = map;
-			return;
-		}*/
+        /*
+         * public void setMap (Map<String, String> map ){ this.map = map;
+         * return; }
+         */
 
-		@Override
-		protected void onPreExecute() {
-			super.onPreExecute();
-			dialog = new ProgressDialog(context);
-			dialog.setMessage("Espere un moemento de favor");
-			dialog.show();
-		}
+        @Override
+        protected void onPreExecute() {
+            super.onPreExecute();
+            dialog = new ProgressDialog(context);
+            dialog.setMessage("Espere un momento de favor");
+            dialog.show();
+        }
 
-		@Override
-		protected String[][] doInBackground(Void... params) {
-			WsDogUtils wsDogUtils = new WsDogUtils(context);
-			try {
-				Integer userid = DogUtil.getInstance().getCurrentUserId() ;
+        @Override
+        protected DogProfilePojo doInBackground(Void... params) {
+            WsDogUtils wsDogUtils = new WsDogUtils(context);
+            try {
+                Integer userid = DogUtil.getInstance().getCurrentUserId();
 
-				String[][]ans =  wsDogUtils.getDuenosMascotasByIdUsuario( userid  );
-				return ans;
-			} catch (Exception e) {
-				return null;
-			}
-		}
+                String[][] result = wsDogUtils.getDuenosMascotasByIdUsuario(userid);
 
-		@Override
-		protected void onPostExecute(String[][] result) {
-			super.onPostExecute(result);
-			dialog.dismiss();
+                SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
 
-		}
-	}
+                dogProfilePojo = new DogProfilePojo();
 
 
+                dogProfilePojo.idDueno = Integer.valueOf(result[0][0]);
+                dogProfilePojo.idUsusario = Integer.valueOf(result[0][1]);
+                dogProfilePojo.duenoNombre = result[0][2];
+                dogProfilePojo.duenoIdGenero = Integer.valueOf(result[0][3]);
+                dogProfilePojo.duenoFechaCumpleanos = sdf.parse(result[0][4]);
+                dogProfilePojo.duenoIdEstado = Integer.valueOf(result[0][5]);
 
-	@Override
-	protected void onActivityResult(int requestCode, int resultCode, Intent intent) {
-		super.onActivityResult(requestCode, resultCode, intent);
+                dogProfilePojo.mascotaNombre = result[0][6];
+                dogProfilePojo.mascotaRaza = result[0][7];
+                dogProfilePojo.mascotaIdGenero = Integer.valueOf(result[0][8]);
+                dogProfilePojo.mascotaIdTipoVida = Integer.valueOf(result[0][9]);
+                dogProfilePojo.mascotaIdActividadFisica = Integer.valueOf(result[0][10]);
+                dogProfilePojo.mascotaFechaCumpleanos = sdf.parse(result[0][11]);
+                byte[] bytes = Base64.decode(result[0][12], Base64.DEFAULT);
+                InputStream is = new ByteArrayInputStream(bytes);
+                Bitmap bmp = BitmapFactory.decodeStream(is);
 
-		if (resultCode == Activity.RESULT_OK && intent != null){
-			if ( requestCode == DogUtil.NEW_ROUTE){
+                dogProfilePojo.mascotaImagen = bmp;
+                
+                dogProfilePojo.tip = result[0][16];
+                
+                return dogProfilePojo;
+            } catch (Exception e) {
+                return null;
+            }
+        }
 
-				Bundle extras = intent.getExtras();
-				Integer idPet = (Integer) extras.get("ID_PET");
+        @Override
+        protected void onPostExecute(DogProfilePojo result) {
+            super.onPostExecute(result);
 
-				if (idPet<0){
-					UI.showAlertDialog("Upss!!", "Ocurrio un error al registro al perro", "OK", context, null);
+            SimpleDateFormat formater = new SimpleDateFormat("MMM dd, yyyy");
 
-				}
-			}
-		}
+            if (result != null){
+                dogBreed.setText(result.mascotaRaza);
+                dogGender.setText(Recursos.GENDER[result.mascotaIdGenero-1]);
+                dogLifeStyle.setText(Recursos.LIFE_STYLE[result.mascotaIdTipoVida-1]);
+                dogBirthDay.setText(formater.format(result.mascotaFechaCumpleanos));
+                dogTip.setText(result.tip);
+                dogImage.setImageBitmap(result.mascotaImagen);
+            } 
 
-	}
+
+
+
+            // String breed = result[0][7];
+            // String gender = result[0][3];
+            // String lifestyle = result[0][0];
+            // String birthday = result[0][0];
+            // String tip = result[0][0];
+            // String image = result[0][0];
+            //
+            //
+            //
+            dialog.dismiss();
+
+        }
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode,
+            Intent intent) {
+        super.onActivityResult(requestCode, resultCode, intent);
+
+        if (resultCode == Activity.RESULT_OK && intent != null) {
+            if (requestCode == DogUtil.NEW_ROUTE) {
+
+                Bundle extras = intent.getExtras();
+                Integer idPet = (Integer) extras.get("ID_PET");
+
+                if (idPet < 0) {
+                    UI.showAlertDialog("Upss!!",
+                            "Ocurrio un error al registro al perro", "OK",
+                            context, null);
+
+                }
+            }
+        }
+
+    }
 }

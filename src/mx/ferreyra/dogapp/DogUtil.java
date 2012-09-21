@@ -29,6 +29,11 @@ public class DogUtil extends Application {
     private Integer currentUserId;
 
     /**
+     * Id for dog registered.
+     */
+    private Integer currentDogId;
+
+    /**
      * Singleton reference for application object.
      */
     private static DogUtil app;
@@ -167,5 +172,35 @@ public class DogUtil extends Application {
 
         // Reload value
         this.currentUserId = userId;
+    }
+
+    public Integer getCurrentDogId() {
+        return this.currentDogId;
+    }
+
+    public void loadCurrentDogId() {
+        SharedPreferences pref = getSharedPreferences(getString(R.string.preferences_name), 0);
+        int possible = pref.getInt(getString(R.string.preference_dog_id), -1);
+        this.currentDogId = possible>=0 ? possible : null;
+    }
+
+    public void saveCurrentDogId(Integer dogId) {
+        SharedPreferences pref = getSharedPreferences(getString(R.string.preferences_name), 0);
+        Editor e = pref.edit();
+        if(dogId == null || dogId < 0) {
+            // Store dog id on preferences
+            e.remove(getString(R.string.preference_dog_id));
+            e.commit();
+
+            // Reload value
+            this.currentDogId = null;
+        } else {
+            // Store dog id on preferences
+            e.putInt(getString(R.string.preference_dog_id), dogId);
+            e.commit();
+
+            // Reload value
+            this.currentDogId = dogId;
+        }
     }
 }

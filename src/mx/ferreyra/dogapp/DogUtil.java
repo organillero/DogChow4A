@@ -73,6 +73,7 @@ public class DogUtil extends Application {
 
         // Loading preferences
         loadCurrentUserId();
+	loadCurrentDogId();
 
         initFacebook();
         if(gTracker == null){

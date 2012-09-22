@@ -231,6 +231,8 @@
     <string name="title_message">DogChow</string>
     <string name="yes_message">Si</string>
     <string name="no_message">No</string>
+    <string name="ok_message">Ok</string>
+    <string name="accept_message">Aceptar</string>
 
     <!-- LoginScreen -->
     <string name="email_empty_message">Ingrese su correo electr\u00f3nico</string>

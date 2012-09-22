@@ -24,4 +24,17 @@ public class DialogHelper {
         alert.setIcon(R.drawable.icon);
         alert.show();
     }
+
+    public static void showOkDialog(Context context,
+                                    String message,
+                                    DialogInterface.OnClickListener okListener) {
+        AlertDialog alert = new AlertDialog.Builder(context)
+            .setMessage(message)
+            .setCancelable(false)
+            .setNeutralButton(R.string.ok_message, okListener)
+            .create();
+        alert.setTitle(R.string.title_message);
+        alert.setIcon(R.drawable.icon);
+        alert.show();
+    }
 }

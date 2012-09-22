@@ -227,4 +227,9 @@
     <string name="preference_user_id">userid_new</string>
     <string name="preference_dog_id">dogid</string>
 
+    <!-- DialogHelper -->
+    <string name="title_message">DogChow</string>
+    <string name="yes_message">Si</string>
+    <string name="no_message">No</string>
+
 </resources>

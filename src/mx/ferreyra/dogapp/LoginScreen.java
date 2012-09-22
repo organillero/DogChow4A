@@ -16,6 +16,7 @@ import mx.ferreyra.dogapp.org.ksoap2.serialization.SoapObject;
 import mx.ferreyra.dogapp.org.ksoap2.serialization.SoapSerializationEnvelope;
 import mx.ferreyra.dogapp.org.ksoap2.transport.HttpTransportSE;
 import static mx.ferreyra.dogapp.ui.UI.*;
+import static mx.ferreyra.dogapp.ui.DialogHelper.*;
 
 import org.xml.sax.Attributes;
 import org.xml.sax.InputSource;
@@ -119,14 +120,14 @@ public class LoginScreen extends Activity{
         // Email validation
         if("".equals(userEmail.trim())) {
             // Email is empty
-            showToast(getString(R.string.email_empty_message), this);
+            showOkDialog(this, getString(R.string.email_empty_message), null);
             return false;
         }
 
         // Password validation
         if("".equals(userPassword.trim())) {
             // Password is empty
-            showToast(getString(R.string.password_empty_message), this);
+            showOkDialog(this, getString(R.string.password_empty_message), null);
             return false;
         }
 

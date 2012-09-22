@@ -43,7 +43,7 @@ import com.google.android.apps.analytics.GoogleAnalyticsTracker;
 /*
  * Draws route directions but obtain location information
  */
-public class ExerciseMenu extends Activity{
+public class ExerciseMenu extends Activity {
 
     public String mapurl;
     public String actualkm;
@@ -57,9 +57,13 @@ public class ExerciseMenu extends Activity{
     private DogUtil app;
 
     //get gps strength in android
-    LocationManager locMgr;
+    //LocationManager locMgr;
     private Context context;
 
+    private Facebook facebook;
+    private boolean isNLP = false;
+    private ProgressBar titleBar;
+    private Handler handler = new Handler();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -71,34 +75,31 @@ public class ExerciseMenu extends Activity{
         setContentView(R.layout.exercisemenu);
         getWindow().setFeatureInt(Window.FEATURE_CUSTOM_TITLE, R.layout.title_bar);
         app = DogUtil.getInstance();
+
+        // Header bar
         titleBar = (ProgressBar)findViewById(R.id.progress_title);
         titleBar.setVisibility(View.INVISIBLE);
 
         title_right= (Button)findViewById(R.id.tbutton_right);
-
         title_right.setText(getResources().getString(R.string.logout));
         title_right.setTextColor(Color.WHITE);
-        title_right.setBackgroundResource(R.drawable.custom_button);	
+        title_right.setBackgroundResource(R.drawable.custom_button);
         title_right.setVisibility(View.VISIBLE);
-
         title_right.setTextSize(12);
-        progress_title = (ProgressBar)findViewById(R.id.progress_title);
-        analyticsTracker = ((DogUtil)getApplication()).getTracker();
-        title_txt = (TextView)findViewById(R.id.title_txt);
-
-
         title_right.setOnClickListener(new OnClickListener() {
-
             @Override
             public void onClick(View v) {
                 if (DogUtil.getInstance().getCurrentUserId() != null){
-
                     DogUtil.getInstance().deleteCurrentUserId();
                     UI.showAlertDialog(null, "Se ha cerrado se la sesi\u00f3n actual.", "OK", context, null);
                 }
             }
         });
 
+        progress_title = (ProgressBar)findViewById(R.id.progress_title);
+        analyticsTracker = ((DogUtil)getApplication()).getTracker();
+
+        title_txt = (TextView)findViewById(R.id.title_txt);
         title_txt.setText(getString(R.string.exercise_title));
     }
 
@@ -111,15 +112,46 @@ public class ExerciseMenu extends Activity{
     }
 
     @Override
+    protected void onStop() {
+        super.onStop();
+
+        if(analyticsTracker != null)
+            analyticsTracker.stopSession();
+    }
+
+    @Override
     protected void onPause() {
         super.onPause();
         if(analyticsTracker != null)
             analyticsTracker.dispatch();
     }
 
-    private Facebook facebook;
-    public void logoutFb(){
-        if(facebook.isSessionValid()){			
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent intent) {
+        super.onActivityResult(requestCode, resultCode, intent);
+
+        if (resultCode == Activity.RESULT_OK && intent != null) {
+            if (requestCode == DogUtil.NEW_ROUTE) {
+                Bundle extras = intent.getExtras();
+                Integer idUser = (Integer) extras.get("ID_USER");
+
+                if(idUser>0) {
+                    Intent i = new Intent(this, Starting.class);
+                    i.putExtra("loadroute", 2);
+                    startActivity(i);
+                }
+            } else if(requestCode == DogUtil.LOAD_ROUTE) {
+                Intent i = new Intent(this, Starting.class);
+                i.putExtra("loadroute", 1);
+                startActivity(i);
+            } else if (requestCode == DogUtil.DOGWELFARE) {
+                startActivity(new Intent(this, DogProfile.class));
+            }
+        }
+    }
+
+    public void logoutFb() {
+        if(facebook.isSessionValid()){
             AsyncFacebookRunner asyncFacebookRunner = new AsyncFacebookRunner(facebook);
             asyncFacebookRunner.logout(getApplicationContext(), new RequestListener() {
 
@@ -161,13 +193,13 @@ public class ExerciseMenu extends Activity{
 
                                 SharedPreferences pref = getSharedPreferences(Utilities.DOGCHOW, 0);
                                 SharedPreferences.Editor edit = pref.edit();
-                                edit.putString(Utilities.USER_ID,""); 
+                                edit.putString(Utilities.USER_ID,"");
                                 edit.commit();
 
-                                i =new Intent(ExerciseMenu.this,MainActivity.class); 
+                                i =new Intent(ExerciseMenu.this,MainActivity.class);
                                 i.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                                 i.addFlags(Intent.FLAG_ACTIVITY_NO_HISTORY);
-                                i.setFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);				
+                                i.setFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);
                                 startActivity(i);
                                 finish();
 
@@ -176,17 +208,18 @@ public class ExerciseMenu extends Activity{
                     }else
                         try {
                             JSONObject myjson = new JSONObject(response);
-                            final String errorMessage = myjson.getString("error_msg");								
+                            final String errorMessage = myjson.getString("error_msg");
+
                             handler.post(new Runnable() {
                                 @Override
                                 public void run() {
                                     if(errorMessage != null )
-                                        Toast.makeText(getApplicationContext(),  getString(R.string.fb_user_logout_failure), Toast.LENGTH_SHORT).show();
+                                        Toast.makeText(getApplicationContext(),
+                                                       getString(R.string.fb_user_logout_failure),
+                                                       Toast.LENGTH_SHORT).show();
                                     finish();
                                 }
                             });
-
-
                         } catch (JSONException e) {
                             setTitleInvisible();
                             e.printStackTrace();
@@ -194,48 +227,38 @@ public class ExerciseMenu extends Activity{
                             setTitleInvisible();
                             e.printStackTrace();
                         }
-
                 }
             });
-
         }else{
             SessionStore.clear(getApplicationContext());
             setTitleInvisible();
         }
     }
 
-    private boolean isNLP = false;
-
-    /*
-     * Check Wi-Fi and GPS connection exist to show map
+    /**
+     * Check if Wi-Fi or GPS connection exist.
      */
     private boolean isRouteShown(){
         boolean connection = false;
-        String provider =Settings.Secure.getString(getContentResolver(),Settings.Secure.LOCATION_PROVIDERS_ALLOWED);
+        String provider = Settings.Secure.getString(getContentResolver(),Settings.Secure.LOCATION_PROVIDERS_ALLOWED);
 
-        if(!provider.contains("gps")){ //if gps is disabled			
-            isNLP = true;
-            connection = false;
-            return connection;
+        if(!provider.contains("gps")) {
+            // GPS is disabled
+            this.isNLP = true;
+            return false;
         }
 
+        ConnectivityManager conMan = (ConnectivityManager)getSystemService(Context.CONNECTIVITY_SERVICE);
 
-        ConnectivityManager conMan = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
-
-        //mobile
+        // Mobile and Wifi status
         State mobile = conMan.getNetworkInfo(ConnectivityManager.TYPE_MOBILE).getState();
-
-        //wifi
         State wifi = conMan.getNetworkInfo(ConnectivityManager.TYPE_WIFI).getState();
 
-
-        if (mobile == NetworkInfo.State.CONNECTED || mobile == NetworkInfo.State.CONNECTING) {
-            //mobile
+        if (mobile == NetworkInfo.State.CONNECTED ||
+            mobile == NetworkInfo.State.CONNECTING ||
+            wifi == NetworkInfo.State.CONNECTED ||
+            wifi == NetworkInfo.State.CONNECTING)
             connection = true;
-        } else if (wifi == NetworkInfo.State.CONNECTED || wifi == NetworkInfo.State.CONNECTING) {
-            //wifi
-            connection = true;
-        }
 
         if(!connection)
             return isNLP = connection;
@@ -280,11 +303,9 @@ public class ExerciseMenu extends Activity{
         alert.setIcon(R.drawable.icon);
         alert.show();
     }
-    private ProgressBar titleBar;
-    Handler handler = new Handler();
+
     public void setTitleInvisible(){
         handler.post(new Runnable() {
-
             @Override
             public void run() {
                 titleBar.setVisibility(View.INVISIBLE);
@@ -292,21 +313,11 @@ public class ExerciseMenu extends Activity{
         });
     }
 
-
-    @Override
-    protected void onStop() {
-        super.onStop();
-
-        if(analyticsTracker != null)
-            analyticsTracker.stopSession();
-    }
-
     @SuppressWarnings("unused")
     private void clearCredentials() {
         try {
             if(facebookConnector != null)
                 facebookConnector.getFacebook().logout(getApplicationContext());
-
         } catch (MalformedURLException e) {
             e.printStackTrace();
         } catch (IOException e) {
@@ -335,20 +346,18 @@ public class ExerciseMenu extends Activity{
 
             DogUtil.TRACKER_VALUE++;
 
-            //if(app.getCurrentUserId()==null) {
-            //startActivityForResult(new Intent(this, PreSignup.class), DogUtil.NEW_ROUTE);
-            //} else {
             Intent i = new Intent(this, Starting.class);
             i.putExtra("loadroute", 2);
             startActivity(i);
-            //}
         }
     }
 
     public void onClickLoadRouteButton(View v) {
         if(app.getCurrentUserId()==null) {
+            // User not logged
             startActivityForResult(new Intent(this, PreSignup.class), DogUtil.LOAD_ROUTE);
         } else {
+            // User logged
             Intent i = new Intent(this, Starting.class);
             i.putExtra("loadroute", 1);
             startActivity(i);
@@ -380,13 +389,7 @@ public class ExerciseMenu extends Activity{
             startActivityForResult(new Intent(this, PreSignup.class), DogUtil.DOGWELFARE);
         } else {
             // User logged
-            // if(app.getCurrentDogId()==null) {
-            // Show dog registration form
-            //    startActivity(new Intent(this, DogRegister.class));
-            //} else {
-            // Show dog profile
             startActivity(new Intent(this, DogProfile.class));
-            //}
         }
     }
 
@@ -435,38 +438,4 @@ public class ExerciseMenu extends Activity{
             }
         });
     }
-
-
-    @Override
-    protected void onActivityResult(int requestCode, int resultCode, Intent intent) {
-        super.onActivityResult(requestCode, resultCode, intent);
-
-        if (resultCode == Activity.RESULT_OK && intent != null){
-
-            if ( requestCode == DogUtil.NEW_ROUTE){
-
-                Bundle extras = intent.getExtras();
-                Integer idUser = (Integer) extras.get("ID_USER");
-
-                if (idUser>0){
-                    Intent i = new Intent(this, Starting.class);
-                    i.putExtra("loadroute", 2);
-                    startActivity(i);
-                }
-
-
-
-            }
-            else if (requestCode == DogUtil.LOAD_ROUTE){
-                Intent i = new Intent(this, Starting.class);
-                i.putExtra("loadroute", 1);
-                startActivity(i);
-            }
-            else if (requestCode == DogUtil.DOGWELFARE){
-                startActivity(new Intent(this, DogProfile.class));
-            }
-
-        }
-    }
-
 }

@@ -127,7 +127,7 @@
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:layout_alignParentTop="true"
-        android:apiKey="0-mA0c7VK7NcZ7tDxhMhdq6jX_k4_Oy3Y8R7CFQ"
+        android:apiKey="0ggmsULpx5gWnKdIEw2m1AmGVAPURVYY-LhPUYw"
         android:clickable="true" />
 
     <Button

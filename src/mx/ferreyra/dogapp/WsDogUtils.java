@@ -19,7 +19,8 @@ import android.content.Context;
 public class WsDogUtils {
 
     public Context context;
-    private String url = "http://marketing7veinte.net/dc_app_perroton/appWSDog/wsDog.asmx?WSDL";
+    //private String url = "http://marketing7veinte.net/dc_app_perroton/appWSDog/wsDog.asmx?WSDL";
+    private String url = "http://www.perroton-dogchow.com.mx/appWSDog/wsDog.asmx?WSDL";
     private String namespace = "http://tempuri.org/";
 
     public WsDogUtils(Context context) {

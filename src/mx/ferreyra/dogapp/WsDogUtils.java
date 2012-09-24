@@ -599,6 +599,11 @@ public class WsDogUtils {
 
         SoapObject root = (SoapObject)result.getProperty(0);
         SoapObject diffgram = (SoapObject)root.getProperty(1);
+	if(diffgram.getPropertyCount()==0) {
+	    // No data returned
+	    return null;
+	}
+
         SoapObject dataSet = (SoapObject)diffgram.getProperty(0);
         int count = dataSet.getPropertyCount();
         String[][] values = new String[count][columns];

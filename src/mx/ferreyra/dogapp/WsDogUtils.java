@@ -240,7 +240,7 @@ public class WsDogUtils {
     public String[][] getDuenosMascotasByIdUsuario(Integer userId)
         throws IOException, XmlPullParserException {
         SoapObject request = new SoapObject(namespace, GET_DUENOS_MASCOTAS_BY_ID_USUARIO);
-        request.addProperty("userId", userId);
+        request.addProperty("idUsuario", userId);
         SoapObject result = (SoapObject)genericRequest(GET_DUENOS_MASCOTAS_BY_ID_USUARIO,
                                                        namespace + GET_DUENOS_MASCOTAS_BY_ID_USUARIO,
                                                        request);

@@ -3,10 +3,10 @@
 
     <string name="hello">Hello World, DogAppActivity!</string>
     <string name="app_name">DogChowMX</string>
-    <string name="dogchow">Entrenador DOG CHOW®</string>
+    <string name="dogchow">Entrenador DOG CHOW\u00AE</string>
     <string name="login">Test Login</string>
     <string name="post">Test UI Server</string>
-    <string name="alert_dialog_photo_message">Choose picture for send </string>
+    <string name="alert_dialog_photo_message">Choose picture for send</string>
     <string name="resume">Resume</string>
     <string name="stop">Stop</string>
     <string name="reset">Reset</string>
@@ -16,12 +16,12 @@
     <string name="reset_due_to_shake">Resetting due to shake.</string>
     <string name="enter_name">Ingrese nombre</string>
     <string name="email">Correo</string>
-    <string name="password">Contraseña</string>
+    <string name="password">Contrase\u00f1a</string>
     <string name="submit">Ingresar</string>
-    <string name="confirm_password">Confirmar contraseña</string>
-    <string name="login_success">Inicio de sesión con éxito</string>
+    <string name="confirm_password">Confirmar contrase\u00f1a</string>
+    <string name="login_success">Inicio de sesi\u00f3n con \u00e9xito</string>
     <string name="logout_unsuccess">Salir no es correcta</string>
-    <string name="ratings_text">¿Qué nivel de dificultad tiene esta ruta?</string>
+    <string name="ratings_text">\u00bfQu\u00e9 nivel de dificultad tiene esta ruta?</string>
     <string name="ratings_title">Califica la ruta</string>
     <string name="save_map">Guardar</string>
     <string name="resume_map">Continuar</string>
@@ -29,49 +29,49 @@
     <string name="share_msg">Dog Race, Successfully path shared</string> <!-- To be done -->
     <string name="share_msg_discard">Dog Race, Do you want to discard last training spot?</string> <!-- To be done -->
     <string name="title_stat">ESTADISTICAS</string>
-    <string name="retrieve_pwd_title">¿Olvidaste tu contraseña</string>
+    <string name="retrieve_pwd_title">\u00bfOlvidaste tu contrase\u00f1a</string>
     <string name="retrieve_pwd_desc">No te preocupes, escribe el mail que registraste y te la enviaremos por correo:</string>
     <string name="retrieve_pwd_email_id">Correo</string>
-    <string name="retrieve_pwd_send_successful">Tu contraseña ha sido enviada a tu correo electrónico</string>
-    <string name="retrieve_pwd_send_failure">Lo sentimos, tu correo electrónico no se ha registrado previamente</string>
+    <string name="retrieve_pwd_send_successful">Tu contrase\u00f1a ha sido enviada a tu correo electr\u00f3nico</string>
+    <string name="retrieve_pwd_send_failure">Lo sentimos, tu correo electr\u00f3nico no se ha registrado previamente</string>
     <string name="retrieve_pwd_email_mandatory">EMAIL_MANDATORY</string>
     <string name="retrieve_pwd_email_not_correct">EMAIL_INCORRECT</string>
     <string name="exercise_title">ENTRENAMIENTO</string>
-    <string name="fb_posted_successfully">Tu status se publicó exitosamente</string>
-    <string name="fb_not_posted_successfully">No publicado con éxito</string>
+    <string name="fb_posted_successfully">Tu status se public\u00f3 exitosamente</string>
+    <string name="fb_not_posted_successfully">No publicado con \u00e9xito</string>
     <!-- Register -->
-    <string name="invalid_emailid">Invalid Email ID</string> <!-- Dirección Invalida de correo -->
+    <string name="invalid_emailid">Invalid Email ID</string> <!-- Direcci\u00f3n Invalida de correo -->
     <string name="user_exist">Error, User name already exists</string> <!-- Error, nombre de usuario previamente registrado -->
 
 
     <!-- Login -->
     <string name="invalid_email_address">Invalid Email.Please enter a valid email address</string>
-    <string name="invalid_username_pwd">Nombre de usuario o contraseña inválida</string>
+    <string name="invalid_username_pwd">Nombre de usuario o contrase\u00f1a inv\u00e1lida</string>
     <!--
 		Username not exists, Please enter Username or Password, Invalid
 		Username or Password
     -->
     <string name="service_error">No se puede procesar datos</string>
     <string name="enter_username_pwd">Por favor, introduzca nombre de usuario o
-		contraseña</string>
-    <string name="pwd_repwd_notmatch">Las contraseñas no coinciden, intente nuevamente</string>
-    <string name="email_not_valid">Dirección de correo inválida</string>
-    <string name="min_three_chars">La contraseña debe tener un mínimo de 3 caracteres</string>
+		contrase\u00f1a</string>
+    <string name="pwd_repwd_notmatch">Las contrase\u00f1as no coinciden, intente nuevamente</string>
+    <string name="email_not_valid">Direcci\u00f3n de correo inv\u00e1lida</string>
+    <string name="min_three_chars">La contrase\u00f1a debe tener un m\u00ednimo de 3 caracteres</string>
 
     <!-- Login -->
-    <string name="invalid_params">Parámetros no válidos</string> <!-- Invalid parameters -->
-    <string name="posted_successfully">Has compartido la ruta exitósamente a la base de
+    <string name="invalid_params">Par\u00e1metros no v\u00e1lidos</string> <!-- Invalid parameters -->
+    <string name="posted_successfully">Has compartido la ruta exit\u00f3samente a la base de
 		datos</string>
-    <string name="not_posted_successfully">Por favor, inténtelo de nuevo más tarde</string> <!-- Posted Successfully -->
+    <string name="not_posted_successfully">Por favor, int\u00e9ntelo de nuevo m\u00e1s tarde</string> <!-- Posted Successfully -->
 
     <string name="service_unavailable">Servicio no disponible</string> <!-- Invalid parameters -->
     <string name="unable_to_retrieve_data">No se puede recuperar los datos</string> <!-- Invalid parameters -->
-    <string name="unable_to_connect">Conexión rechazada</string>
+    <string name="unable_to_connect">Conexi\u00f3n rechazada</string>
     <string name="unable_to_get_data">Incapaz de obtener datos</string>
-    <string name="no_connection">Compruebe la conexión a Internet</string> <!-- Invalid parameters -->
-    <string name="error_in_save">Error de conexión, vuelva a intentar más tarde</string>
-    <string name="url_malformed">Excepción dirección URL incorrecta, mientras que el
-		envío de</string> <!-- Invalid parameters -->
+    <string name="no_connection">Compruebe la conexi\u00f3n a Internet</string> <!-- Invalid parameters -->
+    <string name="error_in_save">Error de conexi\u00f3n, vuelva a intentar m\u00e1s tarde</string>
+    <string name="url_malformed">Excepci\u00f3n direcci\u00f3n URL incorrecta, mientras que el
+		env\u00edo de</string> <!-- Invalid parameters -->
 
     <string name="network_unreachable">Red inalcanzable</string>
     <string name="map_key">0-mA0c7VK7NcZ7tDxhMhdq6jX_k4_Oy3Y8R7CFQ</string>
@@ -84,48 +84,48 @@
     <string name="route_time">00.00.00</string>
     <string name="route_distance">0.00 km</string>
     <string name="route_speed">0.00 (km/h)</string>
-    <string name="ratings_success">Clasificaciones de éxito</string>
+    <string name="ratings_success">Clasificaciones de \u00e9xito</string>
     <string name="data_inadequate">fecha inadecuado</string>
-    <string name="no_player">No se pudo encontrar el reproductor de música</string>
+    <string name="no_player">No se pudo encontrar el reproductor de m\u00fasica</string>
     <string name="nearby_places">lugares cercanos</string>
     <string name="register">REGISTRO</string>
     <string name="login_title">LOGIN</string>
     <string name="publish">Publicar</string>
     <string name="publish_fb">Publicar en Facebook</string>
     <string name="loading">Cargando</string>
-    <string name="error_occurs">Error de conexión, vuelva a intentar más tarde</string> <!-- Please try again later -->
+    <string name="error_occurs">Error de conexi\u00f3n, vuelva a intentar m\u00e1s tarde</string> <!-- Please try again later -->
 
     <string name="invalid_facebook_id">"ID de Facebook La solicitud debe ser especificado"</string>
     <string name="warning">Advertencia</string>
     <string name="map_not_loaded">No se puede cargar de nuevo Map.Try</string>
-    <string name="invalid_username">Nombre de usuario o contraseña inválida</string>
+    <string name="invalid_username">Nombre de usuario o contrase\u00f1a inv\u00e1lida</string>
     <string name="no_such_user">Nombre de usuario no se encuentra</string>
-    <string name="user_not_exist">Error. Usuario aún no registrado</string>
+    <string name="user_not_exist">Error. Usuario a\u00fan no registrado</string>
     <string name="user_already_exist">Error, nombre de usuario previamente registrado</string>
-    <string name="logout">Cerrar sesión</string>
-    <string name="gps_disabled">GPS está desactivado en el dispositivo. ¿Quieres lo activo?</string>
-    <string name="mobile_newtork_disabled">Red móvil está desactivada en el dispositivo. ¿Quieres lo activo?</string>
-    <string name="invalid_parameters">Los parámetros no válidos</string>
-    <string name="invalid_username_password">Nombre de usuario o contraseña inválida</string>
+    <string name="logout">Cerrar sesi\u00f3n</string>
+    <string name="gps_disabled">GPS est\u00e1 desactivado en el dispositivo. \u00bfQuieres lo activo?</string>
+    <string name="mobile_newtork_disabled">Red m\u00f3vil est\u00e1 desactivada en el dispositivo. \u00bfQuieres lo activo?</string>
+    <string name="invalid_parameters">Los par\u00e1metros no v\u00e1lidos</string>
+    <string name="invalid_username_password">Nombre de usuario o contrase\u00f1a inv\u00e1lida</string>
     <string name="username_not_found">Nombre de usuario no se encuentra</string>
     <string name="login_cancel">Ingresar cancelado!</string>
-    <string name="error_in_dialog">Error en el diálogo!</string>
+    <string name="error_in_dialog">Error en el di\u00e1logo!</string>
     <string name="error_sending_message">Error al enviar el msg</string>
-    <string name="login_fails">Inicio de sesión falla!</string>
-    <string name="logout_start">Inicio de sesión falla!</string>
-    <string name="logout_success">Cerrar sesión con éxito</string>
-    <string name="location_not_determine">No se puede determinar la ubicación</string>
-    <string name="location_not_found">La ubicación no podía ser encontrado</string>
-    <string name="current_position">Su posición actual es</string>
+    <string name="login_fails">Inicio de sesi\u00f3n falla!</string>
+    <string name="logout_start">Inicio de sesi\u00f3n falla!</string>
+    <string name="logout_success">Cerrar sesi\u00f3n con \u00e9xito</string>
+    <string name="location_not_determine">No se puede determinar la ubicaci\u00f3n</string>
+    <string name="location_not_found">La ubicaci\u00f3n no pod\u00eda ser encontrado</string>
+    <string name="current_position">Su posici\u00f3n actual es</string>
     <string name="facebook_updated">Facebook actualiza!</string>
     <string name="gps_away">GPS 0.1 km</string>
     <string name="route">RUTA</string>
     <string name="speed">Velocidad</string>
     <!--  -->
-    <string name="direction_from">FROM: </string>
-    <string name="direction_to">TO: </string>
-    <string name="direction_fare">FARE ESTIMATE: </string>
-    <string name="direction_distance">DISTANCE: </string>
+    <string name="direction_from">FROM:</string>
+    <string name="direction_to">TO:</string>
+    <string name="direction_fare">FARE ESTIMATE:</string>
+    <string name="direction_distance">DISTANCE:</string>
     <!--  -->
     <string name="new_photo">New Photo</string>
     <string name="photos">Photos</string>
@@ -147,10 +147,10 @@
 
     <!--  -->
     <string name="fb_publish">Publicar</string>
-    <string name="fb_logout">Cerrar sesión en Facebook</string>
+    <string name="fb_logout">Cerrar sesi\u00f3n en Facebook</string>
     <string name="fb_error_msg">Error en Facebook</string>
-    <string name="fb_dialog_error_msg">La conexión con el servidor no tuvo éxito</string>
-    <string name="fb_cancel_error_msg">Autenticación con Facebook cancelado!</string>
+    <string name="fb_dialog_error_msg">La conexi\u00f3n con el servidor no tuvo \u00e9xito</string>
+    <string name="fb_cancel_error_msg">Autenticaci\u00f3n con Facebook cancelado!</string>
     <!--  -->
     <string name="q">Q</string>
     <string name="no_details">(No Details)</string>
@@ -167,7 +167,7 @@
 
     <!--  -->
     <string name="route_share_text1">Acabo de correr la Ruta</string>
-    <string name="share_text">¡Tu también corre con tu perro en familia! \nDescarga la aplicación:</string>
+    <string name="share_text">\u00a1Tu tambi\u00e9n corre con tu perro en familia! \nDescarga la aplicaci\u00f3n:</string>
     <string name="route_share_text2">con el</string>
     <string name="share_link">http://bitly.com/newsandroid</string>
     <string name="share_android">Android:</string>
@@ -176,8 +176,8 @@
     <string name="share_iphone_link">http://bitly.com/iphoneDC</string>
 
     <!--  -->
-    <string name="fb_user_logout_success">Salir con éxito en Facebook</string>
-    <string name="fb_user_logout_failure">Usuario cerrará la sesión</string>
+    <string name="fb_user_logout_success">Salir con \u00e9xito en Facebook</string>
+    <string name="fb_user_logout_failure">Usuario cerrar\u00e1 la sesi\u00f3n</string>
     <string name="unable_to_publish">No se ha podido publicar</string>
     <string name="details_are_not_available">No hay detalles disponibles!</string>
 
@@ -186,12 +186,12 @@
     <string name="dog_data_label">Datos Mascota</string>
     <string name="name">Nombre</string>
     <string name="breed">Raza</string>
-    <string name="gender">Género</string>
+    <string name="gender">G\u00e9nero</string>
     <string name="life_Style">Tipo de Vida</string>
-    <string name="activity">Actividad Física</string>
+    <string name="activity">Actividad F\u00edsica</string>
     <string name="birthday_label">Fecha de Nacimiento</string>
     <string name="birthday">Fecha</string>
-    <string name="dog_owner_data">Datos Dueño</string>
+    <string name="dog_owner_data">Datos Due\u00f1o</string>
     <string name="state">Estado</string>
     <string name="send">"   Registrar   "</string>
     
@@ -203,24 +203,24 @@
 
     <!-- PreSignup activity -->
     <string name="title_activity_pre_signup">PreSignup</string>
-    <string name="presignup_banner">Esta funcionalidad esta limitada a usuarios registrados. Para continuar por favor selecciona alguna de las siguientes opciones.\n ¡Gracias!</string>
-    <string name="recover_password">Recuperar contraseña</string>
+    <string name="presignup_banner">Esta funcionalidad esta limitada a usuarios registrados. Para continuar por favor selecciona alguna de las siguientes opciones.\n \u00a1Gracias!</string>
+    <string name="recover_password">Recuperar contrase\u00f1a</string>
     <string name="to_login">Loguearse</string>
     <string name="to_signup">Registrarse</string>
 
     <!-- Signup activity -->
     <string name="title_activity_signup">SignupActivity</string>
     <string name="email_label">Correo</string>
-    <string name="password_label">Contraseña</string>
-    <string name="password_confirmation_label">Confirmar contraseña</string>
+    <string name="password_label">Contrase\u00f1a</string>
+    <string name="password_confirmation_label">Confirmar contrase\u00f1a</string>
     <string name="to_signup_with">Registrarse con</string>
-    <string name="ups">¡Ups!</string>
-    <string name="an_error_ocurred">¡Ocurrió un error!</string>
-    <string name="please_wait_signing_up">"Por favor espere... ¡registrando!"</string>
+    <string name="ups">\u00a1Ups!</string>
+    <string name="an_error_ocurred">\u00a1Ocurri\u00f3 un error!</string>
+    <string name="please_wait_signing_up">"Por favor espere... \u00a1registrando!"</string>
 
     <!-- Login activity -->
     <string name="title_activity_login">LoginActivity</string>
-    <string name="to_login_with">Iniciar sesión con</string>
+    <string name="to_login_with">Iniciar sesi\u00f3n con</string>
 
     <!-- DogChow applcation -->
     <string name="preferences_name">dogapp</string>

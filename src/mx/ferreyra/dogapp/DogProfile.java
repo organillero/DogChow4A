@@ -175,19 +175,14 @@ public class DogProfile extends Activity {
 
         if (resultCode == Activity.RESULT_OK && intent != null) {
             if (requestCode == DogUtil.DOG_PROFILE || requestCode ==  DogUtil.DOG_EDIT_PROFILE) {
-
-                //Bundle extras = intent.getExtras();
-
-
-                if (DogUtil.getInstance().getCurrentDogId() !=  null  && DogUtil.getInstance().getCurrentDogId()>0) {
-                    DogProfileAsync async =  new DogProfileAsync (context);
-                    async.execute();
-                }
-
-                else {
+                if (DogUtil.getInstance().getCurrentDogId() ==  null ||
+                    DogUtil.getInstance().getCurrentDogId()<0) {
                     UI.showAlertDialog("Ups!",
                             "Ha ocurrido un error",
                             "OK", context, null);
+                } else {
+                    DogProfileAsync async =  new DogProfileAsync (context);
+                    async.execute();
                 }
             }
 

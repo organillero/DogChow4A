@@ -503,10 +503,10 @@ public class DogRegister extends FragmentActivity {
         protected Integer doInBackground(Void... params) {
             WsDogUtils wsDogUtils = new WsDogUtils(context);
             try {
-                if (DogUtil.getInstance().getCurrentDogId() != null && DogUtil.getInstance().getCurrentDogId() >0)
-                    return wsDogUtils.editDuenoMascota(map)  ;  
-                else
+                if(DogUtil.getInstance().getCurrentDogId() == null || DogUtil.getInstance().getCurrentDogId()<0)
                     return wsDogUtils.insertDuenoMascota(map);
+                else
+                    return wsDogUtils.editDuenoMascota(map);
             } catch (Exception e) {
                 return null;
             }

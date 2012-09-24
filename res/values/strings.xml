@@ -74,7 +74,7 @@
 		env\u00edo de</string> <!-- Invalid parameters -->
 
     <string name="network_unreachable">Red inalcanzable</string>
-    <string name="map_key">0-mA0c7VK7NcZ7tDxhMhdq6jX_k4_Oy3Y8R7CFQ</string>
+    <string name="map_key">0ggmsULpx5gWnKdIEw2m1AmGVAPURVYY-LhPUYw</string>
     <string name="enter_route_name">Especificar nombre de ruta</string>
     <string name="parse_error">No se puede analizar</string>
     <string name="io_error">Servidor de destino no responde</string>

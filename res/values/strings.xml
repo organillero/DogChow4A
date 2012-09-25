@@ -181,7 +181,7 @@
     <string name="unable_to_publish">No se ha podido publicar</string>
     <string name="details_are_not_available">No hay detalles disponibles!</string>
 
-    <!-- Cadenas del layout del registro del perro -->
+    <!-- DogRegister activity -->
 
     <string name="dog_data_label">Datos Mascota</string>
     <string name="name">Nombre</string>
@@ -194,6 +194,7 @@
     <string name="dog_owner_data">Datos Due\u00f1o</string>
     <string name="state">Estado</string>
     <string name="send">"   Registrar   "</string>
+    <string name="save">Guardar</string>
     
     <!-- perfil del perro -->
     

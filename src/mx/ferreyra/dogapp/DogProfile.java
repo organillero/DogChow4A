@@ -96,7 +96,7 @@ public class DogProfile extends Activity {
         protected DogProfilePojo doInBackground(Void... params) {
             WsDogUtils wsDogUtils = new WsDogUtils(context);
             try {
-                Integer userid = Integer.valueOf(DogUtil.getInstance().getPrefs().loadData(Recursos.DOG_ID));//DogUtil.getInstance().getCurrentUserId();
+                Integer userid = DogUtil.getInstance().getCurrentUserId();
 
                 String[][] result = wsDogUtils.getDuenosMascotasByIdUsuario(userid);
 
@@ -119,8 +119,8 @@ public class DogProfile extends Activity {
 
                 dogProfilePojo.mascotaNombre = result[0][6];
                 dogProfilePojo.mascotaRaza = result[0][7];
-                dogProfilePojo.mascotaIdGenero = Integer.valueOf(result[0][8]);
                 dogProfilePojo.mascotaIdTipoVida = Integer.valueOf(result[0][9]);
+                dogProfilePojo.mascotaIdGenero = Integer.valueOf(result[0][8]);
                 dogProfilePojo.mascotaIdActividadFisica = Integer.valueOf(result[0][10]);
                 dogProfilePojo.mascotaFechaCumpleanos = sdf.parse(result[0][11]);
                 //                byte[] bytes = Base64.decode(result[0][12], Base64.DEFAULT);

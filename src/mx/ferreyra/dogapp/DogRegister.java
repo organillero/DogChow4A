@@ -258,7 +258,7 @@ public class DogRegister extends FragmentActivity {
 
         Map<String, String> map = new HashMap<String, String>();
 
-        String userId =DogUtil.getInstance().getPrefs().loadData(Recursos.USER_ID);// DogUtil.getInstance().getCurrentUserId().toString();
+        String userId = DogUtil.getInstance().getCurrentUserId().toString();
         map.put("idUsuario", userId);
         map.put("duenoNombre", dogNameField.getText().toString());
         map.put("mascotaRaza", dogBreedField.getText().toString());
@@ -504,7 +504,7 @@ public class DogRegister extends FragmentActivity {
             WsDogUtils wsDogUtils = new WsDogUtils(context);
             try {
 
-                Integer tmp = Integer.valueOf( DogUtil.getInstance().getPrefs().loadData(Recursos.DOG_ID) );  //DogUtil.getInstance().getCurrentDogId();
+                Integer tmp = DogUtil.getInstance().getCurrentDogId();
                 if( tmp == null || tmp<0)
                     return wsDogUtils.insertDuenoMascota(map);
                 else

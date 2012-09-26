@@ -72,21 +72,25 @@
 
             <Button
                 android:id="@+id/button5"
+                style="@style/greenButton"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_below="@+id/button2"
                 android:layout_centerHorizontal="true"
                 android:layout_marginTop="30dp"
-                android:background="@drawable/i_route_naming_share" />
+                android:text="@string/save"
+                android:width="225dp" />
 
             <Button
                 android:id="@+id/button6"
+                style="@style/greenButton"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_below="@+id/button5"
                 android:layout_centerHorizontal="true"
                 android:layout_marginTop="3dp"
-                android:background="@drawable/i_route_naming_cancel" />
+                android:text="@string/cancel"
+                android:width="225dp" />
 
             <TextView
                 android:id="@+id/textView3"

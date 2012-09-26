@@ -15,6 +15,8 @@ import mx.ferreyra.dogapp.org.ksoap2.SoapEnvelope;
 import mx.ferreyra.dogapp.org.ksoap2.serialization.SoapObject;
 import mx.ferreyra.dogapp.org.ksoap2.serialization.SoapSerializationEnvelope;
 import mx.ferreyra.dogapp.org.ksoap2.transport.HttpTransportSE;
+import static mx.ferreyra.dogapp.ui.UI.*;
+import static mx.ferreyra.dogapp.ui.DialogHelper.*;
 
 import org.xml.sax.Attributes;
 import org.xml.sax.InputSource;
@@ -98,12 +100,38 @@ public class LoginScreen extends Activity{
     }
 
     public void onClickSubmitButton(View view) {
-        String input[] = {
-            this.userEmail = this.email.getText().toString(),
-            this.userPassword = this.password.getText().toString()
-        };
-        soapParseLogin = new SoapParseLogin();
-        soapParseLogin.execute(input);
+        if(validateForm()) {
+            String input[] = {
+                this.userEmail = this.email.getText().toString(),
+                this.userPassword = this.password.getText().toString()
+            };
+            soapParseLogin = new SoapParseLogin();
+            soapParseLogin.execute(input);
+        }
+    }
+
+    /**
+     * Validates form to send for login.
+     */
+    public boolean validateForm() {
+        String userEmail = this.email.getText().toString();
+        String userPassword = this.password.getText().toString();
+
+        // Email validation
+        if("".equals(userEmail.trim())) {
+            // Email is empty
+            showOkDialog(this, getString(R.string.email_empty_message), null);
+            return false;
+        }
+
+        // Password validation
+        if("".equals(userPassword.trim())) {
+            // Password is empty
+            showOkDialog(this, getString(R.string.password_empty_message), null);
+            return false;
+        }
+
+        return true;
     }
 
 	@Override

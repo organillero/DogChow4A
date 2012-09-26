@@ -70,10 +70,6 @@ public class DogUtil extends Application {
         if(app == null)
             app = this;
 
-        // Loading preferences
-        loadCurrentUserId();
-        loadCurrentDogId();
-
         initFacebook();
         if(gTracker == null){
             gTracker = GoogleAnalyticsTracker.getInstance();
@@ -155,21 +151,16 @@ public class DogUtil extends Application {
     }
 
     public Integer getCurrentUserId() {
-        return this.currentUserId;
-    }
-
-    private void loadCurrentUserId() {
         SharedPreferences pref = getSharedPreferences(getString(R.string.preferences_name), 0);
         int possible = pref.getInt(getString(R.string.preference_user_id), -1);
-        this.currentUserId = possible>=0 ? possible : null;
+        return possible>=0 ? possible : null;
     }
 
-    public void loadCurrentDogId() {
+    public Integer getCurrentDogId() {
         SharedPreferences pref = getSharedPreferences(getString(R.string.preferences_name), 0);
         int possible = pref.getInt(getString(R.string.preference_dog_id), -1);
-        this.currentDogId = possible>=0 ? possible : null;
+        return possible>=0 ? possible : null;
     }
-
     
     public void deleteCurrentUserId(){
         SharedPreferences pref = getSharedPreferences(getString(R.string.preferences_name), 0);
@@ -214,9 +205,5 @@ public class DogUtil extends Application {
         }
     }
 
-
-    public Integer getCurrentDogId() {
-        return this.currentDogId;
-    }
 
 }

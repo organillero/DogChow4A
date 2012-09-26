@@ -23,53 +23,32 @@ public class WsDogUtils {
     private String url = "http://www.perroton-dogchow.com.mx/appWSDog/wsDog.asmx?WSDL";
     private String namespace = "http://tempuri.org/";
 
+    private static final String EDIT_DUENO_MASCOTA = "editDuenoMascota";
+    private static final String GET_CAT_ACTIVIDAD_FISICA = "getCatActividadFisica";
+    private static final String GET_CAT_ESTADOS = "getCatEstados";
+    private static final String GET_CAT_GENERO = "getCatGenero";
+    private static final String GET_CAT_TIPO_VIDA = "getCatTipoVida";
+    private static final String GET_DUENOS_MASCOTAS = "getDuenosMascotas";
+    private static final String GET_DUENOS_MASCOTAS_BY_ID_USUARIO = "getDuenosMascotasByIdUsuario";
+    private static final String GET_TIPS_BY_ID_USUARIO = "getTipsByIdUsuario";
+    private static final String GET_TRAINING_SPOT = "getTrainingSpot";
+    private static final String INSERT_IPHONE_ID = "insertIphoneID";
+    private static final String INSERT_RATING = "insertRating";
+    private static final String INSERT_ROUTE = "insertRoute";
+    private static final String INSERT_USER_IPHONE = "insertUserIphone";
+    private static final String INSERT_USERS = "insertUsers";
+    private static final String USER_LOGIN = "userLogin";
+    private static final String USER_RECOVERY_PWD = "userRecoveryPWD";
+
     public WsDogUtils(Context context) {
         this.context = context;
     }
 
-    public Integer parseEditDuenoMascota(SoapObject result) {
-        if (result == null)
-            return null;
-
-        SoapObject root = (SoapObject)result.getProperty(0);
-        SoapObject diffgram = (SoapObject)root.getProperty(1);
-        SoapObject newDataSet = (SoapObject)diffgram.getProperty(0);
-        SoapObject table = (SoapObject)newDataSet.getProperty(0);
-        return Integer.valueOf(table.getPropertyAsString(0));
-    }
-
     public Integer editDuenoMascota(Map parameters)
         throws IOException, XmlPullParserException {
-        String method = "editDuenoMascota";
-        String action = "http://tempuri.org/editDuenoMascota";
-
-        SoapObject request = new SoapObject(namespace, method);
-        request.addProperty("idUsuario",(String)parameters.get("idUsuario"));
-        request.addProperty("duenoNombre",(String)parameters.get("duenoNombre"));
-        request.addProperty("duenoIdGenero",(String)parameters.get("duenoIdGenero"));
-        request.addProperty("duenoFechaCumpleanos",(String)parameters.get("duenoFechaCumpleanos"));
-        request.addProperty("duenoIdEstado",(String)parameters.get("duenoIdEstado"));
-        request.addProperty("mascotaNombre",(String)parameters.get("mascotaNombre"));
-        request.addProperty("mascotaRaza",(String)parameters.get("mascotaRaza"));
-        request.addProperty("mascotaIdGenero",(String)parameters.get("mascotaIdGenero"));
-        request.addProperty("mascotaIdTipoVida",(String)parameters.get("mascotaIdTipoVida"));
-        request.addProperty("mascotaFechaCumpleanos",(String)parameters.get("mascotaFechaCumpleanos"));
-        request.addProperty("mascotaIdActividadFisica",(String)parameters.get("mascotaIdActividadFisica"));
-        request.addProperty("mascotaImagen",(String)parameters.get("mascotaImagen"));
-        request.addProperty("comentarios1",(String)parameters.get("comentarios1"));
-        request.addProperty("comentarios2",(String)parameters.get("comentarios2"));
-
-        SoapSerializationEnvelope envelope = new SoapSerializationEnvelope(SoapEnvelope.VER11);
-        envelope.setOutputSoapObject(request);
-        envelope.dotNet = true;
-
-        HttpTransportSE androidHttpTransport = new HttpTransportSE(url);
-
-        androidHttpTransport.debug = true;
-        androidHttpTransport.call(action, envelope);
-
-        SoapObject result = (SoapObject)envelope.bodyIn;
-        return parseEditDuenoMascota(result);
+        return genericDuenoMascota(EDIT_DUENO_MASCOTA,
+                                   namespace + EDIT_DUENO_MASCOTA,
+                                   parameters);
     }
 
     /**
@@ -88,40 +67,14 @@ public class WsDogUtils {
      * </code></p>
      */
     public String[][] parseGetCatActividadFisica(SoapObject result) {
-        if (result == null)
-            return null;
-
-        SoapObject root = (SoapObject)result.getProperty(0);
-        SoapObject diffgram = (SoapObject)root.getProperty(1);
-        SoapObject newDataSet = (SoapObject)diffgram.getProperty(0);
-        int count = newDataSet.getPropertyCount();
-        String[][] values = new String[count][2];
-
-        for(int i=0; i<newDataSet.getPropertyCount(); i++) {
-            SoapObject table = (SoapObject)newDataSet.getProperty(i);
-
-            values[i][0] = table.getPropertyAsString(0);
-            values[i][1] = table.getPropertyAsString(1);
-        }
-
-        return values;
+        return parseGenericMatrixSoapObject(result, 2);
     }
 
     public String[][] getCatActividadFisica()
         throws IOException, XmlPullParserException {
-        String method = "getCatActividadFisica";
-        String action = "http://tempuri.org/getCatActividadFisica";
-
-        SoapObject request = new SoapObject(namespace, method);
-
-        SoapSerializationEnvelope envelope = new SoapSerializationEnvelope(SoapEnvelope.VER11);
-        envelope.setOutputSoapObject(request);
-        envelope.dotNet = true;
-
-        HttpTransportSE androidHttpTransport = new HttpTransportSE(url);
-        androidHttpTransport.call(action, envelope);
-
-        SoapObject result = (SoapObject)envelope.bodyIn;
+        SoapObject result = (SoapObject)genericRequest(GET_CAT_ACTIVIDAD_FISICA,
+                                                       namespace + GET_CAT_ACTIVIDAD_FISICA,
+                                                       new SoapObject(namespace, GET_CAT_ACTIVIDAD_FISICA));
         return parseGetCatActividadFisica(result);
     }
 
@@ -141,39 +94,14 @@ public class WsDogUtils {
      * </code></p>
      */
     public String[][] parseGetCatEstados(SoapObject result) {
-        if (result == null)
-            return null;
-
-        SoapObject root = (SoapObject)result.getProperty(0);
-        SoapObject diffgram = (SoapObject)root.getProperty(1);
-        SoapObject newDataSet = (SoapObject)diffgram.getProperty(0);
-        int count = newDataSet.getPropertyCount();
-        String[][] values = new String[count][2];
-
-        for(int i=0; i<newDataSet.getPropertyCount(); i++) {
-            SoapObject table = (SoapObject)newDataSet.getProperty(i);
-            values[i][0] = table.getPropertyAsString(0);
-            values[i][1] = table.getPropertyAsString(1);
-        }
-
-        return values;
+        return parseGenericMatrixSoapObject(result, 2);
     }
 
     public String[][] getCatEstados()
         throws IOException, XmlPullParserException {
-        String method = "getCatEstados";
-        String action = "http://tempuri.org/getCatEstados";
-
-        SoapObject request = new SoapObject(namespace, method);
-
-        SoapSerializationEnvelope envelope = new SoapSerializationEnvelope(SoapEnvelope.VER11);
-        envelope.setOutputSoapObject(request);
-        envelope.dotNet = true;
-
-        HttpTransportSE androidHttpTransport = new HttpTransportSE(url);
-        androidHttpTransport.call(action, envelope);
-
-        SoapObject result = (SoapObject)envelope.bodyIn;
+        SoapObject result = (SoapObject)genericRequest(GET_CAT_ESTADOS,
+                                                       namespace + GET_CAT_ESTADOS,
+                                                       new SoapObject(namespace, GET_CAT_ESTADOS));
         return parseGetCatEstados(result);
     }
 
@@ -194,41 +122,14 @@ public class WsDogUtils {
      * </code></p>
      */
     public String[][] parseGetCatGenero(SoapObject result) {
-        if (result == null)
-            return null;
-
-        SoapObject root = (SoapObject)result.getProperty(0);
-        SoapObject diffgram = (SoapObject)root.getProperty(1);
-        SoapObject newDataSet = (SoapObject)diffgram.getProperty(0);
-        int count = newDataSet.getPropertyCount();
-        String[][] values = new String[count][3];
-
-        for(int i=0; i<count; i++) {
-            SoapObject table = (SoapObject)newDataSet.getProperty(i);
-
-            values[i][0] = table.getPropertyAsString(0);
-            values[i][1] = table.getPropertyAsString(1);
-            values[i][2] = table.getPropertyAsString(2);
-        }
-
-        return values;
+        return parseGenericMatrixSoapObject(result, 3);
     }
 
     public String[][] getCatGenero()
         throws IOException, XmlPullParserException {
-        String method = "getCatGenero";
-        String action = "http://tempuri.org/getCatGenero";
-
-        SoapObject request = new SoapObject(namespace, method);
-
-        SoapSerializationEnvelope envelope = new SoapSerializationEnvelope(SoapEnvelope.VER11);
-        envelope.setOutputSoapObject(request);
-        envelope.dotNet = true;
-
-        HttpTransportSE androidHttpTransport = new HttpTransportSE(url);
-        androidHttpTransport.call(action, envelope);
-
-        SoapObject result = (SoapObject)envelope.bodyIn;
+        SoapObject result = (SoapObject)genericRequest(GET_CAT_GENERO,
+                                                       namespace + GET_CAT_GENERO,
+                                                       new SoapObject(namespace, GET_CAT_GENERO));
         return parseGetCatGenero(result);
     }
 
@@ -248,40 +149,14 @@ public class WsDogUtils {
      * </code></p>
      */
     public String[][] parseGetCatTipoVida(SoapObject result) {
-        if (result == null)
-            return null;
-
-        SoapObject root = (SoapObject)result.getProperty(0);
-        SoapObject diffgram = (SoapObject)root.getProperty(1);
-        SoapObject newDataSet = (SoapObject)diffgram.getProperty(0);
-        int count = newDataSet.getPropertyCount();
-        int columns = 17;
-        String[][] values = new String[count][columns];
-
-        for(int i=0; i<newDataSet.getPropertyCount(); i++) {
-            SoapObject table = (SoapObject)newDataSet.getProperty(i);
-            for(int j=0; j<columns; j++)
-                values[i][j] = table.getPropertyAsString(j);
-        }
-
-        return values;
+        return parseGenericMatrixSoapObject(result, 17);
     }
 
     public String[][] getCatTipoVida()
         throws IOException, XmlPullParserException {
-        String method = "getCatTipoVida";
-        String action = "http://tempuri.org/getCatTipoVida";
-
-        SoapObject request = new SoapObject(namespace, method);
-
-        SoapSerializationEnvelope envelope = new SoapSerializationEnvelope(SoapEnvelope.VER11);
-        envelope.setOutputSoapObject(request);
-        envelope.dotNet = true;
-
-        HttpTransportSE androidHttpTransport = new HttpTransportSE(url);
-        androidHttpTransport.call(action, envelope);
-
-        SoapObject result = (SoapObject)envelope.bodyIn;
+        SoapObject result = (SoapObject)genericRequest(GET_CAT_TIPO_VIDA,
+                                                       namespace + GET_CAT_TIPO_VIDA,
+                                                       new SoapObject(namespace, GET_CAT_TIPO_VIDA));
         return parseGetCatTipoVida(result);
     }
 
@@ -317,40 +192,14 @@ public class WsDogUtils {
      * </code></p>
      */
     public String[][] parseGetDuenosMascotas(SoapObject result) {
-        if (result == null)
-            return null;
-
-        SoapObject root = (SoapObject)result.getProperty(0);
-        SoapObject diffgram = (SoapObject)root.getProperty(1);
-        SoapObject newDataSet = (SoapObject)diffgram.getProperty(0);
-        int count = newDataSet.getPropertyCount();
-        int columns = 17;
-        String[][] values = new String[count][columns];
-
-        for(int i=0; i<count; i++) {
-            SoapObject table = (SoapObject)newDataSet.getProperty(i);
-            for(int j=0; j<columns; j++)
-                values[i][j] = table.getPropertyAsString(j);
-        }
-
-        return values;
+        return parseGenericMatrixSoapObject(result, 17);
     }
 
     public String[][] getDuenosMascotas()
         throws IOException, XmlPullParserException {
-        String method = "getDuenosMascotas";
-        String action = "http://tempuri.org/getDuenosMascotas";
-
-        SoapObject request = new SoapObject(namespace, method);
-
-        SoapSerializationEnvelope envelope = new SoapSerializationEnvelope(SoapEnvelope.VER11);
-        envelope.setOutputSoapObject(request);
-        envelope.dotNet = true;
-
-        HttpTransportSE androidHttpTransport = new HttpTransportSE(url);
-        androidHttpTransport.call(action, envelope);
-
-        SoapObject result = (SoapObject)envelope.bodyIn;
+        SoapObject result = (SoapObject)genericRequest(GET_DUENOS_MASCOTAS,
+                                                       namespace + GET_DUENOS_MASCOTAS,
+                                                       new SoapObject(namespace, GET_DUENOS_MASCOTAS));
         return parseGetDuenosMascotas(result);
     }
 
@@ -386,44 +235,16 @@ public class WsDogUtils {
      * </code></p>
      */
     public String[][] parseGetDuenosMascotasByIdUsuario(SoapObject result) {
-        if (result == null)
-            return null;
-
-        SoapObject root = (SoapObject)result.getProperty(0);
-        SoapObject diffgram = (SoapObject)root.getProperty(1);
-        SoapObject newDataSet = (SoapObject)diffgram.getProperty(0);
-        int count = newDataSet.getPropertyCount();
-        if(count==0)
-            return null;
-
-        int columns = 17;
-        String[][] values = new String[count][columns];
-
-        for(int i=0; i<count; i++) {
-            SoapObject table = (SoapObject)newDataSet.getProperty(i);
-            for(int j=0; j<columns; j++)
-                values[i][j] = table.getPropertyAsString(j);
-        }
-
-        return values;
+        return parseGenericMatrixSoapObject(result, 17);
     }
 
     public String[][] getDuenosMascotasByIdUsuario(Integer userId)
         throws IOException, XmlPullParserException {
-        String method = "getDuenosMascotasByIdUsuario";
-        String action = "http://tempuri.org/getDuenosMascotasByIdUsuario";
-
-        SoapObject request = new SoapObject(namespace, method);
+        SoapObject request = new SoapObject(namespace, GET_DUENOS_MASCOTAS_BY_ID_USUARIO);
         request.addProperty("idUsuario", userId);
-
-        SoapSerializationEnvelope envelope = new SoapSerializationEnvelope(SoapEnvelope.VER11);
-        envelope.setOutputSoapObject(request);
-        envelope.dotNet = true;
-
-        HttpTransportSE androidHttpTransport = new HttpTransportSE(url);
-        androidHttpTransport.call(action, envelope);
-
-        SoapObject result = (SoapObject)envelope.bodyIn;
+        SoapObject result = (SoapObject)genericRequest(GET_DUENOS_MASCOTAS_BY_ID_USUARIO,
+                                                       namespace + GET_DUENOS_MASCOTAS_BY_ID_USUARIO,
+                                                       request);
         return parseGetDuenosMascotas(result);
     }
 
@@ -444,44 +265,17 @@ public class WsDogUtils {
      * </code></p>
      */
     public String[][] parseGetStats(SoapObject result) {
-        if (result == null)
-            return null;
-
-        SoapObject root = (SoapObject)result.getProperty(0);
-        SoapObject diffgram = (SoapObject)root.getProperty(1);
-        SoapObject documentElement = (SoapObject)diffgram.getProperty(0);
-        int count = documentElement.getPropertyCount();
-        if(count==0)
-            return null;
-
-        int columns = 3;
-        String[][] values = new String[count][columns];
-
-        for(int i=0; i<count; i++) {
-            SoapObject dtRegister = (SoapObject)documentElement.getProperty(i);
-            for(int j=0; j<columns; j++)
-                values[i][j] = dtRegister.getPropertyAsString(j);
-        }
-
-        return values;
+        return parseGenericMatrixSoapObject(result, 3);
     }
 
     public String[][] getStats(Map parameters)
         throws IOException, XmlPullParserException {
         String method = "getStats";
-        String action = "http://tempuri.org/getStats";
-
         SoapObject request = new SoapObject(namespace, method);
         request.addProperty("userId",(Integer)parameters.get("user_id"));
-
-        SoapSerializationEnvelope envelope = new SoapSerializationEnvelope(SoapEnvelope.VER11);
-        envelope.setOutputSoapObject(request);
-        envelope.dotNet = true;
-
-        HttpTransportSE androidHttpTransport = new HttpTransportSE(url);
-        androidHttpTransport.call(action, envelope);
-
-        SoapObject result = (SoapObject)envelope.bodyIn;
+        SoapObject result = (SoapObject)genericRequest(method,
+                                                       "http://tempuri.org/getStats",
+                                                       request);
         return parseGetStats(result);
     }
 
@@ -501,44 +295,16 @@ public class WsDogUtils {
      * </code></p>
      */
     public String[][] parseGetTipsByIdUsuario(SoapObject result) {
-        if (result == null)
-            return null;
-
-        SoapObject root = (SoapObject)result.getProperty(0);
-        SoapObject diffgram = (SoapObject)root.getProperty(1);
-        SoapObject newDataSet = (SoapObject)diffgram.getProperty(0);
-        int count = newDataSet.getPropertyCount();
-        if(count==0)
-            return null;
-
-        int columns = 2;
-        String[][] values = new String[count][columns];
-
-        for(int i=0; i<count; i++) {
-            SoapObject table = (SoapObject)newDataSet.getProperty(i);
-            for(int j=0; j<columns; j++)
-                values[i][j] = table.getPropertyAsString(j);
-        }
-
-        return values;
+        return parseGenericMatrixSoapObject(result, 2);
     }
 
     public String[][] getTipsByIdUsuario(Map parameters)
         throws IOException, XmlPullParserException {
-        String method = "getTipsByIdUsuario";
-        String action = "http://tempuri.org/getTipsByIdUsuario";
-
-        SoapObject request = new SoapObject(namespace, method);
+        SoapObject request = new SoapObject(namespace, GET_TIPS_BY_ID_USUARIO);
         request.addProperty("idUsuario",(Integer)parameters.get("user_id"));
-
-        SoapSerializationEnvelope envelope = new SoapSerializationEnvelope(SoapEnvelope.VER11);
-        envelope.setOutputSoapObject(request);
-        envelope.dotNet = true;
-
-        HttpTransportSE androidHttpTransport = new HttpTransportSE(url);
-        androidHttpTransport.call(action, envelope);
-
-        SoapObject result = (SoapObject)envelope.bodyIn;
+        SoapObject result = (SoapObject)genericRequest(GET_TIPS_BY_ID_USUARIO,
+                                                       namespace + GET_TIPS_BY_ID_USUARIO,
+                                                       request);
         return parseGetTipsByIdUsuario(result);
     }
 
@@ -549,64 +315,29 @@ public class WsDogUtils {
      * otherwise return <code>String</code> matrix with elements parsed.
      */
     public String[][] parseGetTrainingSpot(SoapObject result) {
-        if (result == null)
-            return null;
-
-        SoapObject root = (SoapObject)result.getProperty(0);
-        SoapObject diffgram = (SoapObject)root.getProperty(1);
-        SoapObject newDataSet = (SoapObject)diffgram.getProperty(0);
-        int count = newDataSet.getPropertyCount();
-        if(count==0)
-            return null;
-
-        int columns = 11;
-        String[][] values = new String[count][columns];
-
-        for(int i=0; i<count; i++) {
-            SoapObject table = (SoapObject)newDataSet.getProperty(i);
-            for(int j=0; j<columns; j++)
-                values[i][j] = table.getPropertyAsString(j);
-        }
-
-        return values;
+        return parseGenericMatrixSoapObject(result, 11);
     }
 
     public String[][] getTrainingSpot(Map parameters)
         throws IOException, XmlPullParserException {
-        String method = "getTrainingSpot";
-        String action = "http://tempuri.org/getTrainingSpot";
-
-        SoapObject request = new SoapObject(namespace, method);
+        SoapObject request = new SoapObject(namespace, GET_TRAINING_SPOT);
         request.addProperty("latitude",(String)parameters.get("latitude"));
         request.addProperty("longitude",(String)parameters.get("longitude"));
-
-        SoapSerializationEnvelope envelope = new SoapSerializationEnvelope(SoapEnvelope.VER11);
-        envelope.setOutputSoapObject(request);
-        envelope.dotNet = true;
-
-        HttpTransportSE androidHttpTransport = new HttpTransportSE(url);
-        androidHttpTransport.call(action, envelope);
-
-        SoapObject result = (SoapObject)envelope.bodyIn;
+        SoapObject result = (SoapObject)genericRequest(GET_TRAINING_SPOT,
+                                                       namespace + GET_TRAINING_SPOT,
+                                                       request);
         return parseGetTrainingSpot(result);
-    }
-
-    public Integer parseInsertDuenoMascota(SoapObject result) {
-        if (result == null)
-            return null;
-
-        SoapObject root = (SoapObject)result.getProperty(0);
-        SoapObject diffgram = (SoapObject)root.getProperty(1);
-        SoapObject newDataSet = (SoapObject)diffgram.getProperty(0);
-	SoapObject table = (SoapObject)newDataSet.getProperty(0);
-	return Integer.valueOf(table.getPropertyAsString(0));
     }
 
     public Integer insertDuenoMascota(Map parameters)
         throws IOException, XmlPullParserException {
-        String method = "insertDuenoMascota";
-        String action = "http://tempuri.org/insertDuenoMascota";
+        return genericDuenoMascota("insertDuenoMascota",
+                                   "http://tempuri.org/insertDuenoMascota",
+                                   parameters);
+    }
 
+    public Integer genericDuenoMascota(String method, String action, Map parameters)
+        throws IOException, XmlPullParserException {
         SoapObject request = new SoapObject(namespace, method);
         request.addProperty("idUsuario",(String)parameters.get("idUsuario"));
         request.addProperty("duenoNombre",(String)parameters.get("duenoNombre"));
@@ -628,10 +359,16 @@ public class WsDogUtils {
         envelope.dotNet = true;
 
         HttpTransportSE androidHttpTransport = new HttpTransportSE(url);
+        androidHttpTransport.debug = true;
         androidHttpTransport.call(action, envelope);
 
-        SoapObject result = (SoapObject)envelope.bodyIn;
-        return parseInsertDuenoMascota(result);
+        if((envelope.bodyIn) instanceof SoapObject) {
+            // Soap object response
+            return parseGenericReturnSoapObject((SoapObject)envelope.bodyIn);
+        } else {
+            // Soap fault response
+            return null;
+        }
     }
 
     /**
@@ -649,44 +386,16 @@ public class WsDogUtils {
      * </code></p>
      */
     public String[][] parseInsertIphoneID(SoapObject result) {
-        if (result == null)
-            return null;
-
-        SoapObject root = (SoapObject)result.getProperty(0);
-        SoapObject diffgram = (SoapObject)root.getProperty(1);
-        SoapObject documentElement = (SoapObject)diffgram.getProperty(0);
-        int count = documentElement.getPropertyCount();
-        if(count==0)
-            return null;
-
-        int columns = 1;
-        String[][] values = new String[count][columns];
-
-        for(int i=0; i<count; i++) {
-            SoapObject dtRegister = (SoapObject)documentElement.getProperty(i);
-            for(int j=0; j<columns; j++)
-                values[i][j] = dtRegister.getPropertyAsString(j);
-        }
-
-        return values;
+        return parseGenericMatrixSoapObject(result, 1);
     }
 
     public String[][] insertIphoneID(Map parameters)
         throws IOException, XmlPullParserException {
-        String method = "insertIphoneID";
-        String action = "http://tempuri.org/insertIphoneID";
-
-        SoapObject request = new SoapObject(namespace, method);
+        SoapObject request = new SoapObject(namespace, INSERT_IPHONE_ID);
         request.addProperty("IphoneID",(Integer)parameters.get("iphone_id"));
-
-        SoapSerializationEnvelope envelope = new SoapSerializationEnvelope(SoapEnvelope.VER11);
-        envelope.setOutputSoapObject(request);
-        envelope.dotNet = true;
-
-        HttpTransportSE androidHttpTransport = new HttpTransportSE(url);
-        androidHttpTransport.call(action, envelope);
-
-        SoapObject result = (SoapObject)envelope.bodyIn;
+        SoapObject result = (SoapObject)genericRequest(INSERT_IPHONE_ID,
+                                                       namespace + INSERT_IPHONE_ID,
+                                                       request);
         return parseInsertIphoneID(result);
     }
 
@@ -705,45 +414,17 @@ public class WsDogUtils {
      * </code></p>
      */
     public String[][] parseInsertRating(SoapObject result) {
-        if (result == null)
-            return null;
-
-        SoapObject root = (SoapObject)result.getProperty(0);
-        SoapObject diffgram = (SoapObject)root.getProperty(1);
-        SoapObject documentElement = (SoapObject)diffgram.getProperty(0);
-        int count = documentElement.getPropertyCount();
-        if(count==0)
-            return null;
-
-        int columns = 1;
-        String[][] values = new String[count][columns];
-
-        for(int i=0; i<count; i++) {
-            SoapObject dtRegister = (SoapObject)documentElement.getProperty(i);
-            for(int j=0; j<columns; j++)
-                values[i][j] = dtRegister.getPropertyAsString(j);
-        }
-
-        return values;
+        return parseGenericMatrixSoapObject(result, 1);
     }
 
     public String[][] insertRating(Map parameters)
         throws IOException, XmlPullParserException {
-        String method = "insertRating";
-        String action = "http://tempuri.org/insertRating";
-
-        SoapObject request = new SoapObject(namespace, method);
+        SoapObject request = new SoapObject(namespace, INSERT_RATING);
         request.addProperty("routeId",(Integer)parameters.get("route_id"));
         request.addProperty("rating",(String)parameters.get("rating"));
-
-        SoapSerializationEnvelope envelope = new SoapSerializationEnvelope(SoapEnvelope.VER11);
-        envelope.setOutputSoapObject(request);
-        envelope.dotNet = true;
-
-        HttpTransportSE androidHttpTransport = new HttpTransportSE(url);
-        androidHttpTransport.call(action, envelope);
-
-        SoapObject result = (SoapObject)envelope.bodyIn;
+        SoapObject result = (SoapObject)genericRequest(INSERT_RATING,
+                                                       namespace + INSERT_RATING,
+                                                       request);
         return parseInsertRating(result);
     }
 
@@ -762,34 +443,12 @@ public class WsDogUtils {
      * </code></p>
      */
     public String[][] parseInsertRoute(SoapObject result) {
-        if (result == null)
-            return null;
-
-        SoapObject root = (SoapObject)result.getProperty(0);
-        SoapObject diffgram = (SoapObject)root.getProperty(1);
-        SoapObject documentElement = (SoapObject)diffgram.getProperty(0);
-        int count = documentElement.getPropertyCount();
-        if(count==0)
-            return null;
-
-        int columns = 1;
-        String[][] values = new String[count][columns];
-
-        for(int i=0; i<count; i++) {
-            SoapObject dtRegister = (SoapObject)documentElement.getProperty(i);
-            for(int j=0; j<columns; j++)
-                values[i][j] = dtRegister.getPropertyAsString(j);
-        }
-
-        return values;
+        return parseGenericMatrixSoapObject(result, 1);
     }
 
     public String[][] insertRoute(Map parameters)
         throws IOException, XmlPullParserException {
-        String method = "insertRoute";
-        String action = "http://tempuri.org/insertRoute";
-
-        SoapObject request = new SoapObject(namespace, method);
+        SoapObject request = new SoapObject(namespace, INSERT_ROUTE);
         request.addProperty("routeName",(String)parameters.get("route_name"));
         request.addProperty("sourceLatitude",(String)parameters.get("source_latitude"));
         request.addProperty("sourceLongitude",(String)parameters.get("source_longitude"));
@@ -799,15 +458,9 @@ public class WsDogUtils {
         request.addProperty("timeTaken",(String)parameters.get("time_taken"));
         request.addProperty("difficulty",(String)parameters.get("difficulty"));
         request.addProperty("userId",(Integer)parameters.get("user_id"));
-
-        SoapSerializationEnvelope envelope = new SoapSerializationEnvelope(SoapEnvelope.VER11);
-        envelope.setOutputSoapObject(request);
-        envelope.dotNet = true;
-
-        HttpTransportSE androidHttpTransport = new HttpTransportSE(url);
-        androidHttpTransport.call(action, envelope);
-
-        SoapObject result = (SoapObject)envelope.bodyIn;
+        SoapObject result = (SoapObject)genericRequest(INSERT_ROUTE,
+                                                       namespace + INSERT_ROUTE,
+                                                       request);
         return parseInsertRoute(result);
     }
 
@@ -826,47 +479,19 @@ public class WsDogUtils {
      * </code></p>
      */
     public String[][] parseInsertUserIphone(SoapObject result) {
-        if (result == null)
-            return null;
-
-        SoapObject root = (SoapObject)result.getProperty(0);
-        SoapObject diffgram = (SoapObject)root.getProperty(1);
-        SoapObject documentElement = (SoapObject)diffgram.getProperty(0);
-        int count = documentElement.getPropertyCount();
-        if(count==0)
-            return null;
-
-        int columns = 1;
-        String[][] values = new String[count][columns];
-
-        for(int i=0; i<count; i++) {
-            SoapObject dtRegister = (SoapObject)documentElement.getProperty(i);
-            for(int j=0; j<columns; j++)
-                values[i][j] = dtRegister.getPropertyAsString(j);
-        }
-
-        return values;
+        return parseGenericMatrixSoapObject(result, 1);
     }
 
     public String[][] insertUserIphone(Map parameters)
         throws IOException, XmlPullParserException {
-        String method = "insertUserIphone";
-        String action = "http://tempuri.org/insertUserIphone";
-
-        SoapObject request = new SoapObject(namespace, method);
+        SoapObject request = new SoapObject(namespace, INSERT_USER_IPHONE);
         request.addProperty("IphoneID",(String)parameters.get("iphone_id"));
         request.addProperty("username",(String)parameters.get("username"));
         request.addProperty("password",(String)parameters.get("password"));
         request.addProperty("isFacebook",(String)parameters.get("is_facebook"));
-
-        SoapSerializationEnvelope envelope = new SoapSerializationEnvelope(SoapEnvelope.VER11);
-        envelope.setOutputSoapObject(request);
-        envelope.dotNet = true;
-
-        HttpTransportSE androidHttpTransport = new HttpTransportSE(url);
-        androidHttpTransport.call(action, envelope);
-
-        SoapObject result = (SoapObject)envelope.bodyIn;
+        SoapObject result = (SoapObject)genericRequest(INSERT_USER_IPHONE,
+                                                       namespace + INSERT_USER_IPHONE,
+                                                       request);
         return parseInsertUserIphone(result);
     }
 
@@ -885,38 +510,18 @@ public class WsDogUtils {
      * </code></p>
      */
     public Integer parseInsertUsers(SoapObject result) {
-        if (result == null)
-            return null;
-
-        SoapObject root = (SoapObject)result.getProperty(0);
-        SoapObject diffgram = (SoapObject)root.getProperty(1);
-        SoapObject documentElement = (SoapObject)diffgram.getProperty(0);
-        int count = documentElement.getPropertyCount();
-        if(count==0)
-            return null;
-
-        SoapObject dtRegister = (SoapObject)documentElement.getProperty(0);
-        return Integer.parseInt(dtRegister.getPropertyAsString(0));
+        return parseGenericReturnSoapObject(result);
     }
 
     public Integer insertUsers(String username, String password, boolean isFacebook)
         throws IOException, XmlPullParserException {
-        String method = "insertUsers";
-        String action = "http://tempuri.org/insertUsers";
-
-        SoapObject request = new SoapObject(namespace, method);
+        SoapObject request = new SoapObject(namespace, INSERT_USERS);
         request.addProperty("username",username);
         request.addProperty("password",password);
         request.addProperty("isFacebook",isFacebook ? "1" : "0");
-
-        SoapSerializationEnvelope envelope = new SoapSerializationEnvelope(SoapEnvelope.VER11);
-        envelope.setOutputSoapObject(request);
-        envelope.dotNet = true;
-
-        HttpTransportSE androidHttpTransport = new HttpTransportSE(url);
-        androidHttpTransport.call(action, envelope);
-
-        SoapObject result = (SoapObject)envelope.bodyIn;
+        SoapObject result = (SoapObject)genericRequest(INSERT_USERS,
+                                                       namespace + INSERT_USERS,
+                                                       request);
         return parseInsertUsers(result);
     }
 
@@ -935,37 +540,18 @@ public class WsDogUtils {
      * </code></p>
      */
     public Integer parseUserLogin(SoapObject result) {
-        if (result == null)
-            return null;
-
-        SoapObject root = (SoapObject)result.getProperty(0);
-        SoapObject diffgram = (SoapObject)root.getProperty(1);
-        SoapObject documentElement = (SoapObject)diffgram.getProperty(0);
-        int count = documentElement.getPropertyCount();
-        if(count==0)
-            return null;
-
-        SoapObject dtRegister = (SoapObject)documentElement.getProperty(0);
-        return Integer.parseInt(dtRegister.getPropertyAsString(0));
+        return parseGenericReturnSoapObject(result);
     }
 
     public Integer userLogin(String username, String password)
         throws IOException, XmlPullParserException {
-        String method = "userLogin";
-        String action = "http://tempuri.org/userLogin";
-
-        SoapObject request = new SoapObject(namespace, method);
+        SoapObject request = new SoapObject(namespace, USER_LOGIN);
         request.addProperty("username",username);
         request.addProperty("password",password);
 
-        SoapSerializationEnvelope envelope = new SoapSerializationEnvelope(SoapEnvelope.VER11);
-        envelope.setOutputSoapObject(request);
-        envelope.dotNet = true;
-
-        HttpTransportSE androidHttpTransport = new HttpTransportSE(url);
-        androidHttpTransport.call(action, envelope);
-
-        SoapObject result = (SoapObject)envelope.bodyIn;
+        SoapObject result = (SoapObject)genericRequest(USER_LOGIN,
+                                                       namespace + USER_LOGIN,
+                                                       request);
         return parseUserLogin(result);
     }
 
@@ -984,44 +570,67 @@ public class WsDogUtils {
      * </code></p>
      */
     public String[][] parseUserRecoveryPWD(SoapObject result) {
+        return parseGenericMatrixSoapObject(result, 1);
+    }
+
+    public String[][] userRecoveryPWD(Map parameters)
+        throws IOException, XmlPullParserException {
+        SoapObject request = new SoapObject(namespace, USER_RECOVERY_PWD);
+        request.addProperty("username",(String)parameters.get("username"));
+        SoapObject result = (SoapObject)genericRequest(USER_RECOVERY_PWD,
+                                                       namespace + USER_RECOVERY_PWD,
+                                                       request);
+        return parseUserRecoveryPWD(result);
+    }
+
+    public Integer parseGenericReturnSoapObject(SoapObject result) {
         if (result == null)
             return null;
 
         SoapObject root = (SoapObject)result.getProperty(0);
         SoapObject diffgram = (SoapObject)root.getProperty(1);
-        SoapObject documentElement = (SoapObject)diffgram.getProperty(0);
-        int count = documentElement.getPropertyCount();
-        if(count==0)
+        SoapObject dataSet = (SoapObject)diffgram.getProperty(0);
+        SoapObject table = (SoapObject)dataSet.getProperty(0);
+        return Integer.valueOf(table.getPropertyAsString(0));
+    }
+
+    public String[][] parseGenericMatrixSoapObject(SoapObject result, int columns) {
+        if (result == null)
             return null;
 
-        int columns = 1;
+        SoapObject root = (SoapObject)result.getProperty(0);
+        SoapObject diffgram = (SoapObject)root.getProperty(1);
+	if(diffgram.getPropertyCount()==0) {
+	    // No data returned
+	    return null;
+	}
+
+        SoapObject dataSet = (SoapObject)diffgram.getProperty(0);
+        int count = dataSet.getPropertyCount();
         String[][] values = new String[count][columns];
 
         for(int i=0; i<count; i++) {
-            SoapObject dtRegister = (SoapObject)documentElement.getProperty(i);
+            SoapObject table = (SoapObject)dataSet.getProperty(i);
             for(int j=0; j<columns; j++)
-                values[i][j] = dtRegister.getPropertyAsString(j);
+                values[i][j] = table.getPropertyAsString(j);
         }
 
         return values;
     }
 
-    public String[][] userRecoveryPWD(Map parameters)
+
+    public Object genericRequest(String method,
+                                 String action,
+                                 SoapObject request)
         throws IOException, XmlPullParserException {
-        String method = "userRecoveryPWD";
-        String action = "http://tempuri.org/userRecoveryPWD";
-
-        SoapObject request = new SoapObject(namespace, method);
-        request.addProperty("username",(String)parameters.get("username"));
-
         SoapSerializationEnvelope envelope = new SoapSerializationEnvelope(SoapEnvelope.VER11);
         envelope.setOutputSoapObject(request);
         envelope.dotNet = true;
 
         HttpTransportSE androidHttpTransport = new HttpTransportSE(url);
+        androidHttpTransport.debug = true;
         androidHttpTransport.call(action, envelope);
 
-        SoapObject result = (SoapObject)envelope.bodyIn;
-        return parseUserRecoveryPWD(result);
+        return envelope.bodyIn;
     }
 }

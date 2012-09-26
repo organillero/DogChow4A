@@ -8,6 +8,7 @@ import java.util.Map;
 import mx.ferreyra.dogapp.pojos.DogProfilePojo;
 import mx.ferreyra.dogapp.recursos.Recursos;
 import mx.ferreyra.dogapp.ui.UI;
+import static mx.ferreyra.dogapp.ui.DialogHelper.*;
 import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.Context;
@@ -99,6 +100,11 @@ public class DogProfile extends Activity {
 
                 String[][] result = wsDogUtils.getDuenosMascotasByIdUsuario(userid);
 
+                if(result==null || result.length==0) {
+                    // No results returned
+                    return null;
+                }
+
                 SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
 
                 dogProfilePojo = new DogProfilePojo();
@@ -126,10 +132,8 @@ public class DogProfile extends Activity {
                 dogProfilePojo.tip = result[0][16];
 
                 return dogProfilePojo;
-            } catch (Exception e) {
-                // if (DogUtil.getInstance().getCurrentDogId() == null) {
+            } catch(Exception e) {
                 return null;
-                //}
             }
         }
 
@@ -137,19 +141,17 @@ public class DogProfile extends Activity {
         protected void onPostExecute(DogProfilePojo result) {
             super.onPostExecute(result);
 
-            SimpleDateFormat formater = new SimpleDateFormat("MMM dd, yyyy");
-
-            if (result != null){
+            if (result == null){
+                showOkDialog(this.context, "No hay mascotas registradas", null);
+                startActivityForResult(new Intent(context, DogRegister.class),DogUtil.DOG_PROFILE);
+            } else {
+                SimpleDateFormat formater = new SimpleDateFormat("MMM dd, yyyy");
                 dogBreed.setText(result.mascotaRaza);
                 dogGender.setText(Recursos.GENDER[result.mascotaIdGenero-1]);
                 dogLifeStyle.setText(Recursos.LIFE_STYLE[result.mascotaIdTipoVida-1]);
                 dogBirthDay.setText(formater.format(result.mascotaFechaCumpleanos));
                 dogTip.setText(result.tip);
                 dogImage.setImageBitmap(result.getMascotaImagen());
-            } 
-
-            else {
-                startActivityForResult(new Intent(context, DogRegister.class),DogUtil.DOG_PROFILE);
             }
 
 
@@ -175,19 +177,14 @@ public class DogProfile extends Activity {
 
         if (resultCode == Activity.RESULT_OK && intent != null) {
             if (requestCode == DogUtil.DOG_PROFILE || requestCode ==  DogUtil.DOG_EDIT_PROFILE) {
-
-                //Bundle extras = intent.getExtras();
-
-
-                if (DogUtil.getInstance().getCurrentDogId() !=  null  && DogUtil.getInstance().getCurrentDogId()>0) {
-                    DogProfileAsync async =  new DogProfileAsync (context);
-                    async.execute();
-                }
-
-                else {
+                if (DogUtil.getInstance().getCurrentDogId() ==  null ||
+                    DogUtil.getInstance().getCurrentDogId()<0) {
                     UI.showAlertDialog("Ups!",
                             "Ha ocurrido un error",
                             "OK", context, null);
+                } else {
+                    DogProfileAsync async =  new DogProfileAsync (context);
+                    async.execute();
                 }
             }
 

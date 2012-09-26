@@ -258,7 +258,7 @@ public class DogRegister extends FragmentActivity {
 
         Map<String, String> map = new HashMap<String, String>();
 
-        String userId = DogUtil.getInstance().getCurrentUserId().toString();
+        String userId =DogUtil.getInstance().getPrefs().loadData(Recursos.USER_ID);// DogUtil.getInstance().getCurrentUserId().toString();
         map.put("idUsuario", userId);
         map.put("duenoNombre", dogNameField.getText().toString());
         map.put("mascotaRaza", dogBreedField.getText().toString());
@@ -503,7 +503,9 @@ public class DogRegister extends FragmentActivity {
         protected Integer doInBackground(Void... params) {
             WsDogUtils wsDogUtils = new WsDogUtils(context);
             try {
-                if(DogUtil.getInstance().getCurrentDogId() == null || DogUtil.getInstance().getCurrentDogId()<0)
+
+                Integer tmp = Integer.valueOf( DogUtil.getInstance().getPrefs().loadData(Recursos.DOG_ID) );  //DogUtil.getInstance().getCurrentDogId();
+                if( tmp == null || tmp<0)
                     return wsDogUtils.insertDuenoMascota(map);
                 else
                     return wsDogUtils.editDuenoMascota(map);
@@ -522,7 +524,7 @@ public class DogRegister extends FragmentActivity {
             Intent intent = new Intent();
             intent.putExtra("ID_PET", result);
 
-            DogUtil.getInstance().saveCurrentDogId(result);
+            DogUtil.getInstance().saveCurrentDogId( result);
 
             setResult(Activity.RESULT_OK, intent);
             finish();

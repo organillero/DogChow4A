@@ -96,7 +96,7 @@ public class DogProfile extends Activity {
         protected DogProfilePojo doInBackground(Void... params) {
             WsDogUtils wsDogUtils = new WsDogUtils(context);
             try {
-                Integer userid = DogUtil.getInstance().getCurrentUserId();
+                Integer userid = Integer.valueOf(DogUtil.getInstance().getPrefs().loadData(Recursos.DOG_ID));//DogUtil.getInstance().getCurrentUserId();
 
                 String[][] result = wsDogUtils.getDuenosMascotasByIdUsuario(userid);
 
@@ -142,7 +142,7 @@ public class DogProfile extends Activity {
             super.onPostExecute(result);
 
             if (result == null){
-                showOkDialog(this.context, "No hay mascotas registradas", null);
+                //showOkDialog(this.context, "No hay mascotas registradas", null);
                 startActivityForResult(new Intent(context, DogRegister.class),DogUtil.DOG_PROFILE);
             } else {
                 SimpleDateFormat formater = new SimpleDateFormat("MMM dd, yyyy");
@@ -177,8 +177,8 @@ public class DogProfile extends Activity {
 
         if (resultCode == Activity.RESULT_OK && intent != null) {
             if (requestCode == DogUtil.DOG_PROFILE || requestCode ==  DogUtil.DOG_EDIT_PROFILE) {
-                if (DogUtil.getInstance().getCurrentDogId() ==  null ||
-                    DogUtil.getInstance().getCurrentDogId()<0) {
+                Integer dogId = DogUtil.getInstance().getCurrentDogId();//Integer.valueOf(DogUtil.getInstance().getPrefs().loadData(Recursos.DOG_ID));
+                if (dogId ==  null || dogId<0) {
                     UI.showAlertDialog("Ups!",
                             "Ha ocurrido un error",
                             "OK", context, null);

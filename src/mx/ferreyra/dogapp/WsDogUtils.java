@@ -30,6 +30,9 @@ public class WsDogUtils {
     private static final String GET_CAT_TIPO_VIDA = "getCatTipoVida";
     private static final String GET_DUENOS_MASCOTAS = "getDuenosMascotas";
     private static final String GET_DUENOS_MASCOTAS_BY_ID_USUARIO = "getDuenosMascotasByIdUsuario";
+    private static final String INSERT_DUENO_MASCOTA = "insertDuenoMascota";
+    
+    
     private static final String GET_TIPS_BY_ID_USUARIO = "getTipsByIdUsuario";
     private static final String GET_TRAINING_SPOT = "getTrainingSpot";
     private static final String INSERT_IPHONE_ID = "insertIphoneID";
@@ -331,8 +334,8 @@ public class WsDogUtils {
 
     public Integer insertDuenoMascota(Map parameters)
         throws IOException, XmlPullParserException {
-        return genericDuenoMascota("insertDuenoMascota",
-                                   "http://tempuri.org/insertDuenoMascota",
+        return genericDuenoMascota( INSERT_DUENO_MASCOTA,
+                                    namespace + INSERT_DUENO_MASCOTA, //"http://tempuri.org/insertDuenoMascota",
                                    parameters);
     }
 

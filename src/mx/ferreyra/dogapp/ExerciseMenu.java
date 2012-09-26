@@ -91,6 +91,7 @@ public class ExerciseMenu extends Activity {
             public void onClick(View v) {
                 if (DogUtil.getInstance().getCurrentUserId() != null){
                     DogUtil.getInstance().deleteCurrentUserId();
+                    DogUtil.getInstance().saveCurrentDogId(null);
                     UI.showAlertDialog(null, "Se ha cerrado se la sesi\u00f3n actual.", "OK", context, null);
                 }
             }

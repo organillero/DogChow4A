@@ -15,7 +15,8 @@ public class AppData {
 	}
 
 	public static boolean IS_FIRST = true;
-	public static final String URL = "http://marketing7veinte.net/dc_app_perroton/appWSDog/wsDog.asmx?WSDL";
+	//public static final String URL = "http://marketing7veinte.net/dc_app_perroton/appWSDog/wsDog.asmx?WSDL";
+	public static final String URL = "http://www.perroton-dogchow.com.mx/appWSDog/wsDog.asmx?WSDL";
 	//public static final String URL = "http://64.211.201.54/dev/APP_PERRO/appWSDog/wsDog.asmx";
 	//public static final String URL = "http://64.211.201.54/dev/APP_PERRO/appWSDog/wsDog.asmx?";
 	//public static final String URL = "http://dogapp.dci.in/dog_services.php";

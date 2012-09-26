@@ -29,4 +29,10 @@ public class Recursos {
 
 	public static final String GENDER_OWNER[] = {"Masculino", "Femenino"};
 	
+	public static final String USER_ID = "USER_ID";
+	public static final String DOG_ID = "DOG_ID";
+	
+	
+	
+	
 }

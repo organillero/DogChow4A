@@ -120,14 +120,14 @@ public class LoginScreen extends Activity{
         // Email validation
         if("".equals(userEmail.trim())) {
             // Email is empty
-            showOkDialog(this, getString(R.string.email_empty_message), null);
+            showOkDialog(this, getString(R.string.email_empty_message), ONLY_DISMISS);
             return false;
         }
 
         // Password validation
         if("".equals(userPassword.trim())) {
             // Password is empty
-            showOkDialog(this, getString(R.string.password_empty_message), null);
+            showOkDialog(this, getString(R.string.password_empty_message), ONLY_DISMISS);
             return false;
         }
 

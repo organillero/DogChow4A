@@ -142,7 +142,7 @@ public class DogProfile extends Activity {
             super.onPostExecute(result);
 
             if (result == null){
-                showOkDialog(this.context, "No hay mascotas registradas", null);
+                showOkDialog(this.context, getString(R.string.no_dogs_registered), ONLY_DISMISS);
                 startActivityForResult(new Intent(context, DogRegister.class),DogUtil.DOG_PROFILE);
             } else {
                 SimpleDateFormat formater = new SimpleDateFormat("MMM dd, yyyy");

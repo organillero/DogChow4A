@@ -191,12 +191,17 @@
     <string name="life_Style">Tipo de Vida</string>
     <string name="activity">Actividad F\u00edsica</string>
     <string name="birthday_label">Fecha de Nacimiento</string>
+    <string name="dog_age">Edad del perro</string>
     <string name="birthday">Fecha</string>
     <string name="dog_owner_data">Datos del due\u00f1o</string>
     <string name="state">Estado</string>
     <string name="send">"   Registrar   "</string>
     <string name="save">Guardar</string>
     <string name="no_dogs_registered">No hay mascotas registradas</string>
+    <string name="age">Edad</string>
+    <string name="less_than_one_year">Menos de 1 a\u00f1o</string>
+    <string name="between_one_and_seven_years">Entre 1 y 7 a\u00f1os</string>
+    <string name="more_than_seven_years">M\u00e1s de 7 a\u00f1os</string>
 
     <!-- perfil del perro -->
     

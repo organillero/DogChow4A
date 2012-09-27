@@ -3,6 +3,7 @@ package mx.ferreyra.dogapp;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.text.SimpleDateFormat;
+import java.util.Calendar;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -45,6 +46,11 @@ import android.widget.ImageView;
 public class DogRegister extends FragmentActivity {
 
     static final int DATE_DIALOG_ID = 0;
+    static final String[] DOG_AGE_RANGES = {
+        "Menos de 1 a\u00f1o",
+        "Entre 1 y 7 a\u00f1os",
+        "M\u00e1s de 7 a\u00f1os"
+    };
 
     private View activityRootView;
     protected Activity context;
@@ -77,12 +83,7 @@ public class DogRegister extends FragmentActivity {
     private int dogGender = -1;
     private int dogLifeStyle =-1;
     private int dogActivity =-1;
-
-    //vars. fec. nacimiento
-    private int dogYear = -1;
-    private int dogMonth = -1;
-    private int dogDay = -1;
-
+    private int dogAgeRange =-1;
 
     private int ownerGender = -1;
     private int ownerState = -1;
@@ -147,11 +148,12 @@ public class DogRegister extends FragmentActivity {
             dogImage = dogProfilePojo.getMascotaImagen();
             btRemoveImage.setVisibility(View.VISIBLE);
 
-            dogBirthday.setHint(formater.format( dogProfilePojo.mascotaFechaCumpleanos ));
-            dogYear = dogProfilePojo.mascotaFechaCumpleanos.getYear()-100+2000;
-            dogMonth = dogProfilePojo.mascotaFechaCumpleanos.getMonth();
-            dogDay = dogProfilePojo.mascotaFechaCumpleanos.getDate();
-
+            int nowYear = Calendar.getInstance().get(Calendar.YEAR);
+            int dogBirthdayYear = dogProfilePojo.mascotaFechaCumpleanos.getYear();
+            int difference = nowYear - dogBirthdayYear;
+            String tag = dogProfilePojo.mascotaFechaCumpleanos==null ? "" :
+                (": " + DOG_AGE_RANGES[difference==0 ? 0 : (difference<7 ? 1 : 2)]);
+            dogBirthday.setHint(getString(R.string.dog_age) + tag);
 
             ownerNameField.setText(dogProfilePojo.duenoNombre);
 
@@ -233,11 +235,22 @@ public class DogRegister extends FragmentActivity {
     }
 
     public void onClickDogBirthdayButton(View view) {
-        DatePickerFragment dogDialogBirtday = new DatePickerFragment();
+        AlertDialog.Builder builder;
+        checkAndHideKeyboard(null);
 
-        dogDialogBirtday.setDate(dogYear, dogMonth, dogDay);
-        dogDialogBirtday.setInterface(myDogDate);
-        dogDialogBirtday.show(getSupportFragmentManager(), "dateOwnerPicker");
+        builder = Build.VERSION.SDK_INT>=11 ?
+                new AlertDialog.Builder(context,AlertDialog.THEME_HOLO_LIGHT) :
+                    new AlertDialog.Builder(context);
+                builder.setTitle(getString(R.string.dog_age));
+                builder.setSingleChoiceItems(DOG_AGE_RANGES, dogAgeRange, new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int item) {
+                        dogBirthday.setHint(getString(R.string.age) + ": " + DOG_AGE_RANGES[item]);
+                        dogAgeRange = item;
+                        dialog.dismiss();
+                    }
+                });
+                builder.create().show();
     }
 
     public void onClickOwnerBirthdayButton(View view) {
@@ -271,7 +284,11 @@ public class DogRegister extends FragmentActivity {
         map.put("mascotaIdTipoVida", String.valueOf(dogLifeStyle+1));
         map.put("mascotaIdActividadFisica", String.valueOf(dogActivity+1));
         map.put("mascotaImagen", encodedImageStr);
-        map.put("mascotaFechaCumpleanos", dogYear + "-" + (dogMonth<10 ? "0"+dogMonth : dogMonth) + "-"+ dogDay);
+
+        Calendar cal = Calendar.getInstance();
+        int diff = dogAgeRange == 0 ? 0 : (dogAgeRange == 1 ? -6 : -10);
+        cal.add(Calendar.YEAR, diff);
+        map.put("mascotaFechaCumpleanos", cal.get(Calendar.YEAR) + "-" + cal.get(Calendar.MONTH) + "-"+ cal.get(Calendar.DAY_OF_MONTH));
 
         map.put("duenoNombre", ownerNameField.getText().toString());
         map.put("duenoIdGenero", String.valueOf(ownerGender+1));
@@ -318,7 +335,7 @@ public class DogRegister extends FragmentActivity {
         }
 
         if(dogGender == -1 || dogLifeStyle == -1 || dogActivity == -1 ||
-                dogYear == -1 || dogMonth == -1 || dogDay == -1 ||
+                dogAgeRange == -1 ||
                 ownerGender == -1 || ownerYear == -1 || ownerMonth == -1 ||
                 ownerDay == -1 || ownerState == -1) {
             UI.showAlertDialog("Upps!!",
@@ -329,19 +346,6 @@ public class DogRegister extends FragmentActivity {
 
         return true;
     }
-
-    MyDate myDogDate = new MyDate(){
-        @Override
-        public void getDate(int year, int month, int day) {
-            dogYear = year;
-            dogMonth = month+1;
-            dogDay = day;
-
-            dogBirthday.setHint(day + " / " + Recursos.MONTHS[month] + " / " + year);
-        }
-
-    };
-
 
     MyDate myOwnerDate = new MyDate(){
         @Override

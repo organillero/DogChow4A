@@ -183,15 +183,16 @@
 
     <!-- DogRegister activity -->
 
-    <string name="dog_data_label">Datos Mascota</string>
+    <string name="dog_data_label">Datos del perro</string>
     <string name="name">Nombre</string>
+    <string name="dog_name">Nombre del perro</string>
     <string name="breed">Raza</string>
     <string name="gender">G\u00e9nero</string>
     <string name="life_Style">Tipo de Vida</string>
     <string name="activity">Actividad F\u00edsica</string>
     <string name="birthday_label">Fecha de Nacimiento</string>
     <string name="birthday">Fecha</string>
-    <string name="dog_owner_data">Datos Due\u00f1o</string>
+    <string name="dog_owner_data">Datos del due\u00f1o</string>
     <string name="state">Estado</string>
     <string name="send">"   Registrar   "</string>
     <string name="save">Guardar</string>

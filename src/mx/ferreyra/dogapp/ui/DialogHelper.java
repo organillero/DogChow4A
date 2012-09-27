@@ -10,6 +10,13 @@ import mx.ferreyra.dogapp.R;
 
 public class DialogHelper {
 
+    public static DialogInterface.OnClickListener ONLY_DISMISS =
+	new DialogInterface.OnClickListener() {
+	    public void onClick(DialogInterface dialog, int which) {
+		dialog.dismiss();
+	    }
+	};
+
     public static void showYesNoDialog(Context context,
                                        String message,
                                        DialogInterface.OnClickListener yesListener,

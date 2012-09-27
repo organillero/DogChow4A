@@ -195,7 +195,8 @@
     <string name="state">Estado</string>
     <string name="send">"   Registrar   "</string>
     <string name="save">Guardar</string>
-    
+    <string name="no_dogs_registered">No hay mascotas registradas</string>
+
     <!-- perfil del perro -->
     
     <string name="edit_profile">Editar Perfil</string>

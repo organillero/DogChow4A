@@ -229,6 +229,7 @@
     <string name="preferences_name">dogapp</string>
     <string name="preference_user_id">userid_new</string>
     <string name="preference_dog_id">dogid</string>
+    <string name="preference_owner_id">owner_id</string>
 
     <!-- DialogHelper -->
     <string name="title_message">DogChow</string>

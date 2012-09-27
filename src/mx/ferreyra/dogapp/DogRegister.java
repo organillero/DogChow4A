@@ -1,6 +1,7 @@
 package mx.ferreyra.dogapp;
 
 import java.io.ByteArrayOutputStream;
+import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.HashMap;
 import java.util.List;
@@ -11,6 +12,9 @@ import mx.ferreyra.dogapp.fragments.DatePickerFragment.MyDate;
 import mx.ferreyra.dogapp.pojos.DogProfilePojo;
 import mx.ferreyra.dogapp.recursos.Recursos;
 import mx.ferreyra.dogapp.ui.UI;
+
+import org.xmlpull.v1.XmlPullParserException;
+
 import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.app.AlertDialog;
@@ -29,6 +33,7 @@ import android.provider.MediaStore;
 import android.provider.MediaStore.Images.Media;
 import android.support.v4.app.FragmentActivity;
 import android.util.Base64;
+import android.util.Log;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
@@ -105,7 +110,7 @@ public class DogRegister extends FragmentActivity {
 
         //Vistas del perro
         dogNameField = (EditText) findViewById(R.id.dog_name_field);
-        dogBreedField = (EditText) findViewById(R.id.dog_name_field);
+        dogBreedField = (EditText) findViewById(R.id.dog_breed_field);
         dogGenderField = (Button) findViewById(R.id.dog_gender_field);
         dogLifeStyleField = (Button) findViewById(R.id.dog_life_style_field);
         dogActivityField = (Button) findViewById(R.id.dog_activity_field);
@@ -125,10 +130,6 @@ public class DogRegister extends FragmentActivity {
         Bundle extras = getIntent().getExtras();
         if (extras != null) {
             dogProfilePojo = (DogProfilePojo) extras.get("DOG_PROFILE_POJO");
-
-
-
-
 
             dogNameField.setText(dogProfilePojo.mascotaNombre);
             dogBreedField.setText(dogProfilePojo.mascotaRaza);
@@ -258,9 +259,13 @@ public class DogRegister extends FragmentActivity {
 
         Map<String, String> map = new HashMap<String, String>();
 
-        String userId = DogUtil.getInstance().getCurrentUserId().toString();
-        map.put("idUsuario", userId);
-        map.put("duenoNombre", dogNameField.getText().toString());
+        Integer userId = DogUtil.getInstance().getCurrentUserId();
+        Integer ownerId = DogUtil.getInstance().getCurrentOwnerId();
+        if(userId!=null)
+            map.put("idUsuario", userId.toString());
+        if(ownerId!=null)
+            map.put("idDueno", ownerId.toString());
+        map.put("mascotaNombre", dogNameField.getText().toString());
         map.put("mascotaRaza", dogBreedField.getText().toString());
         map.put("mascotaIdGenero", String.valueOf(dogGender+1));
         map.put("mascotaIdTipoVida", String.valueOf(dogLifeStyle+1));
@@ -272,6 +277,8 @@ public class DogRegister extends FragmentActivity {
         map.put("duenoIdGenero", String.valueOf(ownerGender+1));
         map.put("duenoFechaCumpleanos", ownerYear + "-" + (ownerMonth<10 ? "0"+ownerMonth : ownerMonth) + "-"+ ownerDay);
         map.put("duenoIdEstado", String.valueOf(ownerState));
+        map.put("comentarios1", "");
+        map.put("comentarios2", "");
 
         DogRegisterAsync dogRegisterAsync =  new DogRegisterAsync (context);
         dogRegisterAsync.setMap(map);
@@ -402,6 +409,7 @@ public class DogRegister extends FragmentActivity {
         AlertDialog.Builder builder = new AlertDialog.Builder(context);
         builder.setTitle("Tomar Fotograf\u00eda");
         builder.setItems(items, new DialogInterface.OnClickListener() {
+            @Override
             public void onClick(DialogInterface dialog, int item) {
                 if (item == 0)
                     getPhotofromAlbum();
@@ -477,7 +485,7 @@ public class DogRegister extends FragmentActivity {
 
 
     protected class DogRegisterAsync extends AsyncTask<Void, Integer, Integer> {
-        private Context context;
+        private final Context context;
         private ProgressDialog dialog;
         private Map<String, String> map;
 
@@ -503,11 +511,17 @@ public class DogRegister extends FragmentActivity {
         protected Integer doInBackground(Void... params) {
             WsDogUtils wsDogUtils = new WsDogUtils(context);
             try {
-                if(DogUtil.getInstance().getCurrentDogId() == null || DogUtil.getInstance().getCurrentDogId()<0)
+                Integer dogId = DogUtil.getInstance().getCurrentDogId();
+                if(dogId == null || dogId < 0)
                     return wsDogUtils.insertDuenoMascota(map);
                 else
                     return wsDogUtils.editDuenoMascota(map);
-            } catch (Exception e) {
+
+            } catch(XmlPullParserException e) {
+                Log.e(DogUtil.DEBUG_TAG, e.getMessage(), e);
+                return null;
+            } catch(IOException e) {
+                Log.e(DogUtil.DEBUG_TAG, e.getMessage(), e);
                 return null;
             }
         }
@@ -522,6 +536,7 @@ public class DogRegister extends FragmentActivity {
             Intent intent = new Intent();
             intent.putExtra("ID_PET", result);
 
+            // Store dog id
             DogUtil.getInstance().saveCurrentDogId(result);
 
             setResult(Activity.RESULT_OK, intent);

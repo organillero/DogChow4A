@@ -64,6 +64,7 @@ public class DogUtil extends Application {
         this.routeName = routeName;
     }
 
+    @Override
     public void onCreate() {
         super.onCreate();
 
@@ -161,7 +162,13 @@ public class DogUtil extends Application {
         int possible = pref.getInt(getString(R.string.preference_dog_id), -1);
         return possible>=0 ? possible : null;
     }
-    
+
+    public Integer getCurrentOwnerId() {
+        SharedPreferences pref = getSharedPreferences(getString(R.string.preferences_name), 0);
+        int possible = pref.getInt(getString(R.string.preference_owner_id), -1);
+        return possible>=0 ? possible : null;
+    }
+
     public void saveCurrentUserId(Integer userId) {
         // Store user id on preferences
         SharedPreferences pref = getSharedPreferences(getString(R.string.preferences_name), 0);
@@ -193,5 +200,18 @@ public class DogUtil extends Application {
         }
     }
 
+    public void saveCurrentOwnerId(Integer ownerId) {
+        SharedPreferences pref = getSharedPreferences(getString(R.string.preferences_name), 0);
+        Editor e = pref.edit();
+        if(ownerId == null || ownerId < 0) {
+            // Store owner id on preferences
+            e.remove(getString(R.string.preference_owner_id));
+            e.commit();
+        } else {
+            // Store owner id on preferences
+            e.putInt(getString(R.string.preference_owner_id), ownerId);
+            e.commit();
+        }
+    }
 
 }

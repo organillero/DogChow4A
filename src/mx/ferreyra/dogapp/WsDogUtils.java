@@ -43,7 +43,7 @@ public class WsDogUtils {
         this.context = context;
     }
 
-    public Integer editDuenoMascota(Map parameters)
+    public Integer editDuenoMascota(Map<String, String> parameters)
         throws IOException, XmlPullParserException {
         return genericDuenoMascota(EDIT_DUENO_MASCOTA,
                                    namespace + EDIT_DUENO_MASCOTA,
@@ -271,7 +271,7 @@ public class WsDogUtils {
         throws IOException, XmlPullParserException {
         String method = "getStats";
         SoapObject request = new SoapObject(namespace, method);
-        request.addProperty("userId",(Integer)parameters.get("user_id"));
+        request.addProperty("userId",parameters.get("user_id"));
         SoapObject result = (SoapObject)genericRequest(method,
                                                        "http://tempuri.org/getStats",
                                                        request);
@@ -328,30 +328,27 @@ public class WsDogUtils {
         return parseGetTrainingSpot(result);
     }
 
-    public Integer insertDuenoMascota(Map parameters)
+    public Integer insertDuenoMascota(Map<String, String> parameters)
         throws IOException, XmlPullParserException {
         return genericDuenoMascota("insertDuenoMascota",
                                    "http://tempuri.org/insertDuenoMascota",
                                    parameters);
     }
 
-    public Integer genericDuenoMascota(String method, String action, Map parameters)
+    public Integer genericDuenoMascota(String method, String action, Map<String, String> parameters)
         throws IOException, XmlPullParserException {
         SoapObject request = new SoapObject(namespace, method);
-        request.addProperty("idUsuario",(String)parameters.get("idUsuario"));
-        request.addProperty("duenoNombre",(String)parameters.get("duenoNombre"));
-        request.addProperty("duenoIdGenero",(String)parameters.get("duenoIdGenero"));
-        request.addProperty("duenoFechaCumpleanos",(String)parameters.get("duenoFechaCumpleanos"));
-        request.addProperty("duenoIdEstado",(String)parameters.get("duenoIdEstado"));
-        request.addProperty("mascotaNombre",(String)parameters.get("mascotaNombre"));
-        request.addProperty("mascotaRaza",(String)parameters.get("mascotaRaza"));
-        request.addProperty("mascotaIdGenero",(String)parameters.get("mascotaIdGenero"));
-        request.addProperty("mascotaIdTipoVida",(String)parameters.get("mascotaIdTipoVida"));
-        request.addProperty("mascotaFechaCumpleanos",(String)parameters.get("mascotaFechaCumpleanos"));
-        request.addProperty("mascotaIdActividadFisica",(String)parameters.get("mascotaIdActividadFisica"));
-        request.addProperty("mascotaImagen",(String)parameters.get("mascotaImagen"));
-        request.addProperty("comentarios1",(String)parameters.get("comentarios1"));
-        request.addProperty("comentarios2",(String)parameters.get("comentarios2"));
+        String[] keys = {
+            "idDueno", "idUsuario", "duenoNombre", "duenoIdGenero", "duenoFechaCumpleanos",
+            "duenoIdEstado", "mascotaNombre", "mascotaRaza", "mascotaIdGenero",
+            "mascotaIdTipoVida", "mascotaIdGenero", "mascotaIdTipoVida",
+            "mascotaFechaCumpleanos", "mascotaIdActividadFisica", "mascotaImagen",
+            "comentarios1", "comentarios2"
+        };
+
+        for(String key : keys)
+            if(parameters.containsKey(key))
+                request.addProperty(key,parameters.get(key));
 
         SoapSerializationEnvelope envelope = new SoapSerializationEnvelope(SoapEnvelope.VER11);
         envelope.setOutputSoapObject(request);

@@ -62,7 +62,7 @@ public class ExerciseMenu extends Activity {
     private Facebook facebook;
     private boolean isNLP = false;
     private ProgressBar titleBar;
-    private Handler handler = new Handler();
+    private final Handler handler = new Handler();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -88,10 +88,10 @@ public class ExerciseMenu extends Activity {
         title_right.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (DogUtil.getInstance().getCurrentUserId() != null){
-                    DogUtil.getInstance().saveCurrentUserId(null);
-                    UI.showAlertDialog(null, "Se ha cerrado se la sesi\u00f3n actual.", "OK", context, null);
-                }
+                DogUtil.getInstance().saveCurrentUserId(null);
+                DogUtil.getInstance().saveCurrentDogId(null);
+                DogUtil.getInstance().saveCurrentOwnerId(null);
+                UI.showAlertDialog(null, "Se ha cerrado se la sesi\u00f3n actual.", "OK", context, null);
             }
         });
 
@@ -278,6 +278,7 @@ public class ExerciseMenu extends Activity {
         alt_bld.setMessage(message)
         .setCancelable(false)
         .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+            @Override
             public void onClick(DialogInterface dialog, int id) {
                 if(isNLP){
                     startActivityForResult(new Intent(android.provider.Settings.ACTION_LOCATION_SOURCE_SETTINGS), 0);
@@ -293,6 +294,7 @@ public class ExerciseMenu extends Activity {
             }
         })
         .setNegativeButton("No", new DialogInterface.OnClickListener() {
+            @Override
             public void onClick(DialogInterface dialog, int id) {
                 dialog.cancel();
             }

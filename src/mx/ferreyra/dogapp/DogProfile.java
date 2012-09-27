@@ -1,23 +1,20 @@
 package mx.ferreyra.dogapp;
 
-import java.io.ByteArrayInputStream;
-import java.io.InputStream;
+import static mx.ferreyra.dogapp.ui.DialogHelper.ONLY_DISMISS;
+import static mx.ferreyra.dogapp.ui.DialogHelper.showOkDialog;
+
 import java.text.SimpleDateFormat;
 import java.util.Map;
 
 import mx.ferreyra.dogapp.pojos.DogProfilePojo;
 import mx.ferreyra.dogapp.recursos.Recursos;
 import mx.ferreyra.dogapp.ui.UI;
-import static mx.ferreyra.dogapp.ui.DialogHelper.*;
 import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.os.AsyncTask;
 import android.os.Bundle;
-import android.util.Base64;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -105,10 +102,12 @@ public class DogProfile extends Activity {
                     return null;
                 }
 
+                // Store owner id
+                DogUtil.getInstance().saveCurrentOwnerId(Integer.valueOf(result[0][0]));
+
                 SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
 
                 dogProfilePojo = new DogProfilePojo();
-
 
                 dogProfilePojo.idDueno = Integer.valueOf(result[0][0]);
                 dogProfilePojo.idUsusario = Integer.valueOf(result[0][1]);
@@ -123,9 +122,6 @@ public class DogProfile extends Activity {
                 dogProfilePojo.mascotaIdTipoVida = Integer.valueOf(result[0][9]);
                 dogProfilePojo.mascotaIdActividadFisica = Integer.valueOf(result[0][10]);
                 dogProfilePojo.mascotaFechaCumpleanos = sdf.parse(result[0][11]);
-                //                byte[] bytes = Base64.decode(result[0][12], Base64.DEFAULT);
-                //                InputStream is = new ByteArrayInputStream(bytes);
-                //                Bitmap bmp = BitmapFactory.decodeStream(is);
 
                 dogProfilePojo.setMascotaImagen ( result[0][12]);
 

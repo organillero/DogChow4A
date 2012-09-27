@@ -18,7 +18,6 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Color;
-import android.location.LocationManager;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.net.NetworkInfo.State;
@@ -90,7 +89,7 @@ public class ExerciseMenu extends Activity {
             @Override
             public void onClick(View v) {
                 if (DogUtil.getInstance().getCurrentUserId() != null){
-                    DogUtil.getInstance().deleteCurrentUserId();
+                    DogUtil.getInstance().saveCurrentUserId(null);
                     UI.showAlertDialog(null, "Se ha cerrado se la sesi\u00f3n actual.", "OK", context, null);
                 }
             }

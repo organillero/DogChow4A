@@ -371,6 +371,10 @@ public class ExerciseMenu extends Activity {
         DogUtil.TRACKER_VALUE++;
     }
 
+    public void onClickCalendarButton(View view) {
+        // TODO implement this method
+    }
+
     public void onClickStatisticsButton(View v) {
         if(app.getCurrentUserId()==null) {
             startActivityForResult(new Intent(this, PreSignup.class), DogUtil.STATISTICS);
@@ -392,6 +396,10 @@ public class ExerciseMenu extends Activity {
             // User logged
             startActivity(new Intent(this, DogProfile.class));
         }
+    }
+
+    public void onClickNearPhotosButton(View view) {
+        // TODO implement this method
     }
 
     public void onClickTButtonLeftButton(View v) {

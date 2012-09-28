@@ -19,8 +19,8 @@ import android.content.Context;
 public class WsDogUtils {
 
     public Context context;
-    private String url = "http://marketing7veinte.net/dc_app_perroton/appWSDog/wsDog.asmx?WSDL";
-    private String namespace = "http://tempuri.org/";
+    private final String url = "http://marketing7veinte.net/dc_app_perroton/appWSDog/wsDog.asmx?WSDL";
+    private final String namespace = "http://tempuri.org/";
 
     private static final String EDIT_DUENO_MASCOTA = "editDuenoMascota";
     private static final String GET_CAT_ACTIVIDAD_FISICA = "getCatActividadFisica";
@@ -45,9 +45,8 @@ public class WsDogUtils {
 
     public Integer editDuenoMascota(Map<String, String> parameters)
         throws IOException, XmlPullParserException {
-        return genericDuenoMascota(EDIT_DUENO_MASCOTA,
-                                   namespace + EDIT_DUENO_MASCOTA,
-                                   parameters);
+        Integer result = genericDuenoMascota(EDIT_DUENO_MASCOTA, namespace + EDIT_DUENO_MASCOTA, parameters);
+        return result;
     }
 
     /**
@@ -346,10 +345,12 @@ public class WsDogUtils {
             "comentarios1", "comentarios2"
         };
 
+        // Puts parameters in SoapObject
         for(String key : keys)
             if(parameters.containsKey(key))
                 request.addProperty(key,parameters.get(key));
 
+        // Prepare Soap envelope
         SoapSerializationEnvelope envelope = new SoapSerializationEnvelope(SoapEnvelope.VER11);
         envelope.setOutputSoapObject(request);
         envelope.dotNet = true;
@@ -358,13 +359,15 @@ public class WsDogUtils {
         androidHttpTransport.debug = true;
         androidHttpTransport.call(action, envelope);
 
+        Integer result;
         if((envelope.bodyIn) instanceof SoapObject) {
             // Soap object response
-            return parseGenericReturnSoapObject((SoapObject)envelope.bodyIn);
+            result = parseGenericReturnSoapObject((SoapObject)envelope.bodyIn);
         } else {
             // Soap fault response
-            return null;
+            result = null;
         }
+        return result;
     }
 
     /**
@@ -388,7 +391,7 @@ public class WsDogUtils {
     public String[][] insertIphoneID(Map parameters)
         throws IOException, XmlPullParserException {
         SoapObject request = new SoapObject(namespace, INSERT_IPHONE_ID);
-        request.addProperty("IphoneID",(Integer)parameters.get("iphone_id"));
+        request.addProperty("IphoneID",parameters.get("iphone_id"));
         SoapObject result = (SoapObject)genericRequest(INSERT_IPHONE_ID,
                                                        namespace + INSERT_IPHONE_ID,
                                                        request);

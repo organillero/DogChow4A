@@ -2,7 +2,6 @@ package mx.ferreyra.dogapp;
 
 import java.io.IOException;
 
-import org.w3c.dom.Comment;
 import org.xmlpull.v1.XmlPullParserException;
 
 import android.app.Activity;
@@ -51,13 +50,13 @@ public class SignupActivity extends Activity {
 	}
 
 	private void dispatchResult(Integer result) {
-		
+
 		Intent intent = new Intent();
         intent.putExtra("ID_USER", result);
-		
+
 		setResult(RESULT_OK, intent);
 		finish();
-		
+
 		/*
 		if(result < 0) {
 			// -1 => Some data wrong
@@ -91,7 +90,7 @@ public class SignupActivity extends Activity {
 	}
 
 	protected class Signup extends AsyncTask<String, Integer, Integer> {
-		private Context context;
+		private final Context context;
 		private ProgressDialog dialog;
 
 		public Signup(Context context) {
@@ -108,7 +107,7 @@ public class SignupActivity extends Activity {
 
 		@Override
 		protected Integer doInBackground(String... params) {
-			WsDogUtils ws = new WsDogUtils(context);
+			WsDogUtils ws = new WsDogUtils();
 			try {
 				return ws.insertUsers(params[0],params[1],false);
 			} catch (IOException e) {

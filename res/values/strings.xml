@@ -245,6 +245,10 @@
     <!-- LoginScreen -->
     <string name="email_empty_message">Ingrese su correo electr\u00f3nico</string>
     <string name="password_empty_message">Ingrese su contrase\u00f1a</string>
+
+    <!-- Add Dog Photo -->
     <string name="title_activity_add_dog_photo">AddDogPhoto</string>
+    <string name="add_dog_photo_label">Agregar fotograf\u00eda</string>
+    <string name="dog_photo_description_label">Descripci\u00f3n de la fotograf\u00eda</string>
 
 </resources>

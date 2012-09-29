@@ -1,19 +1,33 @@
 package mx.ferreyra.dogapp;
 
+import java.io.ByteArrayInputStream;
+import java.io.InputStream;
+
 import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.Context;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.util.Base64;
+import android.widget.ImageView;
+import android.widget.TextView;
 
 public class ShowDogPhoto extends Activity {
 
     private final String PHOTO_ID = "photoId";
+    private ImageView dogPhoto;
+    private TextView dogPhotoFoot;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_show_dog_photo);
+
+        // Load view controls
+        dogPhoto     = (ImageView)findViewById(R.id.dog_photo);
+        dogPhotoFoot = (TextView)findViewById(R.id.dog_photo_foot);
 
         // Check parameters for activity
         Bundle extras = getIntent().getExtras();
@@ -35,11 +49,18 @@ public class ShowDogPhoto extends Activity {
         }
     }
 
-    public void pojoToView() {
+    public void arrayToView(String[] array) {
+        // Load photo
+        byte[] bytes = Base64.decode(array[3], Base64.DEFAULT);
+        InputStream is = new ByteArrayInputStream(bytes);
+        Bitmap bmp = BitmapFactory.decodeStream(is);
+        dogPhoto.setImageBitmap(bmp);
 
+        // TODO load photo foot
+        //dogPhotoFoot.setText(array[0]);
     }
 
-    private class ShowDogPhotoTask extends AsyncTask<Integer, Integer, String> {
+    private class ShowDogPhotoTask extends AsyncTask<Integer, Integer, String[]> {
 
         private final Context context;
         private ProgressDialog dialog;
@@ -57,15 +78,15 @@ public class ShowDogPhoto extends Activity {
         }
 
         @Override
-        protected String doInBackground(Integer... params) {
+        protected String[] doInBackground(Integer... params) {
             WsDogUtils ws = new WsDogUtils();
-            String result = null;
+            String[] result = null;
             // TODO query webservice to find photo
             return result;
         }
 
         @Override
-        protected void onPostExecute(String result) {
+        protected void onPostExecute(String[] result) {
             super.onPostExecute(result);
             // Stop and hide dialog
             dialog.dismiss();
@@ -76,7 +97,7 @@ public class ShowDogPhoto extends Activity {
                 // TODO finish this flow
             } else {
                 // Load data into view
-                pojoToView();
+                arrayToView(result);
             }
         }
     }

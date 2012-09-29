@@ -69,17 +69,13 @@ public class DogUtil extends Application {
         this.routeName = routeName;
     }
 
+    @Override
     public void onCreate() {
         super.onCreate();
 
         if(app == null)
             app = this;
 
-        // Loading preferences
-        prefs=  new Preferencias(this);
-
-        // loadCurrentUserId();
-        //loadCurrentDogId();
 
         initFacebook();
         if(gTracker == null){
@@ -162,79 +158,75 @@ public class DogUtil extends Application {
     }
 
 
-    public Preferencias getPrefs() {
-        return prefs;
-    }
-
-
-
-
-
     public Integer getCurrentUserId() {
-        return prefs.loadData(Recursos.USER_ID) != null? Integer.valueOf( prefs.loadData(Recursos.USER_ID)) :null;
+        SharedPreferences pref = getSharedPreferences(getString(R.string.preferences_name), 0);
+        int possible = pref.getInt(getString(R.string.preference_user_id), -1);
+        return possible>=0 ? possible : null;
     }
 
     public Integer getCurrentDogId() {
-        return prefs.loadData(Recursos.DOG_ID) != null? Integer.valueOf( prefs.loadData(Recursos.DOG_ID)) :null;
+        SharedPreferences pref = getSharedPreferences(getString(R.string.preferences_name), 0);
+        int possible = pref.getInt(getString(R.string.preference_dog_id), -1);
+        return possible>=0 ? possible : null;
     }
    
 
    
 
 
-    public void deleteCurrentUserId(){
 
-        prefs.clearPreference(Recursos.USER_ID);
-
-        /*
-        Editor e = pref.edit();
-        e.remove(getString(R.string.preference_user_id));
-        e.remove(Utilities.USER_ID);
-        e.commit();
-        currentUserId = null;
-        */
+    public Integer getCurrentOwnerId() {
+        SharedPreferences pref = getSharedPreferences(getString(R.string.preferences_name), 0);
+        int possible = pref.getInt(getString(R.string.preference_owner_id), -1);
+        return possible>=0 ? possible : null;
     }
 
     public void saveCurrentUserId(Integer userId) {
-        
-        prefs.saveData(Recursos.USER_ID, userId.toString());
-//        // Store user id on preferences
-//        Editor e = pref.edit();
-//        e.putInt(getString(R.string.preference_user_id), userId);
-//        e.putString(Utilities.USER_ID, userId.toString());
-//        e.commit();
-//
-//
-//        // Reload value
-//        this.currentUserId = userId;
+        // Store user id on preferences
+        SharedPreferences pref = getSharedPreferences(getString(R.string.preferences_name), 0);
+        Editor e = pref.edit();
+        if(userId == null || userId < 0) {
+            // Store user id on preferences
+            e.remove(getString(R.string.preference_user_id));
+            e.remove(Utilities.USER_ID);
+            e.commit();
+        } else {
+            // Store user id on preferences
+            e.putInt(getString(R.string.preference_user_id), userId);
+            e.putString(Utilities.USER_ID, userId.toString());
+            e.commit();
+        }
     }
-
 
     public void saveCurrentDogId(Integer dogId) {
-        
-        if (dogId == null)
-            prefs.clearPreference(Recursos.DOG_ID);
-        else 
-            prefs.saveData(Recursos.DOG_ID, dogId.toString());
-//        SharedPreferences pref = getSharedPreferences(getString(R.string.preferences_name), 0);
-//        Editor e = pref.edit();
-//        if(dogId == null || dogId < 0) {
-//            // Store dog id on preferences
-//            e.remove(getString(R.string.preference_dog_id));
-//            e.commit();
-//
-//            // Reload value
-//            this.currentDogId = null;
-//        } else {
-//            // Store dog id on preferences
-//            e.putInt(getString(R.string.preference_dog_id), dogId);
-//            e.commit();
-//
-//            // Reload value
-//            this.currentDogId = dogId;
-//        }
+
+
+        SharedPreferences pref = getSharedPreferences(getString(R.string.preferences_name), 0);
+        Editor e = pref.edit();
+        if(dogId == null || dogId < 0) {
+            // Store dog id on preferences
+            e.remove(getString(R.string.preference_dog_id));
+            e.commit();
+        } else {
+            // Store dog id on preferences
+            e.putInt(getString(R.string.preference_dog_id), dogId);
+            e.commit();
+        }
     }
 
+    public void saveCurrentOwnerId(Integer ownerId) {
+        SharedPreferences pref = getSharedPreferences(getString(R.string.preferences_name), 0);
+        Editor e = pref.edit();
+        if(ownerId == null || ownerId < 0) {
+            // Store owner id on preferences
+            e.remove(getString(R.string.preference_owner_id));
+            e.commit();
+        } else {
+            // Store owner id on preferences
+            e.putInt(getString(R.string.preference_owner_id), ownerId);
+            e.commit();
+        }
+    }
 
 
     

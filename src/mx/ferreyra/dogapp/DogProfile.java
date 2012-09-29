@@ -1,23 +1,20 @@
 package mx.ferreyra.dogapp;
 
-import java.io.ByteArrayInputStream;
-import java.io.InputStream;
+import static mx.ferreyra.dogapp.ui.DialogHelper.ONLY_DISMISS;
+import static mx.ferreyra.dogapp.ui.DialogHelper.showOkDialog;
+
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.util.Map;
 
 import mx.ferreyra.dogapp.pojos.DogProfilePojo;
 import mx.ferreyra.dogapp.recursos.Recursos;
 import mx.ferreyra.dogapp.ui.UI;
-import static mx.ferreyra.dogapp.ui.DialogHelper.*;
 import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.os.AsyncTask;
 import android.os.Bundle;
-import android.util.Base64;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -40,10 +37,6 @@ public class DogProfile extends Activity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         context = this;
-
-        Integer tmp = DogUtil.getInstance().getCurrentDogId();
-
-
         setContentView(R.layout.profile_dog);
 
         dogBreed = (TextView) findViewById(R.id.tvBreed);
@@ -51,7 +44,6 @@ public class DogProfile extends Activity {
         dogLifeStyle = (TextView) findViewById(R.id.tvLyfeStyle);
         dogBirthDay = (TextView) findViewById(R.id.tvDate);
         dogTip = (TextView) findViewById(R.id.tvTip);
-
         dogImage = (ImageView) findViewById(R.id.imageView1);
 
         DogProfileAsync async =  new DogProfileAsync (context);
@@ -59,8 +51,7 @@ public class DogProfile extends Activity {
 
     }
 
-    public void editProfile(View v){
-
+    public void editProfile(View view) {
         Intent intent = new Intent(this, DogRegister.class);
         intent.putExtra("DOG_PROFILE_POJO", dogProfilePojo);
 
@@ -68,21 +59,13 @@ public class DogProfile extends Activity {
         return;
     }
 
-
-    protected class DogProfileAsync extends
-    AsyncTask<Void, Integer, DogProfilePojo> {
+    protected class DogProfileAsync extends AsyncTask<Void, Integer, DogProfilePojo> {
         private final Context context;
         private ProgressDialog dialog;
-        private Map<String, String> map;
 
         public DogProfileAsync(Context context) {
             this.context = context;
         }
-
-        /*
-         * public void setMap (Map<String, String> map ){ this.map = map;
-         * return; }
-         */
 
         @Override
         protected void onPreExecute() {
@@ -97,7 +80,6 @@ public class DogProfile extends Activity {
             WsDogUtils wsDogUtils = new WsDogUtils(context);
             try {
                 Integer userid = DogUtil.getInstance().getCurrentUserId();
-
                 String[][] result = wsDogUtils.getDuenosMascotasByIdUsuario(userid);
 
                 if(result==null || result.length==0) {
@@ -105,33 +87,14 @@ public class DogProfile extends Activity {
                     return null;
                 }
 
-                SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
 
-                dogProfilePojo = new DogProfilePojo();
+                DogProfilePojo pojo = getDogProfilePojo(result[0]);
 
 
-                dogProfilePojo.idDueno = Integer.valueOf(result[0][0]);
-                dogProfilePojo.idUsusario = Integer.valueOf(result[0][1]);
-                dogProfilePojo.duenoNombre = result[0][2];
-                dogProfilePojo.duenoIdGenero = Integer.valueOf(result[0][3]);
-                dogProfilePojo.duenoFechaCumpleanos = sdf.parse(result[0][4]);
-                dogProfilePojo.duenoIdEstado = Integer.valueOf(result[0][5]);
+                // Store owner id
+                DogUtil.getInstance().saveCurrentOwnerId(pojo.getIdDueno());
 
-                dogProfilePojo.mascotaNombre = result[0][6];
-                dogProfilePojo.mascotaRaza = result[0][7];
-                dogProfilePojo.mascotaIdTipoVida = Integer.valueOf(result[0][9]);
-                dogProfilePojo.mascotaIdGenero = Integer.valueOf(result[0][8]);
-                dogProfilePojo.mascotaIdActividadFisica = Integer.valueOf(result[0][10]);
-                dogProfilePojo.mascotaFechaCumpleanos = sdf.parse(result[0][11]);
-                //                byte[] bytes = Base64.decode(result[0][12], Base64.DEFAULT);
-                //                InputStream is = new ByteArrayInputStream(bytes);
-                //                Bitmap bmp = BitmapFactory.decodeStream(is);
-
-                dogProfilePojo.setMascotaImagen ( result[0][12]);
-
-                dogProfilePojo.tip = result[0][16];
-
-                return dogProfilePojo;
+                return pojo;
             } catch(Exception e) {
                 return null;
             }
@@ -141,32 +104,18 @@ public class DogProfile extends Activity {
         protected void onPostExecute(DogProfilePojo result) {
             super.onPostExecute(result);
 
-            if (result == null){
-                //showOkDialog(this.context, "No hay mascotas registradas", null);
-                startActivityForResult(new Intent(context, DogRegister.class),DogUtil.DOG_PROFILE);
-            } else {
-                SimpleDateFormat formater = new SimpleDateFormat("MMM dd, yyyy");
-                dogBreed.setText(result.mascotaRaza);
-                dogGender.setText(Recursos.GENDER[result.mascotaIdGenero-1]);
-                dogLifeStyle.setText(Recursos.LIFE_STYLE[result.mascotaIdTipoVida-1]);
-                dogBirthDay.setText(formater.format(result.mascotaFechaCumpleanos));
-                dogTip.setText(result.tip);
-                dogImage.setImageBitmap(result.getMascotaImagen());
-            }
 
-
-
-            // String breed = result[0][7];
-            // String gender = result[0][3];
-            // String lifestyle = result[0][0];
-            // String birthday = result[0][0];
-            // String tip = result[0][0];
-            // String image = result[0][0];
-            //
-            //
-            //
+            // Hide dialog
             dialog.dismiss();
 
+            if(result == null){
+                //showOkDialog(this.context, getString(R.string.no_dogs_registered), ONLY_DISMISS);
+                startActivityForResult(new Intent(context, DogRegister.class),DogUtil.DOG_PROFILE);
+            } else {
+                // Display pojo data
+                dogProfilePojo = result;
+                pojoToView(result);
+            }
         }
     }
 
@@ -177,22 +126,56 @@ public class DogProfile extends Activity {
 
         if (resultCode == Activity.RESULT_OK && intent != null) {
             if (requestCode == DogUtil.DOG_PROFILE || requestCode ==  DogUtil.DOG_EDIT_PROFILE) {
-                Integer dogId = DogUtil.getInstance().getCurrentDogId();//Integer.valueOf(DogUtil.getInstance().getPrefs().loadData(Recursos.DOG_ID));
-                if (dogId ==  null || dogId<0) {
+
+                //Integer dogId = DogUtil.getInstance().getCurrentDogId();//Integer.valueOf(DogUtil.getInstance().getPrefs().loadData(Recursos.DOG_ID));
+                //if (dogId ==  null || dogId<0) {
+
+                // Owner id returned from edit mode in DogRegister
+                Integer ownerId = intent.getExtras().getInt("OWNER_ID");
+                if(ownerId ==  null || ownerId < 0) {
+                    // Report error
                     UI.showAlertDialog("Ups!",
                             "Ha ocurrido un error",
                             "OK", context, null);
                 } else {
+                    // DogProfile update was successful
                     DogProfileAsync async =  new DogProfileAsync (context);
                     async.execute();
                 }
             }
-
-        }
-        else {
+        } else {
             finish();
         }
+    }
 
+    public void pojoToView(DogProfilePojo pojo) {
+        SimpleDateFormat formater = new SimpleDateFormat("MMM dd, yyyy");
+        dogBreed.setText(pojo.getMascotaRaza());
+        dogGender.setText(Recursos.GENDER[pojo.getMascotaIdGenero()-1]);
+        dogLifeStyle.setText(Recursos.LIFE_STYLE[pojo.getMascotaIdTipoVida()-1]);
+        dogBirthDay.setText(formater.format(pojo.getMascotaFechaCumpleanos()));
+        dogTip.setText(pojo.getTip());
+        dogImage.setImageBitmap(pojo.getMascotaImagen());
+    }
 
+    public static DogProfilePojo getDogProfilePojo(String[] dataAsArray) throws ParseException {
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+
+        DogProfilePojo pojo = new DogProfilePojo();
+        pojo.setIdDueno(Integer.valueOf(dataAsArray[0]));
+        pojo.setIdUsuario(Integer.valueOf(dataAsArray[1]));
+        pojo.setDuenoNombre(dataAsArray[2]);
+        pojo.setDuenoIdGenero(Integer.valueOf(dataAsArray[3]));
+        pojo.setDuenoFechaCumpleanos(sdf.parse(dataAsArray[4]));
+        pojo.setDuenoIdEstado(Integer.valueOf(dataAsArray[5]));
+        pojo.setMascotaNombre(dataAsArray[6]);
+        pojo.setMascotaRaza(dataAsArray[7]);
+        pojo.setMascotaIdGenero(Integer.valueOf(dataAsArray[8]));
+        pojo.setMascotaIdTipoVida(Integer.valueOf(dataAsArray[9]));
+        pojo.setMascotaIdActividadFisica(Integer.valueOf(dataAsArray[10]));
+        pojo.setMascotaFechaCumpleanos(sdf.parse(dataAsArray[11]));
+        pojo.setMascotaImagen(dataAsArray[12]);
+        pojo.setTip(dataAsArray[16]);
+        return pojo;
     }
 }

@@ -1,7 +1,13 @@
 package mx.ferreyra.dogapp;
 
+import static mx.ferreyra.dogapp.ui.DialogHelper.ONLY_DISMISS;
+import static mx.ferreyra.dogapp.ui.DialogHelper.showOkDialog;
+
 import java.io.ByteArrayOutputStream;
+import java.io.FileNotFoundException;
+import java.io.IOException;
 import java.text.SimpleDateFormat;
+import java.util.Calendar;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -11,6 +17,9 @@ import mx.ferreyra.dogapp.fragments.DatePickerFragment.MyDate;
 import mx.ferreyra.dogapp.pojos.DogProfilePojo;
 import mx.ferreyra.dogapp.recursos.Recursos;
 import mx.ferreyra.dogapp.ui.UI;
+
+import org.xmlpull.v1.XmlPullParserException;
+
 import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.app.AlertDialog;
@@ -29,22 +38,43 @@ import android.provider.MediaStore;
 import android.provider.MediaStore.Images.Media;
 import android.support.v4.app.FragmentActivity;
 import android.util.Base64;
+import android.util.Log;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
+import android.widget.CheckBox;
+import android.widget.CompoundButton;
+import android.widget.CompoundButton.OnCheckedChangeListener;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ImageView;
+import android.widget.RelativeLayout;
 
 @SuppressLint("NewApi")
 public class DogRegister extends FragmentActivity {
 
     static final int DATE_DIALOG_ID = 0;
+    static final String[] DOG_AGE_RANGES = {
+        "Menos de 1 a\u00f1o",
+        "Entre 1 y 7 a\u00f1os",
+        "M\u00e1s de 7 a\u00f1os"
+    };
 
     private View activityRootView;
     protected Activity context;
 
     //Variables internas para el control del registro
+
+
+    //Checkbok para elegir el formulario
+
+    CheckBox selectForm;
+
+    //Relatives layouts de perro y due–o para mostrarlos segun el estado de selectForm
+
+    RelativeLayout rlDog;
+    RelativeLayout rlOwner;
+
     //Vistas  del perro
 
     private EditText dogNameField;
@@ -72,12 +102,7 @@ public class DogRegister extends FragmentActivity {
     private int dogGender = -1;
     private int dogLifeStyle =-1;
     private int dogActivity =-1;
-
-    //vars. fec. nacimiento
-    private int dogYear = -1;
-    private int dogMonth = -1;
-    private int dogDay = -1;
-
+    private int dogAgeRange =-1;
 
     private int ownerGender = -1;
     private int ownerState = -1;
@@ -94,7 +119,6 @@ public class DogRegister extends FragmentActivity {
 
     SimpleDateFormat formater = new SimpleDateFormat("dd / MMM / yyyy");
 
-    @SuppressWarnings("deprecation")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -102,75 +126,103 @@ public class DogRegister extends FragmentActivity {
 
         context = this;
         activityRootView = findViewById(R.id.activityrootview);
-
-        //Vistas del perro
         dogNameField = (EditText) findViewById(R.id.dog_name_field);
-        dogBreedField = (EditText) findViewById(R.id.dog_name_field);
+        dogBreedField = (EditText) findViewById(R.id.dog_breed_field);
         dogGenderField = (Button) findViewById(R.id.dog_gender_field);
         dogLifeStyleField = (Button) findViewById(R.id.dog_life_style_field);
         dogActivityField = (Button) findViewById(R.id.dog_activity_field);
         dogPhoto = (ImageView) findViewById(R.id.dog_photo);
         dogBirthday = (Button) findViewById(R.id.dog_birthday);
-
-        //Vistas del dueno
         ownerNameField = (EditText) findViewById(R.id.owner_name_field);
         ownerGenderField = (Button) findViewById(R.id.owner_gender_field);
         ownerStateField = (Button) findViewById(R.id.owner_state);
         ownerBirthDay = (Button) findViewById(R.id.owner_birthday);
-
-
         btRemoveImage = (ImageButton) findViewById(R.id.bt_remove);
+        selectForm = (CheckBox) findViewById(R.id.cb_select_form);
+
+        rlDog = (RelativeLayout) findViewById(R.id.rl_dog);
+        rlOwner= (RelativeLayout) findViewById(R.id.rl_owner);
 
 
+        selectForm.setOnCheckedChangeListener(new OnCheckedChangeListener() {
+
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                if ( isChecked )
+                {
+                    rlDog.setVisibility(View.INVISIBLE);
+                    rlOwner.setVisibility(View.VISIBLE);
+                }
+                else {
+                    rlDog.setVisibility(View.VISIBLE);
+                    rlOwner.setVisibility(View.INVISIBLE);
+
+                }
+
+
+            }
+        });
+
+
+        // Check if parameters
         Bundle extras = getIntent().getExtras();
-        if (extras != null) {
-            dogProfilePojo = (DogProfilePojo) extras.get("DOG_PROFILE_POJO");
-
-
-
-
-
-            dogNameField.setText(dogProfilePojo.mascotaNombre);
-            dogBreedField.setText(dogProfilePojo.mascotaRaza);
-
-            dogGenderField.setHint(Recursos.GENDER[dogProfilePojo.mascotaIdGenero-1]);
-            dogGender = dogProfilePojo.mascotaIdGenero-1;
-
-            dogLifeStyleField.setHint(Recursos.LIFE_STYLE[dogProfilePojo.mascotaIdTipoVida-1]);
-            dogLifeStyle = dogProfilePojo.mascotaIdTipoVida-1;
-
-            dogActivityField.setHint(Recursos.ACTIVITY[dogProfilePojo.mascotaIdActividadFisica-1]);
-            dogActivity = dogProfilePojo.mascotaIdActividadFisica-1;
-
-            dogPhoto.setImageBitmap(dogProfilePojo.getMascotaImagen());
-            dogImage = dogProfilePojo.getMascotaImagen();
-            btRemoveImage.setVisibility(View.VISIBLE);
-
-            dogBirthday.setHint(formater.format( dogProfilePojo.mascotaFechaCumpleanos ));
-            dogYear = dogProfilePojo.mascotaFechaCumpleanos.getYear()-100+2000;
-            dogMonth = dogProfilePojo.mascotaFechaCumpleanos.getMonth();
-            dogDay = dogProfilePojo.mascotaFechaCumpleanos.getDate();
-
-
-            ownerNameField.setText(dogProfilePojo.duenoNombre);
-
-            ownerGenderField.setHint(Recursos.GENDER_OWNER[dogProfilePojo.duenoIdGenero-1]);
-            ownerGender = dogProfilePojo.duenoIdGenero-1;
-
-            ownerBirthDay.setHint(formater.format( dogProfilePojo.duenoFechaCumpleanos ));
-            ownerYear = dogProfilePojo.duenoFechaCumpleanos.getYear()-100+2000;
-            ownerMonth = dogProfilePojo.duenoFechaCumpleanos.getMonth();
-            ownerDay = dogProfilePojo.duenoFechaCumpleanos.getDate();
-
-            ownerStateField.setHint(Recursos.STATES[dogProfilePojo.duenoIdEstado-1]);
-            ownerState = dogProfilePojo.duenoIdEstado-1;
-
-
+        if(extras != null) {
+            DogProfilePojo pojo = (DogProfilePojo)extras.get("DOG_PROFILE_POJO");
+            if(pojo == null) {
+                Log.w(DogUtil.DEBUG_TAG, "Pojo should not be null");
+            } else {
+                // Load pojo data on view
+                pojoToView(pojo);
+            }
         }
-
     };
 
+    @Override
+    protected void onResume() {
+        super.onResume();
+        selectForm.setChecked(false);
+    }
 
+    public void pojoToView(DogProfilePojo pojo) {
+        dogNameField.setText(pojo.getMascotaNombre());
+        dogBreedField.setText(pojo.getMascotaRaza());
+        dogGenderField.setHint(Recursos.GENDER[pojo.getMascotaIdGenero()-1]);
+        dogGender = pojo.getMascotaIdGenero()-1;
+        dogLifeStyleField.setHint(Recursos.LIFE_STYLE[pojo.getMascotaIdTipoVida()-1]);
+        dogLifeStyle = pojo.getMascotaIdTipoVida()-1;
+        dogActivityField.setHint(Recursos.ACTIVITY[pojo.getMascotaIdActividadFisica()-1]);
+        dogActivity = pojo.getMascotaIdActividadFisica()-1;
+        dogPhoto.setImageBitmap(pojo.getMascotaImagen());
+        dogImage = pojo.getMascotaImagen();
+        btRemoveImage.setVisibility(View.VISIBLE);
+
+        // Age range
+        int nowYear = Calendar.getInstance().get(Calendar.YEAR);
+        int dogBirthdayYear = pojo.getMascotaFechaCumpleanos().getYear();
+        int difference = nowYear - dogBirthdayYear;
+        String tag;
+        if(pojo.getMascotaFechaCumpleanos()==null) {
+            tag = "";
+        } else {
+            if(difference==0) {
+                tag = ": " + DOG_AGE_RANGES[dogAgeRange = 0];
+            } else if(difference<7) {
+                tag = ": " + DOG_AGE_RANGES[dogAgeRange = 1];
+            } else {
+                tag = ": " + DOG_AGE_RANGES[dogAgeRange = 2];
+            }
+        }
+        dogBirthday.setHint(getString(R.string.dog_age) + tag);
+        ownerNameField.setText(pojo.getDuenoNombre());
+        ownerGenderField.setHint(Recursos.GENDER_OWNER[pojo.getDuenoIdGenero()-1]);
+        ownerGender = pojo.getDuenoIdGenero()-1;
+        ownerBirthDay.setHint(formater.format( pojo.getDuenoFechaCumpleanos() ));
+        ownerYear = pojo.getDuenoFechaCumpleanos().getYear()-100+2000;
+        ownerMonth = pojo.getDuenoFechaCumpleanos().getMonth();
+        ownerDay = pojo.getDuenoFechaCumpleanos().getDate();
+        ownerStateField.setHint(Recursos.STATES[pojo.getDuenoIdEstado()-1]);
+        ownerState = pojo.getDuenoIdEstado()-1;
+    }
 
     /*
      * Listener de los botones que tienen funion de spinner para no tener una opcion ya selecionada desde un principio
@@ -232,11 +284,22 @@ public class DogRegister extends FragmentActivity {
     }
 
     public void onClickDogBirthdayButton(View view) {
-        DatePickerFragment dogDialogBirtday = new DatePickerFragment();
+        AlertDialog.Builder builder;
+        checkAndHideKeyboard(null);
 
-        dogDialogBirtday.setDate(dogYear, dogMonth, dogDay);
-        dogDialogBirtday.setInterface(myDogDate);
-        dogDialogBirtday.show(getSupportFragmentManager(), "dateOwnerPicker");
+        builder = Build.VERSION.SDK_INT>=11 ?
+                new AlertDialog.Builder(context,AlertDialog.THEME_HOLO_LIGHT) :
+                    new AlertDialog.Builder(context);
+                builder.setTitle(getString(R.string.dog_age));
+                builder.setSingleChoiceItems(DOG_AGE_RANGES, dogAgeRange, new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int item) {
+                        dogBirthday.setHint(getString(R.string.age) + ": " + DOG_AGE_RANGES[item]);
+                        dogAgeRange = item;
+                        dialog.dismiss();
+                    }
+                });
+                builder.create().show();
     }
 
     public void onClickOwnerBirthdayButton(View view) {
@@ -251,31 +314,53 @@ public class DogRegister extends FragmentActivity {
         if(!validateForm())
             return;
 
-        ByteArrayOutputStream stream = new ByteArrayOutputStream();
-        dogImage.compress(Bitmap.CompressFormat.PNG, 100, stream);
-        byte[] byteArray = stream.toByteArray();
-        String encodedImageStr = Base64.encodeToString(byteArray,Base64.DEFAULT);
+        Map<String, String> map = viewToMap();
 
+        // Register async task
+        DogRegisterAsync dogRegisterAsync =  new DogRegisterAsync(context);
+        dogRegisterAsync.setMap(map);
+        dogRegisterAsync.execute();
+    }
+
+    public Map<String, String> viewToMap() {
         Map<String, String> map = new HashMap<String, String>();
 
-        String userId = DogUtil.getInstance().getCurrentUserId().toString();
-        map.put("idUsuario", userId);
-        map.put("duenoNombre", dogNameField.getText().toString());
+        Integer userId = DogUtil.getInstance().getCurrentUserId();
+        Integer ownerId = DogUtil.getInstance().getCurrentOwnerId();
+        if(userId!=null)
+            map.put("idUsuario", userId.toString());
+        if(ownerId!=null)
+            map.put("idDueno", ownerId.toString());
+
+        map.put("mascotaNombre", dogNameField.getText().toString());
         map.put("mascotaRaza", dogBreedField.getText().toString());
         map.put("mascotaIdGenero", String.valueOf(dogGender+1));
         map.put("mascotaIdTipoVida", String.valueOf(dogLifeStyle+1));
         map.put("mascotaIdActividadFisica", String.valueOf(dogActivity+1));
-        map.put("mascotaImagen", encodedImageStr);
-        map.put("mascotaFechaCumpleanos", dogYear + "-" + (dogMonth<10 ? "0"+dogMonth : dogMonth) + "-"+ dogDay);
 
+        Calendar cal = Calendar.getInstance();
+        int diff = dogAgeRange == 0 ? 0 : (dogAgeRange == 1 ? -6 : -10);
+        cal.add(Calendar.YEAR, diff);
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+        map.put("mascotaFechaCumpleanos", sdf.format(cal.getTime()));
+
+        // Owner data
         map.put("duenoNombre", ownerNameField.getText().toString());
         map.put("duenoIdGenero", String.valueOf(ownerGender+1));
         map.put("duenoFechaCumpleanos", ownerYear + "-" + (ownerMonth<10 ? "0"+ownerMonth : ownerMonth) + "-"+ ownerDay);
         map.put("duenoIdEstado", String.valueOf(ownerState));
 
-        DogRegisterAsync dogRegisterAsync =  new DogRegisterAsync (context);
-        dogRegisterAsync.setMap(map);
-        dogRegisterAsync.execute();
+        map.put("comentarios1", "");
+        map.put("comentarios2", "");
+
+        // Dog Image
+        ByteArrayOutputStream stream = new ByteArrayOutputStream();
+        dogImage.compress(Bitmap.CompressFormat.PNG, 100, stream);
+        byte[] byteArray = stream.toByteArray();
+        String encodedImageStr = Base64.encodeToString(byteArray,Base64.DEFAULT);
+        map.put("mascotaImagen", encodedImageStr);
+
+        return map;
     }
 
     private boolean validateForm() {
@@ -283,7 +368,7 @@ public class DogRegister extends FragmentActivity {
             dogNameField.requestFocus();
             UI.showAlertDialog("Upps!!",
                     "Ingrese el nombre del perro",
-                    "OK", this, null);
+                    getString(android.R.string.ok), this, null);
             return false;
         }
 
@@ -291,7 +376,7 @@ public class DogRegister extends FragmentActivity {
             dogBreedField.requestFocus();
             UI.showAlertDialog("Upps!!",
                     "Ingrese la raza del perro",
-                    "OK", this, null);
+                    getString(android.R.string.ok), this, null);
             return false;
         }
 
@@ -299,42 +384,73 @@ public class DogRegister extends FragmentActivity {
             ownerNameField.requestFocus();
             UI.showAlertDialog("Upps!!",
                     "Ingrese el nombre del due\u00f1o",
-                    "OK", this, null);
+                    getString(android.R.string.ok), this, null);
             return false;
         }
 
         if(dogImage == null) {
             UI.showAlertDialog("Upps!!",
-                    "Seleccione una imagen",
-                    "OK", this, null);
+                    "Seleccione una imagen del perro",
+                    getString(android.R.string.ok), this, null);
             return false;
         }
 
-        if(dogGender == -1 || dogLifeStyle == -1 || dogActivity == -1 ||
-                dogYear == -1 || dogMonth == -1 || dogDay == -1 ||
-                ownerGender == -1 || ownerYear == -1 || ownerMonth == -1 ||
-                ownerDay == -1 || ownerState == -1) {
+
+
+        if(dogGender == -1 ) {
             UI.showAlertDialog("Upps!!",
-                    "Favor de llenar todos los campos antes de continuar",
-                    "OK", this, null);
+                    "Seleccione el genero del perro",
+                    getString(android.R.string.ok), this, null);
+            return false;
+        }
+
+        if(dogLifeStyle == -1 ) {
+            UI.showAlertDialog("Upps!!",
+                    "Seleccione el tipo de vida del perro",
+                    getString(android.R.string.ok), this, null);
+            return false;
+        }
+
+        if(dogActivity == -1 ) {
+            UI.showAlertDialog("Upps!!",
+                    "Seleccione la actividad del perro",
+                    getString(android.R.string.ok), this, null);
+            return false;
+        }
+
+
+        if(dogAgeRange == -1) {
+            UI.showAlertDialog("Upps!!",
+                    "Seleccione el rango de edad del perro",
+                    getString(android.R.string.ok), this, null);
+            return false;
+        }
+
+        if (  ownerDay == -1 || ownerYear == -1 || ownerMonth == -1){
+            UI.showAlertDialog("Upps!!",
+                    "Seleccione una fecha de nacimiento del due\u00f1o",
+                    getString(android.R.string.ok), this, null);
+            return false;
+        }
+
+
+        if ( ownerGender == -1){
+            UI.showAlertDialog("Upps!!",
+                    "Seleccione el genero del due\u00f1o",
+                    getString(android.R.string.ok), this, null);
+            return false;
+        }
+
+
+        if( ownerState == -1) {
+            UI.showAlertDialog("Upps!!",
+                    "Seleccione una localidad  del due\u00f1o",
+                    getString(android.R.string.ok), this, null);
             return false;
         }
 
         return true;
     }
-
-    MyDate myDogDate = new MyDate(){
-        @Override
-        public void getDate(int year, int month, int day) {
-            dogYear = year;
-            dogMonth = month+1;
-            dogDay = day;
-
-            dogBirthday.setHint(day + " / " + Recursos.MONTHS[month] + " / " + year);
-        }
-
-    };
-
 
     MyDate myOwnerDate = new MyDate(){
         @Override
@@ -376,7 +492,6 @@ public class DogRegister extends FragmentActivity {
                 builder.setSingleChoiceItems(Recursos.STATES,  ownerState, new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int item) {
-                        //Registro.this.tvSexo.setText(Recursos.GENDER[item]);
                         ownerStateField.setHint(Recursos.STATES[item]);
                         ownerState = item;
                         dialog.dismiss();
@@ -402,6 +517,7 @@ public class DogRegister extends FragmentActivity {
         AlertDialog.Builder builder = new AlertDialog.Builder(context);
         builder.setTitle("Tomar Fotograf\u00eda");
         builder.setItems(items, new DialogInterface.OnClickListener() {
+            @Override
             public void onClick(DialogInterface dialog, int item) {
                 if (item == 0)
                     getPhotofromAlbum();
@@ -447,8 +563,10 @@ public class DogRegister extends FragmentActivity {
             else if(requestCode == 1){
                 try {
                     mBitmap = Media.getBitmap(context.getContentResolver(), intent.getData());
-                }catch (Exception e) {
-                    e.printStackTrace();
+                }catch(FileNotFoundException e) {
+                    Log.e(DogUtil.DEBUG_TAG, e.getMessage(), e);
+                } catch (IOException e) {
+                    Log.e(DogUtil.DEBUG_TAG, e.getMessage(), e);
                 }
             }
 
@@ -471,20 +589,14 @@ public class DogRegister extends FragmentActivity {
         }
     }
 
-
-
-    //AsyncTasj del Registro del Perfil del Perro
-
-
     protected class DogRegisterAsync extends AsyncTask<Void, Integer, Integer> {
-        private Context context;
+        private final Context context;
         private ProgressDialog dialog;
         private Map<String, String> map;
 
         public DogRegisterAsync(Context context) {
             this.context = context;
         }
-
 
         public void setMap (Map<String, String> map ){
             this.map = map;
@@ -503,13 +615,24 @@ public class DogRegister extends FragmentActivity {
         protected Integer doInBackground(Void... params) {
             WsDogUtils wsDogUtils = new WsDogUtils(context);
             try {
+                Integer userId = DogUtil.getInstance().getCurrentUserId();
+                String[][] dogs = wsDogUtils.getDuenosMascotasByIdUsuario(userId);
+                Integer result;
 
-                Integer tmp = DogUtil.getInstance().getCurrentDogId();
-                if( tmp == null || tmp<0)
-                    return wsDogUtils.insertDuenoMascota(map);
-                else
-                    return wsDogUtils.editDuenoMascota(map);
-            } catch (Exception e) {
+                if(dogs == null) {
+                    // No dogs registered
+                    result = wsDogUtils.insertDuenoMascota(map);
+                } else {
+                    // At least one dog registered
+                    result = wsDogUtils.editDuenoMascota(map);
+                }
+                return result;
+            } catch(XmlPullParserException e) {
+                Log.e(DogUtil.DEBUG_TAG, e.getMessage(), e);
+                return null;
+            } catch(IOException e) {
+                Log.e(DogUtil.DEBUG_TAG, e.getMessage(), e);
+
                 return null;
             }
         }
@@ -517,17 +640,19 @@ public class DogRegister extends FragmentActivity {
         @Override
         protected void onPostExecute(Integer result) {
             super.onPostExecute(result);
-
+            // Hide progress dialog
             dialog.dismiss();
 
 
-            Intent intent = new Intent();
-            intent.putExtra("ID_PET", result);
-
-            DogUtil.getInstance().saveCurrentDogId( result);
-
-            setResult(Activity.RESULT_OK, intent);
-            finish();
+            if(result==null) {
+                showOkDialog(context, "NO se pudo registrar", ONLY_DISMISS);
+            } else {
+                // Return back results
+                Intent intent = new Intent();
+                intent.putExtra("OWNER_ID", result);
+                setResult(Activity.RESULT_OK, intent);
+                finish();
+            }
 
         }
     }

@@ -162,7 +162,7 @@ public class AddDogPhoto extends Activity {
 
         @Override
         protected Integer doInBackground(String... params) {
-            WsDogUtils wsDogUtils = new WsDogUtils(context);
+            WsDogUtils wsDogUtils = new WsDogUtils();
             try {
                 Integer userId = DogUtil.getInstance().getCurrentUserId();
 

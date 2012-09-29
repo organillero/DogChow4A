@@ -18,9 +18,8 @@ import android.content.Context;
  */
 public class WsDogUtils {
 
-    public Context context;
-    private final String url = "http://marketing7veinte.net/dc_app_perroton/appWSDog/wsDog.asmx?WSDL";
-    private final String namespace = "http://tempuri.org/";
+    private final String url;
+    private final String namespace;
 
     private static final String EDIT_DUENO_MASCOTA = "editDuenoMascota";
     private static final String GET_CAT_ACTIVIDAD_FISICA = "getCatActividadFisica";
@@ -40,7 +39,12 @@ public class WsDogUtils {
     private static final String USER_RECOVERY_PWD = "userRecoveryPWD";
 
     public WsDogUtils(Context context) {
-        this.context = context;
+        this(context, "http://marketing7veinte.net/dc_app_perroton/appWSDog/wsDog.asmx?WSDL", "http://tempuri.org/");
+    }
+
+    public WsDogUtils(Context context, String url, String namespace) {
+        this.url = url;
+        this.namespace = namespace;
     }
 
     public Integer editDuenoMascota(Map<String, String> parameters)

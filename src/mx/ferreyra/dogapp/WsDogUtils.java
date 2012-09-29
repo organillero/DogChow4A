@@ -186,6 +186,81 @@ public class WsDogUtils {
         return parseInsertFotoMascota(result);
     }
 
+    private Integer parseEditDuenoMascota(SoapObject result) {
+        return parseGenericReturnSoapObject(result);
+    }
+
+    public Integer editDuenoMascota(int ownerId,
+                                    int userId,
+                                    String ownerName,
+                                    int ownerGenderId,
+                                    Date ownerBirthday,
+                                    int ownerStateId,
+                                    String dogName,
+                                    String dogBreed,
+                                    int dogGenderId,
+                                    int dogLifeStyleId,
+                                    int dogExerciseId,
+                                    Date dogBirthday,
+                                    String dogPhotoAsBase64Binary,
+                                    String comment1,
+                                    String comment2)
+            throws IOException, XmlPullParserException {
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+        return editDuenoMascota(Integer.toString(ownerId),
+                                Integer.toString(userId),
+                                ownerName,
+                                Integer.toString(ownerGenderId),
+                                sdf.format(ownerBirthday),
+                                Integer.toString(ownerStateId),
+                                dogName,
+                                dogBreed,
+                                Integer.toString(dogGenderId),
+                                Integer.toString(dogLifeStyleId),
+                                Integer.toString(dogExerciseId),
+                                sdf.format(dogBirthday),
+                                dogPhotoAsBase64Binary,
+                                comment1,
+                                comment2);
+    }
+
+    public Integer editDuenoMascota(String ownerId,
+                                    String userId,
+                                    String ownerName,
+                                    String ownerGenderId,
+                                    String ownerBirthday,
+                                    String ownerStateId,
+                                    String dogName,
+                                    String dogBreed,
+                                    String dogGenderId,
+                                    String dogLifeStyleId,
+                                    String dogExerciseId,
+                                    String dogBirthday,
+                                    String dogPhotoAsBase64Binary,
+                                    String comment1,
+                                    String comment2)
+        throws IOException, XmlPullParserException {
+        SoapObject request = new SoapObject(namespace, EDIT_DUENO_MASCOTA);
+        request.addProperty("idDueno",ownerId);
+        request.addProperty("idUsuario",userId);
+        request.addProperty("duenoNombre",ownerName);
+        request.addProperty("duenoIdGenero",ownerGenderId);
+        request.addProperty("duenoFechaCumpleanos",ownerBirthday);
+        request.addProperty("duenoIdEstado",ownerStateId);
+        request.addProperty("mascotaNombre",dogName);
+        request.addProperty("mascotaRaza",dogBreed);
+        request.addProperty("mascotaIdGenero",dogGenderId);
+        request.addProperty("mascotaIdTipoVida",dogLifeStyleId);
+        request.addProperty("mascotaIdActividadFisica",dogExerciseId);
+        request.addProperty("mascotaFechaCumpleanos",dogBirthday);
+        request.addProperty("comentarios1",comment1);
+        request.addProperty("comentarios2",comment2);
+        SoapObject result = (SoapObject)genericRequest(EDIT_DUENO_MASCOTA,
+                                                       namespace + EDIT_DUENO_MASCOTA,
+                                                       request);
+        return parseEditDuenoMascota(result);
+    }
+
     public Integer editDuenoMascota(Map<String, String> parameters)
         throws IOException, XmlPullParserException {
         Integer result = genericDuenoMascota(EDIT_DUENO_MASCOTA, namespace + EDIT_DUENO_MASCOTA, parameters);

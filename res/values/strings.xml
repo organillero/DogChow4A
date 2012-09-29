@@ -204,10 +204,9 @@
     <string name="more_than_seven_years">M\u00e1s de 7 a\u00f1os</string>
 
     <!-- perfil del perro -->
-    
+
     <string name="edit_profile">Editar Perfil</string>
     <string name="tips">Tips</string>
-    
 
     <!-- PreSignup activity -->
     <string name="title_activity_pre_signup">PreSignup</string>
@@ -246,5 +245,6 @@
     <!-- LoginScreen -->
     <string name="email_empty_message">Ingrese su correo electr\u00f3nico</string>
     <string name="password_empty_message">Ingrese su contrase\u00f1a</string>
+    <string name="title_activity_add_dog_photo">AddDogPhoto</string>
 
 </resources>

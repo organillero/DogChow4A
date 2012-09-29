@@ -168,7 +168,7 @@ public class AddDogPhoto extends Activity {
 
                 Integer result = wsDogUtils.insertFotoMascota(userId,
                         new Date(), params[0], getLocation().getLatitude(),
-                        getLocation().getLongitude(), null, null);
+                        getLocation().getLongitude(), params[1], null);
                 return result;
             } catch(XmlPullParserException e) {
                 Log.e(DogUtil.DEBUG_TAG, e.getMessage(), e);

@@ -1,6 +1,7 @@
 package mx.ferreyra.dogapp;
 
 import java.io.IOException;
+import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Map;
 
@@ -37,6 +38,11 @@ public class WsDogUtils {
     private static final String INSERT_USERS = "insertUsers";
     private static final String USER_LOGIN = "userLogin";
     private static final String USER_RECOVERY_PWD = "userRecoveryPWD";
+    private static final String DELETE_FOTO_MASCOTA                  = "deleteFotoMascota";
+    private static final String GET_FOTOS_MASCOTA_BY_ID_FOTO         = "getFotosMascotaByIdFoto";
+    private static final String GET_FOTOS_MASCOTA_BY_LAT_LON         = "getFotosMascotaByLatLon";
+    private static final String GET_FOTOS_MASCOTA_BY_USUARIO_MES_ANO = "getFotosMascotaByUsuarioMesAno";
+    private static final String INSERT_FOTO_MASCOTA                  = "insertFotoMascota";
 
     public WsDogUtils(Context context) {
         this(context, "http://marketing7veinte.net/dc_app_perroton/appWSDog/wsDog.asmx?WSDL", "http://tempuri.org/");
@@ -45,6 +51,139 @@ public class WsDogUtils {
     public WsDogUtils(Context context, String url, String namespace) {
         this.url = url;
         this.namespace = namespace;
+    }
+
+    private Integer parseDeleteFotoMascota(SoapObject result) {
+        return parseGenericReturnSoapObject(result);
+    }
+
+    public Integer deleteFotoMascota(int photoId, int userId)
+        throws IOException, XmlPullParserException {
+        return deleteFotoMascota(Integer.toString(photoId),
+                                 Integer.toString(userId));
+    }
+
+    public Integer deleteFotoMascota(String photoId, String userId)
+        throws IOException, XmlPullParserException {
+        SoapObject request = new SoapObject(namespace, DELETE_FOTO_MASCOTA);
+        request.addProperty("idFoto",photoId);
+        request.addProperty("idUsuario",userId);
+        SoapObject result = (SoapObject)genericRequest(DELETE_FOTO_MASCOTA,
+                                                       namespace + DELETE_FOTO_MASCOTA,
+                                                       request);
+        return parseDeleteFotoMascota(result);
+    }
+
+    private String[][] parseGetFotosMascotaByIdFoto(SoapObject result) {
+        return parseGenericMatrixSoapObject(result, 9);
+    }
+
+    public String[][] getFotosMascotaByIdFoto(int photoId)
+        throws IOException, XmlPullParserException {
+        return getFotosMascotaByIdFoto(Integer.toString(photoId));
+    }
+
+    public String[][] getFotosMascotaByIdFoto(String photoId)
+        throws IOException, XmlPullParserException {
+        SoapObject request = new SoapObject(namespace, GET_FOTOS_MASCOTA_BY_ID_FOTO);
+        request.addProperty("idFoto",photoId);
+        SoapObject result = (SoapObject)genericRequest(GET_FOTOS_MASCOTA_BY_ID_FOTO,
+                                                       namespace + GET_FOTOS_MASCOTA_BY_ID_FOTO,
+                                                       request);
+        return parseGetFotosMascotaByIdFoto(result);
+    }
+
+    private String[][] parseGetFotosMascotaByLatLon(SoapObject result) {
+        return parseGenericMatrixSoapObject(result, 10);
+    }
+
+    public String[][] getFotosMascotaByLatLon(double latitude,
+                                              double longitude,
+                                              double radio)
+        throws IOException, XmlPullParserException {
+        return getFotosMascotaByLatLon(Double.toString(latitude),
+                                       Double.toString(longitude),
+                                       Double.toString(radio));
+    }
+
+    public String[][] getFotosMascotaByLatLon(String latitude,
+                                              String longitude,
+                                              String radio)
+        throws IOException, XmlPullParserException {
+        SoapObject request = new SoapObject(namespace, GET_FOTOS_MASCOTA_BY_LAT_LON);
+        request.addProperty("lat",latitude);
+        request.addProperty("lon",longitude);
+        request.addProperty("radio",radio);
+        SoapObject result = (SoapObject)genericRequest(GET_FOTOS_MASCOTA_BY_LAT_LON,
+                                                       namespace + GET_FOTOS_MASCOTA_BY_LAT_LON,
+                                                       request);
+        return parseGetFotosMascotaByLatLon(result);
+    }
+
+    private String[][] parseGetFotosMascotaByUsuarioMesAno(SoapObject result) {
+        return parseGenericMatrixSoapObject(result, 9);
+    }
+
+    public String[][] getFotosMascotaByUsuarioMesAno(int userId, Date date)
+        throws IOException, XmlPullParserException {
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+        return getFotosMascotaByUsuarioMesAno(Integer.toString(userId),
+                                              sdf.format(date));
+    }
+
+    public String[][] getFotosMascotaByUsuarioMesAno(String userId, String date)
+        throws IOException, XmlPullParserException {
+        SoapObject request = new SoapObject(namespace, GET_FOTOS_MASCOTA_BY_USUARIO_MES_ANO);
+        request.addProperty("idUsuario",userId);
+        request.addProperty("fecha",date);
+        SoapObject result = (SoapObject)genericRequest(GET_FOTOS_MASCOTA_BY_USUARIO_MES_ANO,
+                                                       namespace + GET_FOTOS_MASCOTA_BY_USUARIO_MES_ANO,
+                                                       request);
+        return parseGetFotosMascotaByUsuarioMesAno(result);
+    }
+
+    private Integer parseInsertFotoMascota(SoapObject result) {
+        return parseGenericReturnSoapObject(result);
+    }
+
+    public Integer insertFotoMascota(int userId,
+                                     Date date,
+                                     String photoAsBase64Binary,
+                                     double latitude,
+                                     double longitude,
+                                     String comment1,
+                                     String comment2)
+        throws IOException, XmlPullParserException {
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+        return insertFotoMascota(Integer.toString(userId),
+                                 sdf.format(date),
+                                 photoAsBase64Binary,
+                                 Double.toString(latitude),
+                                 Double.toString(longitude),
+                                 comment1,
+                                 comment2);
+    }
+
+    public Integer insertFotoMascota(String userId,
+                                     String date,
+                                     String photoAsBase64Binary,
+                                     String latitude,
+                                     String longitude,
+                                     String comment1,
+                                     String comment2)
+        throws IOException, XmlPullParserException {
+        SoapObject request = new SoapObject(namespace, INSERT_FOTO_MASCOTA);
+        request.addProperty("idUsuario",userId);
+        request.addProperty("fecha",date);
+        request.addProperty("foto", photoAsBase64Binary);
+        request.addProperty("lat", latitude);
+        request.addProperty("lon", longitude);
+        request.addProperty("comentarios1", comment1);
+        request.addProperty("comentarios2", comment2);
+        SoapObject result = (SoapObject)genericRequest(INSERT_FOTO_MASCOTA,
+                                                       namespace + INSERT_FOTO_MASCOTA,
+                                                       request);
+        return parseInsertFotoMascota(result);
     }
 
     public Integer editDuenoMascota(Map<String, String> parameters)

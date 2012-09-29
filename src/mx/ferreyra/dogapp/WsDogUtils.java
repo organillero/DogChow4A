@@ -12,8 +12,6 @@ import mx.ferreyra.dogapp.org.ksoap2.transport.HttpTransportSE;
 
 import org.xmlpull.v1.XmlPullParserException;
 
-import android.content.Context;
-
 /**
  * @author Israel Buitron
  */
@@ -44,11 +42,11 @@ public class WsDogUtils {
     private static final String GET_FOTOS_MASCOTA_BY_USUARIO_MES_ANO = "getFotosMascotaByUsuarioMesAno";
     private static final String INSERT_FOTO_MASCOTA                  = "insertFotoMascota";
 
-    public WsDogUtils(Context context) {
-        this(context, "http://marketing7veinte.net/dc_app_perroton/appWSDog/wsDog.asmx?WSDL", "http://tempuri.org/");
+    public WsDogUtils() {
+        this("http://marketing7veinte.net/dc_app_perroton/appWSDog/wsDog.asmx?WSDL", "http://tempuri.org/");
     }
 
-    public WsDogUtils(Context context, String url, String namespace) {
+    public WsDogUtils(String url, String namespace) {
         this.url = url;
         this.namespace = namespace;
     }

@@ -60,8 +60,8 @@ public class ShowDogPhoto extends Activity {
         Bitmap bmp = BitmapFactory.decodeStream(is);
         dogPhoto.setImageBitmap(bmp);
 
-        // TODO load photo foot
-        //dogPhotoFoot.setText(array[i][j]);
+        // Load photo foot
+        dogPhotoFoot.setText(array[0][6]);
     }
 
     private class ShowDogPhotoTask extends AsyncTask<Integer, Integer, String[][]> {

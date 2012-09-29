@@ -53,4 +53,16 @@
             android:ems="10"
             android:hint="@string/dog_photo_description_label"
             android:inputType="textMultiLine" />
+
+    <Button
+            android:id="@+id/bt_send"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/dog_photo_foot"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="20dp"
+            android:background="@drawable/bt_send"
+            android:onClick="onClickAddPhotoButton"
+            android:text="@string/add_photo_label"
+            android:textColor="@android:color/white" />
 </RelativeLayout>

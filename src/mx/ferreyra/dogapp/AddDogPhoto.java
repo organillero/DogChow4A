@@ -1,9 +1,14 @@
 package mx.ferreyra.dogapp;
 
 import java.io.ByteArrayOutputStream;
+import java.io.IOException;
+import java.util.Date;
 import java.util.List;
 
 import mx.ferreyra.dogapp.ui.UI;
+
+import org.xmlpull.v1.XmlPullParserException;
+
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.ProgressDialog;
@@ -13,10 +18,14 @@ import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.content.pm.ResolveInfo;
 import android.graphics.Bitmap;
+import android.location.Criteria;
+import android.location.Location;
+import android.location.LocationManager;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.provider.MediaStore;
 import android.util.Base64;
+import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.ImageView;
@@ -26,6 +35,7 @@ public class AddDogPhoto extends Activity {
     private Bitmap dogImage;
     private ImageView dogPhoto;
     private EditText dogPhotoFoot;
+    private LocationManager locationManager;
 
     // Intent results
     private final int ADD_PHOTO_FROM_STORAGE = 0x01;
@@ -35,6 +45,9 @@ public class AddDogPhoto extends Activity {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_add_dog_photo);
+
+        // Load location service
+        locationManager = (LocationManager)getSystemService(Context.LOCATION_SERVICE);
 
         // Load view controls
         dogPhoto     = (ImageView)findViewById(R.id.dog_photo);
@@ -51,9 +64,9 @@ public class AddDogPhoto extends Activity {
         builder.setItems(items, new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int item) {
-                if (item == 0)
+                if (item == ADD_PHOTO_FROM_STORAGE)
                     getPhotofromAlbum();
-                else if (item == 1)
+                else if (item == ADD_PHOTO_FROM_CAMARA)
                     takePhoto();
             }
         });
@@ -93,6 +106,13 @@ public class AddDogPhoto extends Activity {
             encodedImageStr,
             foot
         };
+    }
+
+    private Location getLocation() {
+        Criteria criteria = new Criteria();
+        String bestProvider = locationManager.getBestProvider(criteria, true);
+        Location location = locationManager.getLastKnownLocation(bestProvider);
+        return location;
     }
 
     private void getPhotofromAlbum() {
@@ -143,9 +163,20 @@ public class AddDogPhoto extends Activity {
         @Override
         protected Integer doInBackground(String... params) {
             WsDogUtils wsDogUtils = new WsDogUtils(context);
-            Integer userId = DogUtil.getInstance().getCurrentUserId();
-            Integer result = null;
-            return result;
+            try {
+                Integer userId = DogUtil.getInstance().getCurrentUserId();
+
+                Integer result = wsDogUtils.insertFotoMascota(userId,
+                        new Date(), params[0], getLocation().getLatitude(),
+                        getLocation().getLongitude(), null, null);
+                return result;
+            } catch(XmlPullParserException e) {
+                Log.e(DogUtil.DEBUG_TAG, e.getMessage(), e);
+                return null;
+            } catch(IOException e) {
+                Log.e(DogUtil.DEBUG_TAG, e.getMessage(), e);
+                return null;
+            }
         }
 
         @Override

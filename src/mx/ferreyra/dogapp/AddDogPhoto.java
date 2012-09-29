@@ -1,24 +1,31 @@
 package mx.ferreyra.dogapp;
 
+import java.io.ByteArrayOutputStream;
 import java.util.List;
 
 import mx.ferreyra.dogapp.ui.UI;
 import android.app.Activity;
 import android.app.AlertDialog;
+import android.app.ProgressDialog;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.content.pm.ResolveInfo;
 import android.graphics.Bitmap;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.provider.MediaStore;
+import android.util.Base64;
 import android.view.View;
+import android.widget.EditText;
 import android.widget.ImageView;
 
 public class AddDogPhoto extends Activity {
 
     private Bitmap dogImage;
     private ImageView dogPhoto;
+    private EditText dogPhotoFoot;
 
     // Intent results
     private final int ADD_PHOTO_FROM_STORAGE = 0x01;
@@ -30,7 +37,8 @@ public class AddDogPhoto extends Activity {
         setContentView(R.layout.activity_add_dog_photo);
 
         // Load view controls
-        dogPhoto = (ImageView)findViewById(R.id.dog_photo);
+        dogPhoto     = (ImageView)findViewById(R.id.dog_photo);
+        dogPhotoFoot = (EditText)findViewById(R.id.dog_photo_foot);
     }
 
     public void onClickDogPhotoButton(View view) {
@@ -65,7 +73,26 @@ public class AddDogPhoto extends Activity {
         if(!isValidForm())
             return;
 
-        // TODO implement this method
+        // Invoke webservices using asynctask
+        AddDogPhotoTask task = new AddDogPhotoTask(this);
+        String[] params = viewToArray();
+        task.execute(params);
+    }
+
+    public String[] viewToArray() {
+        // Dog Image
+        ByteArrayOutputStream stream = new ByteArrayOutputStream();
+        dogImage.compress(Bitmap.CompressFormat.PNG, 100, stream);
+        byte[] byteArray = stream.toByteArray();
+        String encodedImageStr = Base64.encodeToString(byteArray,Base64.DEFAULT);
+
+        // Dog photo foot
+        String foot = dogPhotoFoot.getText().toString();
+
+        return new String[] {
+            encodedImageStr,
+            foot
+        };
     }
 
     private void getPhotofromAlbum() {
@@ -94,5 +121,46 @@ public class AddDogPhoto extends Activity {
         }
 
         return true;
+    }
+
+    private class AddDogPhotoTask extends AsyncTask<String, Integer, Integer> {
+
+        private final Context context;
+        private ProgressDialog dialog;
+
+        public AddDogPhotoTask(Context context) {
+            this.context = context;
+        }
+
+        @Override
+        protected void onPreExecute() {
+            super.onPreExecute();
+            dialog = new ProgressDialog(context);
+            dialog.setMessage(context.getString(R.string.please_wait_signing_up));
+            dialog.show();
+        }
+
+        @Override
+        protected Integer doInBackground(String... params) {
+            WsDogUtils wsDogUtils = new WsDogUtils(context);
+            Integer userId = DogUtil.getInstance().getCurrentUserId();
+            Integer result = null;
+            return result;
+        }
+
+        @Override
+        protected void onPostExecute(Integer result) {
+            super.onPostExecute(result);
+
+            // Stop and hide dialog
+            dialog.dismiss();
+
+            // Check result
+            if(result == null || result < 0) {
+                // Something wrong happened
+            } else {
+                // Notify successful process
+            }
+        }
     }
 }

@@ -13,6 +13,7 @@ import mx.ferreyra.dogapp.org.ksoap2.serialization.SoapObject;
 import mx.ferreyra.dogapp.org.ksoap2.serialization.SoapSerializationEnvelope;
 import mx.ferreyra.dogapp.org.ksoap2.transport.HttpTransportSE;
 import mx.ferreyra.dogapp.pojos.FotosMascotaByLatLonResponse;
+import mx.ferreyra.dogapp.pojos.FotosMascotaByUsuarioMesAnoResponse;
 
 import org.xmlpull.v1.XmlPullParserException;
 
@@ -135,7 +136,7 @@ public class WsDogUtils {
 
         for(int i=0; i<response.length; i++) {
             FotosMascotaByLatLonResponse pojo = new FotosMascotaByLatLonResponse();
-            
+
             pojo.setPhotoId(Long.valueOf(response[i][0]) );
             pojo.setOwnerId(Long.valueOf(response[i][1]));
             pojo.setDate(sdf.parse(response[i][2]));
@@ -171,6 +172,31 @@ public class WsDogUtils {
                 namespace + GET_FOTOS_MASCOTA_BY_USUARIO_MES_ANO,
                 request);
         return parseGetFotosMascotaByUsuarioMesAno(result);
+    }
+
+    public static List<FotosMascotaByUsuarioMesAnoResponse> fotosMascotaByUsuarioMesAnoToPojo(String[][] response)
+        throws ParseException {
+
+        if(response==null)
+            return null;
+
+        List<FotosMascotaByUsuarioMesAnoResponse> list = new ArrayList<FotosMascotaByUsuarioMesAnoResponse>();
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+
+        for(int i=0; i<response.length; i++) {
+            FotosMascotaByUsuarioMesAnoResponse pojo = new FotosMascotaByUsuarioMesAnoResponse();
+            pojo.setPhotoId(Long.valueOf(response[i][0]) );
+            pojo.setOwnerId(Long.valueOf(response[i][1]));
+            pojo.setDate(sdf.parse(response[i][2]));
+            pojo.setPhotoAsBase64Binary(response[i][3]);
+            pojo.setLatitude(Double.valueOf(response[i][4]));
+            pojo.setLongitude(Double.valueOf(response[i][5]));
+            pojo.setComments1(response[i][6]);
+            pojo.setComments2(response[i][7]);
+            pojo.setCreationDate(sdf.parse(response[i][8]));
+            list.add(pojo);
+        }
+        return list;
     }
 
     private Integer parseInsertFotoMascota(SoapObject result) {

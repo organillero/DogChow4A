@@ -70,7 +70,7 @@ public class DogRegister extends FragmentActivity {
 
     CheckBox selectForm;
 
-    //Relatives layouts de perro y due–o para mostrarlos segun el estado de selectForm
+    //Relatives layouts de perro y dueï¿½o para mostrarlos segun el estado de selectForm
 
     RelativeLayout rlDog;
     RelativeLayout rlOwner;
@@ -102,7 +102,7 @@ public class DogRegister extends FragmentActivity {
     private int dogGender = -1;
     private int dogLifeStyle =-1;
     private int dogActivity =-1;
-    private int dogAgeRange =-1;
+    private int dogAgeYear =-1;
 
     private int ownerGender = -1;
     private int ownerState = -1;
@@ -196,23 +196,18 @@ public class DogRegister extends FragmentActivity {
         dogImage = pojo.getMascotaImagen();
         btRemoveImage.setVisibility(View.VISIBLE);
 
-        // Age range
-        int nowYear = Calendar.getInstance().get(Calendar.YEAR);
-        int dogBirthdayYear = pojo.getMascotaFechaCumpleanos().getYear();
-        int difference = nowYear - dogBirthdayYear;
+        // Dog birthday year
         String tag;
         if(pojo.getMascotaFechaCumpleanos()==null) {
             tag = "";
         } else {
-            if(difference==0) {
-                tag = ": " + DOG_AGE_RANGES[dogAgeRange = 0];
-            } else if(difference<7) {
-                tag = ": " + DOG_AGE_RANGES[dogAgeRange = 1];
-            } else {
-                tag = ": " + DOG_AGE_RANGES[dogAgeRange = 2];
-            }
+            Calendar c = Calendar.getInstance();
+            c.setTime(pojo.getMascotaFechaCumpleanos());
+            int dogBirthdayYear = c.get(Calendar.YEAR);
+            tag = Integer.toString(dogBirthdayYear);
+            dogAgeYear = 2012 - dogBirthdayYear;
         }
-        dogBirthday.setHint(getString(R.string.dog_age) + tag);
+        dogBirthday.setHint(tag);
         ownerNameField.setText(pojo.getDuenoNombre());
         ownerGenderField.setHint(Recursos.GENDER_OWNER[pojo.getDuenoIdGenero()-1]);
         ownerGender = pojo.getDuenoIdGenero()-1;
@@ -286,16 +281,15 @@ public class DogRegister extends FragmentActivity {
     public void onClickDogBirthdayButton(View view) {
         AlertDialog.Builder builder;
         checkAndHideKeyboard(null);
-
         builder = Build.VERSION.SDK_INT>=11 ?
                 new AlertDialog.Builder(context,AlertDialog.THEME_HOLO_LIGHT) :
                     new AlertDialog.Builder(context);
-                builder.setTitle(getString(R.string.dog_age));
-                builder.setSingleChoiceItems(DOG_AGE_RANGES, dogAgeRange, new DialogInterface.OnClickListener() {
+                builder.setTitle("A\u00f1o");
+                builder.setSingleChoiceItems(Recursos.DOG_YEARS, dogAgeYear, new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int item) {
-                        dogBirthday.setHint(getString(R.string.age) + ": " + DOG_AGE_RANGES[item]);
-                        dogAgeRange = item;
+                        dogBirthday.setHint(getString(R.string.age) + ": " + Recursos.DOG_YEARS[item]);
+                        dogAgeYear = item;
                         dialog.dismiss();
                     }
                 });
@@ -339,8 +333,7 @@ public class DogRegister extends FragmentActivity {
         map.put("mascotaIdActividadFisica", String.valueOf(dogActivity+1));
 
         Calendar cal = Calendar.getInstance();
-        int diff = dogAgeRange == 0 ? 0 : (dogAgeRange == 1 ? -6 : -10);
-        cal.add(Calendar.YEAR, diff);
+        cal.set(Calendar.YEAR, 2012-dogAgeYear);
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
         map.put("mascotaFechaCumpleanos", sdf.format(cal.getTime()));
 
@@ -419,7 +412,7 @@ public class DogRegister extends FragmentActivity {
         }
 
 
-        if(dogAgeRange == -1) {
+        if(dogAgeYear == -1) {
             UI.showAlertDialog("Upps!!",
                     "Seleccione el rango de edad del perro",
                     getString(android.R.string.ok), this, null);

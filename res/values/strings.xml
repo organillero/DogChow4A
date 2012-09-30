@@ -249,4 +249,15 @@
     <!-- Show Dog Photo -->
     <string name="title_activity_show_dog_photo">ShowDogPhoto</string>
 
+    <!-- Add Dog Photo -->
+    <string name="title_activity_add_dog_photo">AddDogPhoto</string>
+    <string name="add_dog_photo_label">Agregar fotograf\u00eda</string>
+    <string name="dog_photo_description_label">Descripci\u00f3n de la fotograf\u00eda</string>
+    <string name="add_photo_label">Agregar</string>
+    <string name="take_image">Tomar imagen</string>
+    <string name="take_from_camera">C\u00e1mara</string>
+    <string name="take_from_images_stored">Im\u00e1genes guardadas</string>
+    <string name="validation_alert_dialog_title">Datos incompletos</string>
+    <string name="dog_image_not_selected_dialog_message">Seleccione una imagen</string>
+
 </resources>

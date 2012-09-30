@@ -213,7 +213,8 @@
     <string name="title_activity_pre_signup">PreSignup</string>
     <string name="presignup_banner">Esta funcionalidad esta limitada a usuarios registrados. Para continuar por favor selecciona alguna de las siguientes opciones.\n \u00a1Gracias!</string>
     <string name="recover_password">Recuperar contrase\u00f1a</string>
-    <string name="to_login">Loguearse</string>
+    <string name="to_login">Iniciar sesi\u00f3n</string>
+    <string name="enter">Entrar</string>
     <string name="to_signup">Registrarse</string>
 
     <!-- Signup activity -->

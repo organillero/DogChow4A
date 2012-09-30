@@ -606,7 +606,7 @@ public class DogRegister extends FragmentActivity {
 
         @Override
         protected Integer doInBackground(Void... params) {
-            WsDogUtils wsDogUtils = new WsDogUtils(context);
+            WsDogUtils wsDogUtils = new WsDogUtils();
             try {
                 Integer userId = DogUtil.getInstance().getCurrentUserId();
                 String[][] dogs = wsDogUtils.getDuenosMascotasByIdUsuario(userId);

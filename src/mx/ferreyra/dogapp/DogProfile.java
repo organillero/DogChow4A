@@ -77,7 +77,7 @@ public class DogProfile extends Activity {
 
         @Override
         protected DogProfilePojo doInBackground(Void... params) {
-            WsDogUtils wsDogUtils = new WsDogUtils(context);
+            WsDogUtils wsDogUtils = new WsDogUtils();
             try {
                 Integer userid = DogUtil.getInstance().getCurrentUserId();
                 String[][] result = wsDogUtils.getDuenosMascotasByIdUsuario(userid);

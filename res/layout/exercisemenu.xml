@@ -32,50 +32,73 @@
 
             <Button
                 android:id="@+id/newroute_btn"
-                android:layout_width="120dp"
-                android:layout_height="120dp"
+                android:layout_width="90dp"
+                android:layout_height="90dp"
                 android:layout_alignParentLeft="true"
-                android:layout_margin="10dp"
+                android:layout_margin="5dp"
                 android:src="@drawable/selector_shape_obscurecer"
                 android:onClick="onClickNewRouteButton"
                 android:background="@drawable/newroute_" />
 
             <Button
                 android:id="@+id/loadroute_btn"
-                android:layout_width="120dp"
-                android:layout_height="120dp"
+                android:layout_width="90dp"
+                android:layout_height="90dp"
                 android:layout_alignBaseline="@+id/newroute_btn"
-                android:layout_margin="10dp"
+                android:layout_margin="5dp"
                 android:layout_toRightOf="@id/newroute_btn"
                 android:src="@drawable/selector_shape_obscurecer"
                 android:onClick="onClickLoadRouteButton"
                 android:background="@drawable/loadpath_" />
 
             <Button
+                android:id="@+id/calendar_btn"
+                android:layout_width="90dp"
+                android:layout_height="90dp"
+                android:layout_alignBaseline="@+id/newroute_btn"
+                android:layout_margin="5dp"
+                android:layout_toRightOf="@id/loadroute_btn"
+                android:src="@drawable/selector_shape_obscurecer"
+                android:onClick="onClickCalendarRouteButton"
+                android:background="@drawable/menu_calendar_button" />
+
+            <Button
                 android:id="@+id/statistics_btn"
-                android:layout_width="120dp"
-                android:layout_height="120dp"
+                android:layout_width="90dp"
+                android:layout_height="90dp"
                 android:layout_alignParentLeft="true"
                 android:layout_below="@id/newroute_btn"
-                android:layout_margin="10dp"
-                android:layout_marginTop="23dp"
+                android:layout_margin="5dp"
                 android:src="@drawable/selector_shape_obscurecer"
                 android:background="@drawable/statistics_"
                 android:onClick="onClickStatisticsButton" />
 
             <Button
                 android:id="@+id/dog_welfare_btn"
-                android:layout_width="120dp"
-                android:layout_height="120dp"
+                android:layout_width="90dp"
+                android:layout_height="90dp"
                 android:layout_alignBaseline="@+id/statistics_btn"
                 android:layout_alignTop="@+id/statistics_btn"
                 android:layout_below="@id/loadroute_btn"
-                android:layout_margin="10dp"
+                android:layout_margin="5dp"
                 android:src="@drawable/selector_shape_obscurecer"
                 android:layout_toRightOf="@id/statistics_btn"
                 android:background="@drawable/wealth_"
                 android:onClick="onClickDogWelfare" />
-        </RelativeLayout>
+
+            <Button
+                android:id="@+id/near_photos_btn"
+                android:layout_width="90dp"
+                android:layout_height="90dp"
+                android:layout_alignBaseline="@+id/statistics_btn"
+                android:layout_alignTop="@+id/statistics_btn"
+                android:layout_below="@+id/calendar_btn"
+                android:layout_margin="5dp"
+                android:src="@drawable/selector_shape_obscurecer"
+                android:layout_toRightOf="@id/dog_welfare_btn"
+                android:background="@drawable/menu_near_photos"
+                android:onClick="onClickNearPhotosButton" />
+            </RelativeLayout>
     </RelativeLayout>
 
 </ScrollView>

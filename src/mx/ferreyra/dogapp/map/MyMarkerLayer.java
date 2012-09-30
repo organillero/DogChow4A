@@ -2,7 +2,7 @@ package mx.ferreyra.dogapp.map;
 
 import java.util.ArrayList;
 
-import mx.ferreyra.dogapp.WsDogUtils.FotosMascotaByLatLonResponse;
+import mx.ferreyra.dogapp.pojos.FotosMascotaByLatLonResponse;
 import mx.ferreyra.dogapp.ui.UI;
 import android.content.Context;
 import android.graphics.drawable.Drawable;

@@ -4,9 +4,9 @@ import java.io.ByteArrayInputStream;
 import java.io.InputStream;
 import java.util.List;
 
-import mx.ferreyra.dogapp.WsDogUtils.FotosMascotaByLatLonResponse;
 import mx.ferreyra.dogapp.map.MyMarkerLayer;
 import mx.ferreyra.dogapp.map.MyOverlayItem;
+import mx.ferreyra.dogapp.pojos.FotosMascotaByLatLonResponse;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.graphics.Bitmap;

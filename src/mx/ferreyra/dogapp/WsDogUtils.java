@@ -1,8 +1,11 @@
 package mx.ferreyra.dogapp;
 
 import java.io.IOException;
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 import java.util.Map;
 
 import mx.ferreyra.dogapp.org.ksoap2.SoapEnvelope;
@@ -116,6 +119,31 @@ public class WsDogUtils {
                                                        namespace + GET_FOTOS_MASCOTA_BY_LAT_LON,
                                                        request);
         return parseGetFotosMascotaByLatLon(result);
+    }
+
+    public List<FotosMascotaByLatLonResponse> fotosMascotaByLatLonToPojo(String[][] response)
+        throws ParseException {
+        if(response==null)
+            return null;
+
+        List<FotosMascotaByLatLonResponse> list = new ArrayList<FotosMascotaByLatLonResponse>();
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+
+        for(int i=0; i<response.length; i++) {
+            FotosMascotaByLatLonResponse pojo = new FotosMascotaByLatLonResponse();
+            pojo.setPhotoId(Long.getLong(response[i][0]));
+            pojo.setOwnerId(Long.getLong(response[i][1]));
+            pojo.setDate(sdf.parse(response[i][2]));
+            pojo.setPhotoAsBase64Binary(response[i][3]);
+            pojo.setLatitude(Double.valueOf(response[i][4]));
+            pojo.setLongitude(Double.valueOf(response[i][5]));
+            pojo.setComments1(response[i][6]);
+            pojo.setComments2(response[i][7]);
+            pojo.setCreationDate(sdf.parse(response[i][8]));
+            pojo.setDistance(Double.valueOf(response[i][9]));
+            list.add(pojo);
+        }
+        return list;
     }
 
     private String[][] parseGetFotosMascotaByUsuarioMesAno(SoapObject result) {

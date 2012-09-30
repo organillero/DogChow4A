@@ -399,7 +399,9 @@ public class ExerciseMenu extends Activity {
     }
 
     public void onClickNearPhotosButton(View view) {
-        // TODO implement this method
+       
+        startActivity(new Intent(this, MapNearDogPhotos.class));
+        
     }
 
     public void onClickTButtonLeftButton(View v) {

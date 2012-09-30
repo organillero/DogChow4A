@@ -77,7 +77,7 @@ public class ShowDogPhoto extends Activity {
         protected void onPreExecute() {
             super.onPreExecute();
             dialog = new ProgressDialog(context);
-            dialog.setMessage(context.getString(R.string.please_wait_signing_up));
+            dialog.setMessage(context.getString(R.string.please_wait_loading_dog_photo));
             dialog.show();
         }
 

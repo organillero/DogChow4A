@@ -248,6 +248,7 @@
 
     <!-- Show Dog Photo -->
     <string name="title_activity_show_dog_photo">ShowDogPhoto</string>
+    <string name="please_wait_loading_dog_photo">Por favor espere\u2026 cargando imagen del perro</string>
 
     <!-- Add Dog Photo -->
     <string name="title_activity_add_dog_photo">AddDogPhoto</string>

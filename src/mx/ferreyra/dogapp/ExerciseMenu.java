@@ -148,6 +148,11 @@ public class ExerciseMenu extends Activity {
             } else if (requestCode == DogUtil.DOGWELFARE) {
                 startActivity(new Intent(this, DogProfile.class));
             }
+            
+            //TODO
+            else if (requestCode == DogUtil.DOG_CALENDAR){
+                startActivity(new Intent(this, DogProfile.class));
+            }
         }
     }
 
@@ -374,20 +379,27 @@ public class ExerciseMenu extends Activity {
     }
 
     public void onClickCalendarButton(View view) {
-        // TODO implement this method
-    }
-
-    public void onClickStatisticsButton(View v) {
+     
         if(app.getCurrentUserId()==null) {
             startActivityForResult(new Intent(this, PreSignup.class), DogUtil.STATISTICS);
         } else {
             startActivity(new Intent(this, Report.class));
         }
+    }
+
+    public void onClickStatisticsButton(View v) {
+        if(app.getCurrentUserId()==null) {
+            startActivityForResult(new Intent(this, PreSignup.class), DogUtil.DOG_CALENDAR);
+        } else {
+            startActivity(new Intent(this, Report.class));
+        }
+        /*
         analyticsTracker.trackEvent("Statictics",           // Category, i.e. Statictics Button
                 "Button",               // Action, i.e. New Route
                 "clicked",              // Label    i.e. New Route
                 DogUtil.TRACKER_VALUE); // Value,
         DogUtil.TRACKER_VALUE++;
+        */
     }
 
     public void onClickDogWelfare(View v) {

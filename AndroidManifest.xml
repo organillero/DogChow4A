@@ -94,14 +94,14 @@
         <activity
             android:name=".LoginActivity"
             android:screenOrientation="portrait" />
-        
         <activity
             android:name=".MapNearDogPhotos"
             android:screenOrientation="portrait" />
         
-        
-        
-        
+         <activity
+            android:name=".ShowDogPhoto"
+            android:screenOrientation="portrait"
+            android:label="@string/title_activity_show_dog_photo" />
     </application>
 
 </manifest>

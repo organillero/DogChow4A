@@ -2,9 +2,11 @@ package mx.ferreyra.dogapp.map;
 
 import java.util.ArrayList;
 
+import mx.ferreyra.dogapp.ShowDogPhoto;
 import mx.ferreyra.dogapp.pojos.FotosMascotaByLatLonResponse;
 import mx.ferreyra.dogapp.ui.UI;
 import android.content.Context;
+import android.content.Intent;
 import android.graphics.drawable.Drawable;
 
 import com.google.android.maps.ItemizedOverlay;
@@ -49,7 +51,11 @@ public class MyMarkerLayer extends ItemizedOverlay {
         
         FotosMascotaByLatLonResponse foto  = (FotosMascotaByLatLonResponse) mOverlays.get(index).getObject();
         
-        UI.showToast("ok, idFoto: " + foto.getPhotoId().toString() , context);
+        Intent intent = new Intent (context, ShowDogPhoto.class);
+        intent.putExtra(ShowDogPhoto.PHOTO_ID, foto.getPhotoId().intValue());
+        context.startActivity(intent);
+        
+        //UI.showToast("ok, idFoto: " + foto.getPhotoId().toString() , context);
         return super.onTap(index);
     }
 }

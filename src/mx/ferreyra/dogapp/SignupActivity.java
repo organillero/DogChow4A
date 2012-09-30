@@ -1,5 +1,8 @@
 package mx.ferreyra.dogapp;
 
+import static mx.ferreyra.dogapp.ui.DialogHelper.ONLY_DISMISS;
+import static mx.ferreyra.dogapp.ui.DialogHelper.showOkDialog;
+
 import java.io.IOException;
 
 import org.xmlpull.v1.XmlPullParserException;
@@ -33,10 +36,18 @@ public class SignupActivity extends Activity {
 
 	public void onClickSignup(View view) {
 		if(!validateEmail()) {
-			// TODO notify user that email is not valid
+			// Notify user that email is not valid
+		    showOkDialog(this, getString(R.string.type_an_email), ONLY_DISMISS);
+		    return;
 		} else if(!validatePassword()) {
-			// TODO notify user that password is not valid
-		}
+            // Notify user that password is not valid
+            showOkDialog(this, getString(R.string.type_a_password), ONLY_DISMISS);
+            return;
+        } else if(!validatePasswordConfirmarion()) {
+            // Notify user that password confirmation is not valid
+            showOkDialog(this, getString(R.string.password_and_confirmation_not_equal), ONLY_DISMISS);
+            return;
+        }
 
 		Signup task = new Signup(this);
 		String[] args = {
@@ -79,15 +90,24 @@ public class SignupActivity extends Activity {
 		return email.length() > 5;
 	}
 
-	private boolean validatePassword() {
-		String password = passwordValueField.getText().toString();
-		String confirmation = passwordConfirmationValueField.getText().toString();
+    private boolean validatePassword() {
+        String password = passwordValueField.getText().toString();
 
-		if(password == null || password.trim().length() < PASSWORD_MIN_SIZE)
-			return false;
+        if(password == null || password.trim().length() < PASSWORD_MIN_SIZE)
+            return false;
 
-		return password.equals(confirmation);
-	}
+        return true;
+    }
+
+    private boolean validatePasswordConfirmarion() {
+        String password = passwordValueField.getText().toString();
+        String confirmation = passwordConfirmationValueField.getText().toString();
+
+        if(confirmation == null || confirmation.trim().length() < PASSWORD_MIN_SIZE)
+            return false;
+
+        return password.equals(confirmation);
+    }
 
 	protected class Signup extends AsyncTask<String, Integer, Integer> {
 		private final Context context;

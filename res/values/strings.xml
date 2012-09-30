@@ -225,6 +225,9 @@
     <string name="to_signup_with">Registrarse con</string>
     <string name="ups">\u00a1Ups!</string>
     <string name="an_error_ocurred">\u00a1Ocurri\u00f3 un error!</string>
+    <string name="type_an_email">Ingrese un correo</string>
+    <string name="type_a_password">Ingrese una contrase\u00f1a</string>
+    <string name="password_and_confirmation_not_equal">La contrase\u00f1a y su confirmaci\u00f3n no son iguales</string>
     <string name="please_wait_signing_up">"Por favor espere... \u00a1registrando!"</string>
 
     <!-- Login activity -->

@@ -369,7 +369,7 @@ public class TrackMapRoute extends MapActivity implements LocationListener{
 	@Override
 	protected void onResume() {
 		super.onResume();
-		begin();
+		//begin();
 
 		LoadPreferences();
 

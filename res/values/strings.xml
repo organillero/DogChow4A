@@ -246,6 +246,7 @@
     <string name="email_empty_message">Ingrese su correo electr\u00f3nico</string>
     <string name="password_empty_message">Ingrese su contrase\u00f1a</string>
 
+
     <!-- Show Dog Photo -->
     <string name="title_activity_show_dog_photo">ShowDogPhoto</string>
     <string name="please_wait_loading_dog_photo">Por favor espere\u2026 cargando imagen del perro</string>
@@ -261,4 +262,9 @@
     <string name="validation_alert_dialog_title">Datos incompletos</string>
     <string name="dog_image_not_selected_dialog_message">Seleccione una imagen</string>
 
+    <!-- ShowCalendar activity -->
+    <string name="menu_settings">Settings</string>
+    <string name="title_activity_show_calendar">ShowCalendar</string>
+
 </resources>
+

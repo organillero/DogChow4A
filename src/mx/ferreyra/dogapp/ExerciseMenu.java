@@ -132,6 +132,7 @@ public class ExerciseMenu extends Activity {
         super.onActivityResult(requestCode, resultCode, intent);
 
         if (resultCode == Activity.RESULT_OK && intent != null) {
+            
             if (requestCode == DogUtil.NEW_ROUTE) {
                 Bundle extras = intent.getExtras();
                 Integer idUser = (Integer) extras.get("ID_USER");
@@ -141,17 +142,20 @@ public class ExerciseMenu extends Activity {
                     i.putExtra("loadroute", 2);
                     startActivity(i);
                 }
-            } else if(requestCode == DogUtil.LOAD_ROUTE) {
+            }
+            
+            else if(requestCode == DogUtil.LOAD_ROUTE) {
                 Intent i = new Intent(this, Starting.class);
                 i.putExtra("loadroute", 1);
                 startActivity(i);
-            } else if (requestCode == DogUtil.DOGWELFARE) {
+            }
+            
+            else if (requestCode == DogUtil.DOGWELFARE) {
                 startActivity(new Intent(this, DogProfile.class));
             }
             
-            //TODO
             else if (requestCode == DogUtil.DOG_CALENDAR){
-                startActivity(new Intent(this, DogProfile.class));
+                startActivity(new Intent(this, ShowCalendar.class));
             }
         }
     }
@@ -383,7 +387,7 @@ public class ExerciseMenu extends Activity {
         if(app.getCurrentUserId()==null) {
             startActivityForResult(new Intent(this, PreSignup.class), DogUtil.STATISTICS);
         } else {
-            startActivity(new Intent(this, Report.class));
+            startActivity(new Intent(this, ShowCalendar.class));
         }
     }
 

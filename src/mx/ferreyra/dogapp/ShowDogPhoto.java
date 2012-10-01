@@ -15,6 +15,7 @@ import android.os.AsyncTask;
 import android.os.Bundle;
 import android.util.Base64;
 import android.util.Log;
+import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -64,6 +65,9 @@ public class ShowDogPhoto extends Activity {
         dogPhotoFoot.setText(array[0][6]);
     }
 
+    
+
+    
     private class ShowDogPhotoTask extends AsyncTask<Integer, Integer, String[][]> {
 
         private final Context context;

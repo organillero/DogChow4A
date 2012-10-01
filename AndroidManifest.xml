@@ -109,8 +109,7 @@
 
         <activity
             android:name=".ShowCalendar"
-            android:screenOrientation="portrait"
-            android:label="@string/title_activity_show_calendar" />
+            android:screenOrientation="portrait" />
 
     </application>
 

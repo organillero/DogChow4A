@@ -11,6 +11,9 @@ public class Recursos {
         "1999", "1998", "1997", "1996", "1995", "1994", "1993", "1992", "1991", "1990"
 	};
 	public static final String MONTHS[]={"Ene", "Feb", "Mar", "Abr", "May", "Jun", "Jul", "Ago", "Sep", "Oct", "Nov", "Dic"};
+	
+	
+	public static final String MONTHS_CAL[]={"Enero", "Febrero", "Marzo", "Abril", "Mayo", "Junio", "Julio", "Agosto", "Septiembre", "Octubre", "Noviembre", "Diciembre"};
 
 	public static final String STATES[] ={	"Aguascalientes", "Baja California",
 											"Baja California Sur", "Campeche",

@@ -1,13 +1,53 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/activityRootView"
     android:layout_width="match_parent"
     android:layout_height="match_parent" >
 
+    <RelativeLayout
+        android:id="@+id/rl_calendar"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:padding="10dp" >
+
+        <Button
+            android:id="@+id/cal_month"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="5dp"
+            android:background="@drawable/bg_select_field"
+            android:gravity="left"
+            android:hint="@string/month"
+            android:onClick="onClickCalMonthButton" />
+
+        <Button
+            android:id="@+id/cal_year"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/cal_month"
+            android:background="@drawable/bg_select_field"
+            android:gravity="left"
+            android:hint="@string/year"
+            android:onClick="onClickCalYearButton" />
+
+        <Button
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/cal_year"
+            android:layout_alignParentLeft="true"
+            android:layout_marginTop="20dp"
+            android:background="@drawable/bt_send"
+            android:contentDescription="@null"
+            android:onClick="onClickSendButton"
+            android:text="@string/consult"
+            android:textColor="@android:color/white" />
+    </RelativeLayout>
+
     <GridView
-        xmlns:android="http://schemas.android.com/apk/res/android"
         android:id="@+id/gridview"
         android:layout_width="fill_parent"
         android:layout_height="fill_parent"
+        android:layout_below="@+id/rl_calendar"
         android:columnWidth="90dp"
         android:gravity="center"
         android:horizontalSpacing="10dp"

@@ -125,7 +125,7 @@ public class WsDogUtils {
     }
 
 
-    public static List<FotosMascotaByLatLonResponse> fotosMascotaByLatLonToPojo(String[][] response)
+    public List<FotosMascotaByLatLonResponse> fotosMascotaByLatLonToPojo(String[][] response)
         throws ParseException {
 
         if(response==null)

@@ -1,23 +1,44 @@
 package mx.ferreyra.dogapp;
 
+import java.util.Date;
+import java.util.List;
+
+import mx.ferreyra.dogapp.pojos.FotosMascotaByLatLonResponse;
+import mx.ferreyra.dogapp.recursos.Recursos;
 import mx.ferreyra.dogapp.ui.UI;
+import android.annotation.SuppressLint;
 import android.app.Activity;
+import android.app.AlertDialog;
+import android.app.ProgressDialog;
 import android.content.Context;
+import android.content.DialogInterface;
+import android.content.res.Configuration;
+import android.location.Criteria;
+import android.location.Location;
+import android.location.LocationManager;
+import android.os.AsyncTask;
+import android.os.Build;
 import android.os.Bundle;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.BaseAdapter;
+import android.widget.Button;
 import android.widget.GridView;
 import android.widget.ImageView;
-import android.widget.Toast;
 
 public class ShowCalendar extends Activity {
 
     
+    private View activityRootView;
     private Context context;
     private GridView gridview;
+    
+    private Button calMonth;
+    private Button calYear;
+    
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -26,7 +47,11 @@ public class ShowCalendar extends Activity {
         
         setContentView(R.layout.activity_show_calendar);
 
+        activityRootView = findViewById(R.id.activityRootView);
+        
         gridview = (GridView) findViewById(R.id.gridview);
+        calMonth = (Button) findViewById(R.id.cal_month);
+        calYear = (Button) findViewById(R.id.cal_year);
         gridview.setAdapter(new ImageAdapter(this));
         
         
@@ -40,6 +65,54 @@ public class ShowCalendar extends Activity {
 
     }
 
+    
+    private int month = -1;
+    private int year = -1;
+    
+    @SuppressLint("NewApi")
+	public void  onClickCalMonthButton (View v){
+        
+        AlertDialog.Builder builder;
+        checkAndHideKeyboard(null);
+        builder = Build.VERSION.SDK_INT>=11 ?
+                new AlertDialog.Builder(context,AlertDialog.THEME_HOLO_LIGHT) :
+                    new AlertDialog.Builder(context);
+                builder.setTitle("Mes");
+                builder.setSingleChoiceItems(Recursos.MONTHS_CAL,  year, new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int item) {
+                        calMonth.setHint(Recursos.MONTHS_CAL[item]);
+                        month = item;
+                        dialog.dismiss();
+                    }
+                });
+                builder.create().show();
+        
+        
+    }
+    
+    @SuppressLint("NewApi")
+	public void onClickCalYearButton (View v){
+        
+        AlertDialog.Builder builder;
+        checkAndHideKeyboard(null);
+        builder = Build.VERSION.SDK_INT>=11 ?
+                new AlertDialog.Builder(context,AlertDialog.THEME_HOLO_LIGHT) :
+                    new AlertDialog.Builder(context);
+                builder.setTitle("A–o");
+                builder.setSingleChoiceItems(Recursos.DOG_YEARS,  year, new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int item) {
+                        calYear.setHint(Recursos.DOG_YEARS[item]);
+                        year = item;
+                        dialog.dismiss();
+                    }
+                });
+                builder.create().show();
+        
+        
+        
+    }
 
     public class ImageAdapter extends BaseAdapter {
         private Context mContext;
@@ -92,6 +165,65 @@ public class ShowCalendar extends Activity {
         };
     }
 
+    
+    private class MyCalAsyncTask extends AsyncTask<Void, Void, List<FotosMascotaByLatLonResponse>> {
 
 
+        ProgressDialog progress;
+
+        @Override
+        protected void onPreExecute() {
+            super.onPreExecute();
+            progress =ProgressDialog.show(context, "Espere de favor", "Actualizando informaci—n", true, false);
+
+        }
+
+        @Override
+        protected List<FotosMascotaByLatLonResponse> doInBackground(Void... arg0) {
+
+
+            String bestProvider;
+            LocationManager locationManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
+            Criteria criteria = new Criteria();
+            bestProvider = locationManager.getBestProvider(criteria, true);      
+            Location location = locationManager.getLastKnownLocation(bestProvider);
+
+            String[][] ans = null;
+
+            WsDogUtils dogUtils = new WsDogUtils();
+
+           Integer userId = DogUtil.getInstance().getCurrentUserId();
+           Date date= new Date();
+           
+            
+            try {
+                ans = dogUtils.getFotosMascotaByUsuarioMesAno(userId, date);
+                
+                //ans = dogUtils.fotosMascotaByLatLonToPojo( dogUtils.getFotosMascotaByLatLon (location.getLatitude(), location.getLongitude(), 20 ) );
+            } catch (Exception e) {
+                e.printStackTrace();
+                ans = null;
+            } 
+
+            return null;
+        }
+
+
+        @Override
+        protected void onPostExecute(List<FotosMascotaByLatLonResponse> fotosMascotas) {
+            super.onPostExecute(fotosMascotas);
+            progress.dismiss();
+            
+
+        }
+    }
+    
+    public void checkAndHideKeyboard(View view){
+        if(getResources().getConfiguration().keyboardHidden == Configuration.KEYBOARDHIDDEN_NO){
+            InputMethodManager imm = (InputMethodManager)context.getSystemService(Context.INPUT_METHOD_SERVICE);
+            imm.hideSoftInputFromWindow(activityRootView.getWindowToken(), 0);
+        }
+    }
+
+    
 }

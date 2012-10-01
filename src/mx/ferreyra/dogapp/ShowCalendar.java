@@ -15,6 +15,7 @@ import android.app.AlertDialog;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.content.res.Configuration;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -90,12 +91,44 @@ public class ShowCalendar extends Activity {
 
     public void onclickPhoto (View v){
 
+        if (month == -1 || year == -1 ){
+            return; 
+        }
+
 
         if ( v.getTag() != null){
             new DialogPhotoOptions(  (FotosMascotaByUsuarioMesAnoResponse)v.getTag(), context).buildShow();
         }
+        
         else {
-            //TODO
+
+
+
+            int day =-1;
+            for(int i=0; i< idButtons.length ; i++){
+
+                if(idButtons[i] == v.getId()){
+                    day =i;
+                    break;
+                }
+
+            }
+
+
+            if (day == -1 )
+                return;
+
+            String tmpYear =  String.valueOf(2012 - year);
+            String tmpMonth =   ((month+1) < 10 ? "0" +(month+1) : "" + (month+1));
+            String tmpDay =   ((day+1) < 10 ? "0" +(day+1) : "" + (day+1));
+
+
+            String tmpDate = tmpYear + "-" + tmpMonth + "-" + tmpDay ;
+
+            Intent intent = new Intent(context, AddDogPhoto.class);
+            intent.putExtra("DATE", tmpDate);
+
+            context.startActivity(intent);
         }
 
 

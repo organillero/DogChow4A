@@ -1,9 +1,11 @@
 package mx.ferreyra.dogapp;
 
+import java.io.ByteArrayInputStream;
+import java.io.InputStream;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
-import mx.ferreyra.dogapp.pojos.FotosMascotaByLatLonResponse;
 import mx.ferreyra.dogapp.pojos.FotosMascotaByUsuarioMesAnoResponse;
 import mx.ferreyra.dogapp.recursos.Recursos;
 import mx.ferreyra.dogapp.ui.UI;
@@ -14,17 +16,20 @@ import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.res.Configuration;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.graphics.drawable.BitmapDrawable;
+import android.graphics.drawable.Drawable;
 import android.location.Criteria;
 import android.location.Location;
 import android.location.LocationManager;
 import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
+import android.util.Base64;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.inputmethod.InputMethodManager;
-import android.widget.AdapterView;
-import android.widget.AdapterView.OnItemClickListener;
 import android.widget.BaseAdapter;
 import android.widget.Button;
 import android.widget.GridView;
@@ -33,15 +38,33 @@ import android.widget.ImageView;
 public class ShowCalendar extends Activity {
 
 
+    private int idButtons[] ={
+
+            R.id.bt_1, R.id.bt_2, R.id.bt_3, R.id.bt_4, R.id.bt_5,
+            R.id.bt_6, R.id.bt_7, R.id.bt_8, R.id.bt_9, R.id.bt_10,
+
+            R.id.bt_11, R.id.bt_12, R.id.bt_13, R.id.bt_14, R.id.bt_15,
+            R.id.bt_16, R.id.bt_17, R.id.bt_18, R.id.bt_19, R.id.bt_20,
+
+            R.id.bt_21, R.id.bt_22, R.id.bt_23, R.id.bt_24, R.id.bt_25,
+            R.id.bt_26, R.id.bt_27, R.id.bt_28, R.id.bt_29, R.id.bt_30,
+            R.id.bt_31
+    };
+
+    ArrayList<Button>buttons;
+
+    //private Button buttons[]={};
+
     private View activityRootView;
     private Context context;
-    private GridView gridview;
 
     private Button calMonth;
     private Button calYear;
 
-    public ImageAdapter adapter=null;
-    
+
+
+
+
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -52,21 +75,29 @@ public class ShowCalendar extends Activity {
 
         activityRootView = findViewById(R.id.activityRootView);
 
-        gridview = (GridView) findViewById(R.id.gridview);
+        //gridview = (GridView) findViewById(R.id.gridview);
         calMonth = (Button) findViewById(R.id.cal_month);
         calYear = (Button) findViewById(R.id.cal_year);
-        
-        adapter =  new ImageAdapter(this);
-        gridview.setAdapter(adapter);
+
+        buttons = new ArrayList<Button>();
+        for (int i=0; i< idButtons.length ;i++){
+            buttons.add( (Button) findViewById(idButtons[i]));
+
+        }
+
+    }
 
 
+    public void onclickPhoto (View v){
 
-        gridview.setOnItemClickListener(new OnItemClickListener() {
-            public void onItemClick(AdapterView<?> parent, View v, int position, long id) {
-                UI.showToast("pos." + position, context);
 
-            }
-        });
+        if ( v.getTag() != null){
+            new DialogPhotoOptions(  (FotosMascotaByUsuarioMesAnoResponse)v.getTag(), context).buildShow();
+        }
+        else {
+            //TODO
+        }
+
 
     }
 
@@ -120,61 +151,19 @@ public class ShowCalendar extends Activity {
     }
 
     public void  onClickConsultCalButton (View v){
-        new MyCalAsyncTask().execute();
+
+        if (month == -1 || year == -1 ){
+            UI.showAlertDialog("Upps", "Por favor selecione una fecha v‡lida", "ok", context, null);
+        }
+        else{
+            new MyCalAsyncTask().execute();
+        }
     } 
 
 
-    public class ImageAdapter extends BaseAdapter {
-        private Context mContext;
 
-        public ImageAdapter(Context c) {
-            mContext = c;
-        }
 
-        public int getCount() {
-            return mThumbIds.length;
-        }
-
-        public Object getItem(int position) {
-            return null;
-        }
-
-        public long getItemId(int position) {
-            return 0;
-        }
-
-        // create a new ImageView for each item referenced by the Adapter
-        public View getView(int position, View convertView, ViewGroup parent) {
-            ImageView imageView;
-            if (convertView == null) {  // if it's not recycled, initialize some attributes
-                imageView = new ImageView(mContext);
-                imageView.setLayoutParams(new GridView.LayoutParams(80, 80));
-                imageView.setScaleType(ImageView.ScaleType.CENTER_CROP);
-                imageView.setPadding(2, 2, 2, 2);
-            } else {
-                imageView = (ImageView) convertView;
-            }
-
-            imageView.setImageResource(mThumbIds[position]);
-            return imageView;
-        }
-
-        // references to our images
-        private Integer[] mThumbIds = {
-                R.drawable.sample_2, R.drawable.sample_3,
-                R.drawable.sample_4, R.drawable.sample_5,
-                R.drawable.sample_6, R.drawable.sample_7,
-                R.drawable.sample_0, R.drawable.sample_1,
-                R.drawable.sample_2, R.drawable.sample_3,
-                R.drawable.sample_4, R.drawable.sample_5,
-                R.drawable.sample_6, R.drawable.sample_7,
-                R.drawable.sample_0, R.drawable.sample_1,
-                R.drawable.sample_2, R.drawable.sample_3,
-                R.drawable.sample_4, R.drawable.sample_5,
-                R.drawable.sample_6, R.drawable.sample_7
-        };
-    }
-
+    static final int MONTHS_LENGHT[]={31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31};
 
     private class MyCalAsyncTask extends AsyncTask<Void, Void,  List<FotosMascotaByUsuarioMesAnoResponse>> {
 
@@ -206,9 +195,15 @@ public class ShowCalendar extends Activity {
             Date date= new Date();
 
             userId = 10;
-            
+            String tmpYear =  String.valueOf(2012 - year);
+            String tmpMonth =   ((month+1) < 10 ? "0" +(month+1) : "" + (month+1));
+
+            String tmpDate = tmpYear + "-" + tmpMonth + "-01" ;
+
+
+
             try {
-                ans = dogUtils.fotosMascotaByUsuarioMesAnoToPojo(dogUtils.getFotosMascotaByUsuarioMesAno( userId.toString(), "2012-09-01"));
+                ans = dogUtils.fotosMascotaByUsuarioMesAnoToPojo(dogUtils.getFotosMascotaByUsuarioMesAno( userId.toString(), tmpDate));
             } catch (Exception e) {
                 e.printStackTrace();
                 ans = null;
@@ -218,15 +213,53 @@ public class ShowCalendar extends Activity {
         }
 
 
+        @SuppressWarnings("deprecation")
         @Override
         protected void onPostExecute( List<FotosMascotaByUsuarioMesAnoResponse> fotosMascotas) {
             super.onPostExecute(fotosMascotas);
+
             progress.dismiss();
 
+            for (int i=0; i< idButtons.length ;i++){
+                buttons.get(i).setBackgroundDrawable(null);
+            }
 
-            //adapter.add;
-            
+
+            if(fotosMascotas != null && fotosMascotas.size() > 0){
+
+                //fotosMascotaAdapter.clear();
+                // fotosMascotaAdapter.add(MONTHS_LENGHT[month], null);
+
+                for ( FotosMascotaByUsuarioMesAnoResponse fotoMascota : fotosMascotas){
+
+                    Button button = buttons.get(fotoMascota.getDate().getDay()-1);
+
+                    button.setTag(fotoMascota);
+
+                    button.setBackgroundDrawable(getDrawable(fotoMascota.getPhotoAsBase64Binary()));
+                    //fotosMascotaAdapter.add(fotoMascota.getDate().getDay()-1, fotoMascota);
+                }
+
+            }
+            //adapter.notifyDataSetChanged();
         }
+
+
+        //TODO kill me
+        Drawable getDrawable (String str){
+            byte[] bytes = Base64.decode(str, Base64.DEFAULT);
+            InputStream is = new ByteArrayInputStream(bytes);
+            Bitmap bmp = BitmapFactory.decodeStream(is);
+
+            Drawable icon = new BitmapDrawable(getResources(),bmp);
+
+            icon.setBounds(
+                    0 - icon.getIntrinsicWidth() / 2, 0 - icon.getIntrinsicHeight(), 
+                    icon.getIntrinsicWidth() / 2, 0);
+
+            return  icon;
+        }
+
     }
 
     public void checkAndHideKeyboard(View view){

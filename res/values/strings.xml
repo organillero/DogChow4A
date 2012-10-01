@@ -266,6 +266,12 @@
     <string name="year">Año</string>
     <string name="month">Mes</string>
     <string name="consult">Consultar</string>
+    
+    
+    <!-- DiahlogOptionsPhoto activity -->
+    <string name="details">Ver detalles</string>
+    <string name="edit">Editar Foto</string>
+
 
 </resources>
 

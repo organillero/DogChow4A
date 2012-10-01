@@ -3,6 +3,7 @@ package mx.ferreyra.dogapp;
 import mx.ferreyra.dogapp.pojos.FotosMascotaByUsuarioMesAnoResponse;
 import android.app.Dialog;
 import android.content.Context;
+import android.content.Intent;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
@@ -36,6 +37,48 @@ public class DialogPhotoOptions {
         Button edit = (Button) this.dialog.findViewById(R.id.bt_edit);
         Button share = (Button) this.dialog.findViewById(R.id.bt_share);
         Button cancel = (Button) this.dialog.findViewById(R.id.bt_cancel);
+
+
+        details.setOnClickListener(new OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                dialog.cancel();
+                Intent intent = new Intent (context, ShowDogPhoto.class);
+                intent.putExtra(ShowDogPhoto.PHOTO_ID, fotoMascota.getPhotoId().intValue());
+                context.startActivity(intent);
+
+            }
+        });
+
+
+        edit.setOnClickListener(new OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                dialog.cancel();
+
+
+                Intent intent = new Intent(context, AddDogPhoto.class);
+                intent.putExtra("FOTO_MASCOTA", fotoMascota);
+
+                context.startActivity(intent);
+
+
+            }
+        });
+
+
+        share.setOnClickListener(new OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                dialog.cancel();
+
+                Intent i = new Intent(Intent.ACTION_SEND);//new Intent(Intent.ACTION_VIEW);  
+                //i.setData(Uri.parse(url));
+                i.putExtra(Intent.EXTRA_TEXT, "Tomando un recuerdo de mi perro con DogChow ");
+                i.setType("text/plain");
+                context.startActivity(i);
+            }
+        });
 
 
         cancel.setOnClickListener(new OnClickListener() {

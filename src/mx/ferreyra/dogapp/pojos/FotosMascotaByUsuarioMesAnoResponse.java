@@ -3,12 +3,23 @@
  */
 package mx.ferreyra.dogapp.pojos;
 
+import java.io.ByteArrayInputStream;
+import java.io.InputStream;
+import java.io.Serializable;
 import java.util.Date;
+
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.util.Base64;
 
 /**
  * @author Israel Buitron
  */
-public class FotosMascotaByUsuarioMesAnoResponse {
+public class FotosMascotaByUsuarioMesAnoResponse  implements Serializable{
+    /**
+     * 
+     */
+    private static final long serialVersionUID = -3094778685178365416L;
     private Long photoId;
     private Long ownerId;
     private Date date;
@@ -72,5 +83,12 @@ public class FotosMascotaByUsuarioMesAnoResponse {
     }
     public void setCreationDate(Date creationDate) {
         this.creationDate = creationDate;
+    }
+    
+    public Bitmap getImagen (){
+        byte[] bytes = Base64.decode(photoAsBase64Binary, Base64.DEFAULT);
+        InputStream is = new ByteArrayInputStream(bytes);
+        Bitmap bmp = BitmapFactory.decodeStream(is);
+        return bmp;
     }
 }

@@ -93,7 +93,7 @@ public class ExerciseMenu extends Activity {
                 DogUtil.getInstance().saveCurrentDogId(null);
                 DogUtil.getInstance().saveCurrentOwnerId(null);
                 UI.showAlertDialog(null, "Se ha cerrado se la sesi\u00f3n actual.", "OK", context, null);
-
+                title_right.setVisibility(View.INVISIBLE);
             }
         });
 
@@ -107,6 +107,13 @@ public class ExerciseMenu extends Activity {
     @Override
     protected void onResume() {
         super.onResume();
+
+        // Check for user logged in
+        if(DogUtil.getInstance().getCurrentUserId()==null) {
+            title_right.setVisibility(View.INVISIBLE);
+        } else {
+            title_right.setVisibility(View.VISIBLE);
+        }
 
         if(analyticsTracker == null)
             analyticsTracker = ((DogUtil)getApplication()).getTracker();

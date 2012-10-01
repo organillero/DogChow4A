@@ -1,7 +1,6 @@
 package mx.ferreyra.dogapp;
 
 import mx.ferreyra.dogapp.persistence.Preferencias;
-import mx.ferreyra.dogapp.recursos.Recursos;
 import android.app.Application;
 import android.content.ComponentName;
 import android.content.Context;
@@ -28,6 +27,9 @@ public class DogUtil extends Application {
     public static final int DOG_PROFILE = 0x05;
 
     public static final int DOG_EDIT_PROFILE = 0x06;
+
+    public static String FB_ACCESS_TOKEN_PREFERENCE_KEY = "fb_access_token";
+    public static String FB_ACCESS_EXPIRES_PREFERENCE_KEY = "fb_access_expires";
 
     /**
      * Id for user logged.
@@ -169,9 +171,9 @@ public class DogUtil extends Application {
         int possible = pref.getInt(getString(R.string.preference_dog_id), -1);
         return possible>=0 ? possible : null;
     }
-   
 
-   
+
+
 
 
 
@@ -229,5 +231,5 @@ public class DogUtil extends Application {
     }
 
 
-    
+
 }

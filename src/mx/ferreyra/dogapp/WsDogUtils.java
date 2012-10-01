@@ -731,10 +731,15 @@ public class WsDogUtils {
 
     public Integer insertUsers(String username, String password, boolean isFacebook)
         throws IOException, XmlPullParserException {
+        return insertUsers(username, password, isFacebook ? "1" : "0");
+    }
+
+    public Integer insertUsers(String username, String password, String isFacebook)
+        throws IOException, XmlPullParserException {
         SoapObject request = new SoapObject(namespace, INSERT_USERS);
         request.addProperty("username",username);
         request.addProperty("password",password);
-        request.addProperty("isFacebook",isFacebook ? "1" : "0");
+        request.addProperty("isFacebook",isFacebook);
         SoapObject result = (SoapObject)genericRequest(INSERT_USERS,
                                                        namespace + INSERT_USERS,
                                                        request);

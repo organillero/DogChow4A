@@ -71,21 +71,21 @@ public class TrackMapRoute extends MapActivity implements LocationListener{
 	private ImageView title_image;
 	private TextView title_txt, bottom_timer;
 	private Button title_left , title_right;
-	private Button btnStart,btnStop; 
-	private Button mapa,stats,camera; 
+	private Button btnStart,btnStop;
+	private Button mapa,stats,camera;
 	private Button btn_save,btn_resume,btn_discard;
 	private Dialog alert;
 	private String time ="00.00.00";
 	private String lastTime ="";
 	private SharedPreferences sharedPreferences;
-	private Handler handler = new Handler();
+	private final Handler handler = new Handler();
 	protected long startTime = 0L;
 	private boolean isRunning = false;
 	private static final String PERSIST_IS_RUNNING = "isRunning";
 	private static final String PERSIST_START_MARKER_MILLIS = "startMarkerMillis";
 	//	private static final long MINUTES = 1000*5;
 	//	private static final long METERS = 3;
-	//	
+	//
 	private static final long MINUTES = 0;
 	private static final long METERS = 0;
 
@@ -96,9 +96,9 @@ public class TrackMapRoute extends MapActivity implements LocationListener{
 
 	private TextView txt_time_stats, bottom_txt_distance,  bottom_txt_speed, txt_report_speed, txt_report_distance;
 
-	private float distance = 0.0f;	
+	private float distance = 0.0f;
 	private String speed = "0";
-	private GoogleAnalyticsTracker analyticsTracker;	
+	private GoogleAnalyticsTracker analyticsTracker;
 	private ProgressBar statsProgressBar;
 	private String result;
 
@@ -107,7 +107,7 @@ public class TrackMapRoute extends MapActivity implements LocationListener{
 		super.onCreate(savedInstanceState);
 		setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
 		requestWindowFeature(Window.FEATURE_CUSTOM_TITLE);
-		getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, 
+		getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,
 				WindowManager.LayoutParams.FLAG_FULLSCREEN);
 		setContentView(R.layout.trackmap);
 		getWindow().setFeatureInt(Window.FEATURE_CUSTOM_TITLE,
@@ -127,7 +127,7 @@ public class TrackMapRoute extends MapActivity implements LocationListener{
 		statsProgressBar.setVisibility(View.INVISIBLE);
 
 
-		bottom_timer =  (TextView)findViewById(R.id.bottom_time_txt);		
+		bottom_timer =  (TextView)findViewById(R.id.bottom_time_txt);
 		bottom_txt_distance = (TextView)findViewById(R.id.bottom_distance_txt);
 		bottom_txt_speed = (TextView)findViewById(R.id.bottom_speed_txt);
 
@@ -140,7 +140,8 @@ public class TrackMapRoute extends MapActivity implements LocationListener{
 
 		title_left.setOnClickListener(new OnClickListener() {
 
-			public void onClick(View v) { 
+			@Override
+            public void onClick(View v) {
 				Intent i =new Intent(TrackMapRoute.this,ExerciseMenu.class);
 				startActivity(i);
 				finish();
@@ -149,7 +150,8 @@ public class TrackMapRoute extends MapActivity implements LocationListener{
 
 		title_right.setOnClickListener(new OnClickListener() {
 
-			public void onClick(View v) { 
+			@Override
+            public void onClick(View v) {
 				List<Overlay> overlays =  mapView.getOverlays();
 				List<Double> latitudes = new ArrayList<Double>();
 				List<Double> longitudes = new ArrayList<Double>();
@@ -159,10 +161,10 @@ public class TrackMapRoute extends MapActivity implements LocationListener{
 					latitudes.add(overlay.getGeoPointDestLatitude()/1e6);
 
 					longitudes.add(overlay.getGeoPointSourceLongitude()/1e6);
-					longitudes.add(overlay.getGeoPointDestLongitude()/1e6);					
+					longitudes.add(overlay.getGeoPointDestLongitude()/1e6);
 				}
 
-				Intent i =new Intent(TrackMapRoute.this,RouteNaming.class); 				
+				Intent i =new Intent(TrackMapRoute.this,RouteNaming.class);
 				i.putExtra("sourceLatitude", srcLat);
 				i.putExtra("sourceLongitude", srcLong);
 				i.putExtra("routeLatitude", latitudes.toString());
@@ -170,7 +172,7 @@ public class TrackMapRoute extends MapActivity implements LocationListener{
 				i.putExtra("distance", distance);
 				i.putExtra("timeTaken", lastTime);
 				startActivity(i);
-				finish(); 
+				finish();
 			}
 		});
 
@@ -189,7 +191,7 @@ public class TrackMapRoute extends MapActivity implements LocationListener{
 
 		//		ipod.setOnClickListener(new OnClickListener() {
 		//
-		//			public void onClick(View v) { 
+		//			public void onClick(View v) {
 		//
 		//				mapa.setBackgroundResource(R.drawable.map_grey);
 		//				stats.setBackgroundResource(R.drawable.stats_grey);
@@ -207,7 +209,7 @@ public class TrackMapRoute extends MapActivity implements LocationListener{
 		mapView = (MapView) findViewById(R.id.myMap);
 		locationManager = (LocationManager) getSystemService(LOCATION_SERVICE);
 
-		mapView.getController().setZoom(18); 
+		mapView.getController().setZoom(18);
 		mapView.setBuiltInZoomControls(true);
 
 
@@ -231,8 +233,9 @@ public class TrackMapRoute extends MapActivity implements LocationListener{
 	mapa.setBackgroundResource(R.drawable.mapa_sele);
 	stats.setBackgroundResource(R.drawable.stats);
 	bottomBar.setVisibility(View.VISIBLE);
-	btnStart.setVisibility(View.VISIBLE);
-	btnStop.setVisibility(View.VISIBLE);
+//	btnStart.setVisibility(View.VISIBLE);
+//	btnStop.setVisibility(View.VISIBLE);
+	toggleStartButton(isRunning);
 
 	analyticsTracker.trackEvent("Maps",                 // Category,
 				    "Button",               // Action,
@@ -280,7 +283,7 @@ public class TrackMapRoute extends MapActivity implements LocationListener{
 		editor.commit();
 	}
 
-	private void LoadPreferences(){ 
+	private void LoadPreferences(){
 
 		SharedPreferences sharedPreferences = getSharedPreferences(Utilities.DOGAPP, MODE_PRIVATE);
 		String time = sharedPreferences.getString(Utilities.ROUTE_TIMING, getResources().getString(R.string.route_time));
@@ -294,35 +297,35 @@ public class TrackMapRoute extends MapActivity implements LocationListener{
 	}
 
 
-	public class MyOverLay extends Overlay 
-	{ 
-		private GeoPoint gp1; 
-		private GeoPoint gp2; 
-		private int mode=0; 
-		private int defaultColor; 
+	public class MyOverLay extends Overlay
+	{
+		private final GeoPoint gp1;
+		private final GeoPoint gp2;
+		private int mode=0;
+		private final int defaultColor;
 
-		public MyOverLay(GeoPoint gp1,GeoPoint gp2,int mode) // GeoPoint is a int. (6E) 
-		{ 
-			this.gp1 = gp1; 
-			this.gp2 = gp2; 
-			this.mode = mode; 
-			defaultColor = Color.BLACK; // no defaultColor 
+		public MyOverLay(GeoPoint gp1,GeoPoint gp2,int mode) // GeoPoint is a int. (6E)
+		{
+			this.gp1 = gp1;
+			this.gp2 = gp2;
+			this.mode = mode;
+			defaultColor = Color.BLACK; // no defaultColor
 
-		} 
+		}
 
-		public MyOverLay(GeoPoint gp1,GeoPoint gp2,int mode, int defaultColor) 
-		{ 
-			this.gp1 = gp1; 
-			this.gp2 = gp2; 
-			this.mode = mode; 
-			this.defaultColor = defaultColor; 
-		} 
+		public MyOverLay(GeoPoint gp1,GeoPoint gp2,int mode, int defaultColor)
+		{
+			this.gp1 = gp1;
+			this.gp2 = gp2;
+			this.mode = mode;
+			this.defaultColor = defaultColor;
+		}
 
 
-		public int getMode() 
-		{ 
-			return mode; 
-		} 
+		public int getMode()
+		{
+			return mode;
+		}
 
 		@Override
 		public void draw(Canvas canvas, MapView mapView, boolean shadow) {
@@ -334,7 +337,7 @@ public class TrackMapRoute extends MapActivity implements LocationListener{
 			paint.setColor(defaultColor);
 			Point point2 = new Point();
 			projection.toPixels(gp2, point2);
-			paint.setStrokeWidth(7);		
+			paint.setStrokeWidth(7);
 			canvas.drawLine(point.x, point.y, point2.x, point2.y, paint);
 		}
 
@@ -369,7 +372,7 @@ public class TrackMapRoute extends MapActivity implements LocationListener{
 	@Override
 	protected void onResume() {
 		super.onResume();
-		begin();
+		//begin();
 
 		LoadPreferences();
 
@@ -435,7 +438,7 @@ public class TrackMapRoute extends MapActivity implements LocationListener{
 	public void onLocationChanged(Location location) {
 		if (location == null) return;
 
-		GeoPoint point = new GeoPoint((int)(location.getLatitude() * 1e6),   (int)(location.getLongitude() * 1e6));	
+		GeoPoint point = new GeoPoint((int)(location.getLatitude() * 1e6),   (int)(location.getLongitude() * 1e6));
 		mapView.getController().animateTo(point); //<11>
 		if(previousGeoPoint == null){
 			previousGeoPoint = point;
@@ -474,10 +477,11 @@ public class TrackMapRoute extends MapActivity implements LocationListener{
 
 
 
-	private OnClickListener startClickListener = new OnClickListener() {
-		public void onClick(View v) {
-			begin();			
-			isRunning = true;
+	private final OnClickListener startClickListener = new OnClickListener() {
+		@Override
+        public void onClick(View v) {
+			begin();
+			toggleStartButton(isRunning = true);
 
 			analyticsTracker.trackEvent(
 					"Start",  // Category, i.e. Start Button
@@ -489,22 +493,24 @@ public class TrackMapRoute extends MapActivity implements LocationListener{
 		}
 	};
 
-	private Runnable updateTimeTask = new Runnable() {
-		public void run() {
+	private final Runnable updateTimeTask = new Runnable() {
+		@Override
+        public void run() {
 			setTime();
 			handler.postDelayed(this, 10);
-		}    
+		}
 	};
 
 
-	private Runnable updateDistanceTask = new Runnable() {
-		public void run() {
+	private final Runnable updateDistanceTask = new Runnable() {
+		@Override
+        public void run() {
 			bottom_txt_distance.setText(String.valueOf(distance));
 			txt_report_distance.setText(String.valueOf(distance));
 			bottom_txt_speed.setText(speed);
 
 			txt_report_speed.setText(speed);
-		}    
+		}
 	};
 
 
@@ -542,7 +548,7 @@ public class TrackMapRoute extends MapActivity implements LocationListener{
 
 
 			time = displayMinutes+" : "+displaySeconds+" : "+displayMillis;
-			bottom_timer.setText(displayMinutes+" : "+displaySeconds+" : "+displayMillis);	
+			bottom_timer.setText(displayMinutes+" : "+displaySeconds+" : "+displayMillis);
 			if(!isStat)
 				txt_time_stats.setText(time);
 		}catch (Exception e) {
@@ -551,17 +557,18 @@ public class TrackMapRoute extends MapActivity implements LocationListener{
 		}
 
 
-	} 
+	}
 
-	private OnClickListener stopClickListener = new OnClickListener() {
-		public void onClick(View v) {
+	private final OnClickListener stopClickListener = new OnClickListener() {
+		@Override
+        public void onClick(View v) {
 			stopListining();
 			gotoShare();
 			done();
 		}
 	};
 
-	private void stopListining(){ 
+	private void stopListining(){
 
 		analyticsTracker.trackEvent(
 				"Pause",  // Category, i.e. Pause Button
@@ -583,15 +590,16 @@ public class TrackMapRoute extends MapActivity implements LocationListener{
 			btnStart.setOnClickListener(startClickListener);
 
 		} else {
-			btnStart.setVisibility(View.INVISIBLE);
-			btnStop.setVisibility(View.VISIBLE);
+			btnStart.setVisibility(View.VISIBLE);
+			btnStop.setVisibility(View.INVISIBLE);
 			btnStop.setOnClickListener(stopClickListener);
 		}
 	}
 
 
-	private OnClickListener resetClickListener = new OnClickListener() {
-		public void onClick(View v) {
+	private final OnClickListener resetClickListener = new OnClickListener() {
+		@Override
+        public void onClick(View v) {
 			reset();
 
 
@@ -605,8 +613,9 @@ public class TrackMapRoute extends MapActivity implements LocationListener{
 		lastTime = time;
 		done();
 		setDisplay("0", "0", "0");
-		btnStart.setVisibility(View.VISIBLE);
-		btnStop.setVisibility(View.INVISIBLE);
+		toggleStartButton(true);
+//		btnStart.setVisibility(View.VISIBLE);
+//		btnStop.setVisibility(View.INVISIBLE);
 	}
 
 	private void done() {
@@ -645,18 +654,18 @@ public class TrackMapRoute extends MapActivity implements LocationListener{
 			handler.removeCallbacks(updateTimeTask);
 			handler.postDelayed(updateTimeTask, 10);
 		}
-		toggleStartButton(false);
+		toggleStartButton(isRunning);
 	}
 
 	private void begin(long lstartTime) {
 
 		startLocationUpdates();
 		if(lstartTime != 0L){
-			startTime = lstartTime;			
+			startTime = lstartTime;
 			handler.removeCallbacks(updateTimeTask);
 			handler.postDelayed(updateTimeTask, 10);
 		}else if (startTime == 0L) {
-			startTime = System.currentTimeMillis();			
+			startTime = System.currentTimeMillis();
 			handler.removeCallbacks(updateTimeTask);
 			handler.postDelayed(updateTimeTask, 10);
 		} else if (isRunning) {
@@ -667,18 +676,18 @@ public class TrackMapRoute extends MapActivity implements LocationListener{
 	}
 
 	private void startLocationUpdates(){
-		locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, MINUTES, METERS, this); 
+		locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, MINUTES, METERS, this);
 	}
 	TextView textView;
 
 	public void gotoShare() {
 
 		LayoutInflater inflater = (LayoutInflater)getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-		View view = inflater.inflate(R.layout.send, null); 
+		View view = inflater.inflate(R.layout.send, null);
 		textView = (TextView)view.findViewById(R.id.txt_pause);
 		btn_save  = (Button)view.findViewById(R.id.btn_save);
 		btn_resume = (Button)view.findViewById(R.id.btn_resume);
-		btn_discard = (Button)view.findViewById(R.id.btn_discard); 
+		btn_discard = (Button)view.findViewById(R.id.btn_discard);
 
 		AlertDialog.Builder builder = new AlertDialog.Builder( TrackMapRoute.this);
 		builder.setView(view);
@@ -686,8 +695,9 @@ public class TrackMapRoute extends MapActivity implements LocationListener{
 		alert.show();
 
 		btn_save.setOnClickListener(new OnClickListener() {
-			public void onClick(View arg0) {
-				distance = (float) (distance/1000.0f);
+			@Override
+            public void onClick(View arg0) {
+				distance = distance/1000.0f;
 				SavePreferences(Utilities.ROUTE_TIMING, time);
 				SavePreferences(Utilities.ROUTE_DISTANCE, String.valueOf(distance));
 				SavePreferences(Utilities.ROUTE_SPEED, speed);
@@ -702,19 +712,19 @@ public class TrackMapRoute extends MapActivity implements LocationListener{
 						latitudes.add(myoverlay.getGeoPointDestLatitude()/1e6);
 
 						longitudes.add(myoverlay.getGeoPointSourceLongitude()/1e6);
-						longitudes.add(myoverlay.getGeoPointDestLongitude()/1e6);	
+						longitudes.add(myoverlay.getGeoPointDestLongitude()/1e6);
 					}
 
 				}
 
-				Intent i = new Intent(TrackMapRoute.this, RouteNaming.class);  
+				Intent i = new Intent(TrackMapRoute.this, RouteNaming.class);
 				i.putExtra("sourceLatitude", srcLat);
 				i.putExtra("sourceLongitude", srcLong);
 				i.putExtra("routeLatitude", latitudes.toString().replace("[", "").replace("]", ""));
 				i.putExtra("routeLongitude", longitudes.toString().replace("[", "").replace("]", ""));
 				i.putExtra("distance", distance);
 				i.putExtra("timeTaken", lastTime);
-				startActivity(i); 
+				startActivity(i);
 				reset();
 				alert.dismiss();
 				handler.removeCallbacks(updateTimeTask);
@@ -732,14 +742,15 @@ public class TrackMapRoute extends MapActivity implements LocationListener{
 
 		btn_resume.setOnClickListener(new OnClickListener() {
 
-			public void onClick(View arg0) { 
+			@Override
+            public void onClick(View arg0) {
 
-				saveDisplay();				
+				saveDisplay();
 
 				startTime = Long.parseLong(getSharedPreferences("DOGAPP", MODE_PRIVATE).getString("MILLS", "0L"));
 				begin(startTime);
 
-				alert.dismiss(); 
+				alert.dismiss();
 
 				analyticsTracker.trackEvent(
 						"Resume",  // Category, i.e. Resume Button
@@ -753,7 +764,8 @@ public class TrackMapRoute extends MapActivity implements LocationListener{
 
 		btn_discard.setOnClickListener(new OnClickListener() {
 
-			public void onClick(View arg0) {
+			@Override
+            public void onClick(View arg0) {
 
 
 				SavePreferences(Utilities.ROUTE_TIMING, getResources().getString(R.string.route_time));
@@ -767,11 +779,11 @@ public class TrackMapRoute extends MapActivity implements LocationListener{
 
 				bottom_timer.setText(getResources().getString(R.string.route_time));
 				bottom_txt_distance.setText(getResources().getString(R.string.route_distance));
-				bottom_txt_speed.setText(getResources().getString(R.string.route_speed));				
+				bottom_txt_speed.setText(getResources().getString(R.string.route_speed));
 
 				if(mapView != null)
 					mapView.getOverlays().clear();
-				previousGeoPoint = null;				
+				previousGeoPoint = null;
 				sourceLocation = null;
 				alert.dismiss();
 				isRunning = false;
@@ -866,7 +878,7 @@ public class TrackMapRoute extends MapActivity implements LocationListener{
 
 	public static boolean checkDecimalPlaces(String number) {
 		//String[] str = new String[]{"10.20", "123456", "12.invalid"};
-		if( number.indexOf(".") > 0 ){				
+		if( number.indexOf(".") > 0 ){
 			try	{
 				/*
 				 * To check if the number is valid decimal number, use
@@ -876,9 +888,9 @@ public class TrackMapRoute extends MapActivity implements LocationListener{
 				 * argument string is not a valid decimal number.
 				 */
 
-				if(Double.parseDouble(getNumberOfDecimalPlaces(number))>5){					  
-					//System.out.println(number + " is a valid decimal number");	
-					isnumber = true;					
+				if(Double.parseDouble(getNumberOfDecimalPlaces(number))>5){
+					//System.out.println(number + " is a valid decimal number");
+					isnumber = true;
 				}
 				else
 					isnumber = false;
@@ -894,14 +906,14 @@ public class TrackMapRoute extends MapActivity implements LocationListener{
 				 * To check if the number is valid integer number, use
 				 * int parseInt(String str) method of
 				 * Integer wrapper class.
-				 * 			
+				 *
 				 * This method throws NumberFormatException if the
 				 * argument string is not a valid integer number.
 				 */
 				int n = Integer.parseInt(number);
 				if(n >= -180 && n <= 180)
 					isnumber = true;
-				else 
+				else
 					isnumber = false;
 				//System.out.println(number + " is valid integer number");
 			}
@@ -928,7 +940,8 @@ public class TrackMapRoute extends MapActivity implements LocationListener{
 		}
 
 
-		protected Boolean doInBackground(String... results) {
+		@Override
+        protected Boolean doInBackground(String... results) {
 			try {
 				SoapObject request = new SoapObject(AppData.NAMESPACE,	AppData.METHOD_NAME_USER_STATS);
 
@@ -942,11 +955,11 @@ public class TrackMapRoute extends MapActivity implements LocationListener{
 
 				HttpTransportSE androidHttpTransport = new HttpTransportSE(AppData.URL);
 				androidHttpTransport.setXmlVersionTag("<?xml version=\"1.0\" encoding=\"UTF-8\"?>");
-				androidHttpTransport.debug=true;				
+				androidHttpTransport.debug=true;
 
-				androidHttpTransport.call(AppData.SOAP_ACTION+AppData.METHOD_NAME_USER_STATS, envelope); 
+				androidHttpTransport.call(AppData.SOAP_ACTION+AppData.METHOD_NAME_USER_STATS, envelope);
 
-				result = androidHttpTransport.responseDump;	
+				result = androidHttpTransport.responseDump;
 
 				return getParsedMyXML(result);
 			}
@@ -955,16 +968,16 @@ public class TrackMapRoute extends MapActivity implements LocationListener{
 				Log.e(DogUtil.DEBUG_TAG, errorMsg);
 				return false;
 			}catch (UnknownServiceException e) {
-				errorMsg = getResources().getString(R.string.service_unavailable);				
+				errorMsg = getResources().getString(R.string.service_unavailable);
 				Log.e(DogUtil.DEBUG_TAG,  getResources().getString(R.string.service_unavailable));
 				return false;
 			}catch (MalformedURLException e) {
-				errorMsg = getResources().getString(R.string.url_malformed);	
+				errorMsg = getResources().getString(R.string.url_malformed);
 				e.printStackTrace();
 				Log.e(DogUtil.DEBUG_TAG, errorMsg );
 				return false;
 			}catch (Exception e) {
-				errorMsg =  getResources().getString(R.string.unable_to_get_data);	
+				errorMsg =  getResources().getString(R.string.unable_to_get_data);
 				Log.e(DogUtil.DEBUG_TAG, errorMsg);
 				return false;
 			}
@@ -972,7 +985,8 @@ public class TrackMapRoute extends MapActivity implements LocationListener{
 
 		}
 
-		protected void onPostExecute(Boolean b) {
+		@Override
+        protected void onPostExecute(Boolean b) {
 			try{
 				if(statsProgressBar != null)
 					statsProgressBar.setVisibility(View.INVISIBLE);
@@ -987,7 +1001,7 @@ public class TrackMapRoute extends MapActivity implements LocationListener{
 
 				StatsData data = reportHandler.getStatsData();
 				txt_time_stats.setText(data.getSecondTime());
-				//txt_report_distance.setText(data.getDistance());				
+				//txt_report_distance.setText(data.getDistance());
 				//txt_report_speed.setText(data.getSpeed());
 
 				//if(DogUtil.checkNumber(data.getDistance())){
@@ -999,7 +1013,7 @@ public class TrackMapRoute extends MapActivity implements LocationListener{
 				//}
 
 
-			}catch (Exception e) { 
+			}catch (Exception e) {
 
 			}
 		}
@@ -1008,7 +1022,7 @@ public class TrackMapRoute extends MapActivity implements LocationListener{
 		protected void onCancelled() {
 
 			super.onCancelled();
-			try{ 
+			try{
 				if(statsProgressBar != null)
 					statsProgressBar.setVisibility(View.INVISIBLE);
 			}catch (Exception e) {
@@ -1054,7 +1068,7 @@ public class TrackMapRoute extends MapActivity implements LocationListener{
 		private boolean isSecondTime;
 		private boolean isSpeed;
 		private boolean hasData = false;
-		private StatsData statsData = null; 
+		private StatsData statsData = null;
 
 		public StatsData getStatsData(){
 			return statsData;
@@ -1072,7 +1086,7 @@ public class TrackMapRoute extends MapActivity implements LocationListener{
 
 		@Override
 		public void startElement(String namespaceURI, String localName,
-				String qName, Attributes atts) throws SAXException {		
+				String qName, Attributes atts) throws SAXException {
 			if (localName.equals("Distance")){
 				isDistance = true;
 				hasData = true;
@@ -1083,7 +1097,7 @@ public class TrackMapRoute extends MapActivity implements LocationListener{
 				isSpeed = true;
 				hasData = true;
 			}
-		} 
+		}
 		@Override
 		public void endElement(String namespaceURI, String localName, String qName)
 		throws SAXException {
@@ -1095,7 +1109,7 @@ public class TrackMapRoute extends MapActivity implements LocationListener{
 			}else if(localName.equals("Speed")){
 				isSpeed = false;
 			}
-		}  
+		}
 
 		@Override
 		public void characters(char ch[], int start, int length) {
@@ -1124,7 +1138,7 @@ public class TrackMapRoute extends MapActivity implements LocationListener{
 		XMLReader xr = sp.getXMLReader();
 
 		reportHandler = new ReportHandler();
-		xr.setContentHandler(reportHandler);   
+		xr.setContentHandler(reportHandler);
 		try {
 			InputStream is = new ByteArrayInputStream(xml.getBytes("UTF-8"));
 			xr.parse(new InputSource(is));
@@ -1132,7 +1146,7 @@ public class TrackMapRoute extends MapActivity implements LocationListener{
 		} catch (UnsupportedEncodingException e) {
 			e.printStackTrace();
 			return false;
-		} 
+		}
 
 		if(!reportHandler.getData())
 			return false;
@@ -1143,7 +1157,7 @@ public class TrackMapRoute extends MapActivity implements LocationListener{
 
 
 
-	private void loadDefault(){ 
+	private void loadDefault(){
 
 		String time =  getResources().getString(R.string.route_time);
 		String distance = getResources().getString(R.string.route_distance);

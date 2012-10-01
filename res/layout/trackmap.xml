@@ -11,8 +11,8 @@
 		android:apiKey="0m2OOy7zIRumcm1oVQgK4I47r5p44OWsBSWuJCg"
 		android:layout_above="@+id/bottom_bar"
 		android:layout_alignParentTop="true" />
-    --><!--
-
+    -->
+    <!--
     <FrameLayout
         android:id="@+id/header"
         android:layout_width="fill_parent"
@@ -112,12 +112,9 @@
             </LinearLayout>
         </LinearLayout>
     </FrameLayout>
+    -->
 
-	-->
-	
-	<include layout="@layout/stats"/>
-        
-
+    <include layout="@layout/stats" />
 	//android:apiKey="0m2OOy7zIRumcm1oVQgK4I47r5p44OWsBSWuJCg"
 	//0-mA0c7VK7NcZ7tDxhMhdq6jX_k4_Oy3Y8R7CFQ - current
 	//0Brn-Fx2j7CS9-U40YVnfwK8aDAjokEfblmQC1w - old    
@@ -138,8 +135,8 @@
         android:layout_centerHorizontal="true"
         android:layout_marginLeft="10dp"
         android:layout_marginTop="36dp"
-        android:onClick="onClickButton1Button"
-        android:background="@drawable/i_mapbtn" >
+        android:background="@drawable/i_mapbtn"
+        android:onClick="onClickButton1Button" >
     </Button>
 
     <Button
@@ -149,8 +146,8 @@
         android:layout_alignBaseline="@+id/button1"
         android:layout_alignBottom="@+id/button1"
         android:layout_toRightOf="@id/button1"
-        android:onClick="onClickButton2Button"
-        android:background="@drawable/i_statsbtn" >
+        android:background="@drawable/i_statsbtn"
+        android:onClick="onClickButton2Button" >
     </Button>
 
     <Button
@@ -180,7 +177,7 @@
         android:layout_alignBottom="@+id/button4"
         android:layout_marginLeft="6dp"
         android:layout_toRightOf="@id/button4"
-        android:onClick="onClickButton5Button">
+        android:onClick="onClickButton5Button" >
     </Button>
 
     <Button
@@ -201,14 +198,7 @@
 		android:layout_toRightOf="@+id/button6" ></Button>
     -->
 
-
-
-
-
 	//
-	
-
-    
 
     <FrameLayout
         android:id="@+id/bottom_bar"
@@ -232,6 +222,8 @@
                 android:layout_below="@+id/button6"
                 android:layout_gravity="center"
                 android:text="Distancia"
+                android:textColor="@android:color/white"
+                android:textSize="16sp"
                 android:textStyle="bold" />
 
             <TextView
@@ -242,6 +234,8 @@
                 android:background="@android:color/transparent"
                 android:singleLine="true"
                 android:text="0.00 km"
+                android:textColor="@android:color/white"
+                android:textSize="16sp"
                 android:textStyle="bold" />
         </LinearLayout>
 
@@ -259,6 +253,8 @@
                 android:layout_below="@+id/button6"
                 android:layout_gravity="center"
                 android:text="Tiempo"
+                android:textColor="@android:color/white"
+                android:textSize="16sp"
                 android:textStyle="bold" />
 
             <TextView
@@ -269,6 +265,8 @@
                 android:background="@android:color/transparent"
                 android:singleLine="true"
                 android:text="0.00"
+                android:textColor="@android:color/white"
+                android:textSize="16sp"
                 android:textStyle="bold" />
         </LinearLayout>
 
@@ -288,6 +286,8 @@
                 android:layout_below="@+id/button6"
                 android:layout_gravity="center"
                 android:text="Velocidad"
+                android:textColor="@android:color/white"
+                android:textSize="16sp"
                 android:textStyle="bold" />
 
             <TextView
@@ -298,6 +298,8 @@
                 android:background="@android:color/transparent"
                 android:singleLine="true"
                 android:text="0(km/h)"
+                android:textColor="@android:color/white"
+                android:textSize="16sp"
                 android:textStyle="bold" />
         </LinearLayout>
     </FrameLayout>

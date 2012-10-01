@@ -1,0 +1,70 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent" >
+
+    <TextView
+        android:id="@+id/add_dog_photo_title"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="10dp"
+        android:layout_marginLeft="2dp"
+        android:layout_marginRight="2dp"
+        android:background="#167044"
+        android:padding="6dp"
+        android:text="@string/add_dog_photo_label"
+        android:textColor="@android:color/white"
+        android:textSize="16sp"
+        android:textStyle="bold" />
+
+    <ImageView
+        android:id="@+id/dog_photo"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/add_dog_photo_title"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="10dp"
+        android:background="@drawable/bg_camera"
+        android:contentDescription="@null"
+        android:onClick="onClickDogPhotoButton"
+        android:src="@drawable/bg_avatar_camera" />
+
+    <ImageButton
+        android:id="@+id/remove_dog_photo_btn"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignTop="@+id/dog_photo"
+        android:layout_marginRight="20dp"
+        android:layout_marginTop="21dp"
+        android:layout_toLeftOf="@+id/dog_photo"
+        android:background="@null"
+        android:contentDescription="@null"
+        android:onClick="onClickRemoveDogPhotoButton"
+        android:src="@drawable/bt_remove"
+        android:visibility="invisible" />
+
+    <EditText
+        android:id="@+id/dog_photo_foot"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/dog_photo"
+        android:layout_margin="10dp"
+        android:background="@drawable/bg_textfield_short"
+        android:ems="10"
+        android:minLines="5"
+        android:hint="@string/dog_photo_description_label"
+        android:inputType="textMultiLine" />
+
+    <Button
+        android:id="@+id/bt_send"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/dog_photo_foot"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="20dp"
+        android:background="@drawable/bt_send"
+        android:onClick="onClickAddPhotoButton"
+        android:text="@string/add_photo_label"
+        android:textColor="@android:color/white" />
+
+</RelativeLayout>

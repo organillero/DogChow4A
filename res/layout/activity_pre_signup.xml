@@ -49,7 +49,7 @@
                 android:layout_centerHorizontal="true"
                 android:layout_margin="15dp"
                 android:onClick="onClickLoginButton"
-                android:text="@string/to_login"
+                android:text="@string/enter"
                 android:width="225dp" />
 
             <Button

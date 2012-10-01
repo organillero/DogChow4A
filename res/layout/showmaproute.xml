@@ -3,12 +3,12 @@
     android:layout_width="fill_parent"
     android:layout_height="fill_parent" >
 
-    <!--android:layout_below="@+id/sort_mode" -->
+    <!-- android:layout_below="@+id/sort_mode" -->
+
     <com.google.android.maps.MapView
         android:id="@+id/myMap"
         android:layout_width="fill_parent"
         android:layout_height="fill_parent"
-
         android:apiKey="0ggmsULpx5gWnKdIEw2m1AmGVAPURVYY-LhPUYw"
         android:clickable="true"
         android:paddingTop="2dp" />
@@ -35,6 +35,8 @@
                 android:layout_below="@+id/button6"
                 android:layout_gravity="center"
                 android:text="Distancia"
+                android:textColor="@android:color/white"
+                android:textSize="16sp"
                 android:textStyle="bold" />
 
             <TextView
@@ -45,6 +47,8 @@
                 android:background="@android:color/transparent"
                 android:singleLine="true"
                 android:text="0.00 km"
+                android:textColor="@android:color/white"
+                android:textSize="16sp"
                 android:textStyle="bold" />
         </LinearLayout>
 
@@ -62,6 +66,8 @@
                 android:layout_below="@+id/button6"
                 android:layout_gravity="center"
                 android:text="Tiempo"
+                android:textColor="@android:color/white"
+                android:textSize="16sp"
                 android:textStyle="bold" />
 
             <TextView
@@ -72,6 +78,8 @@
                 android:background="@android:color/transparent"
                 android:singleLine="true"
                 android:text="0.00"
+                android:textColor="@android:color/white"
+                android:textSize="16sp"
                 android:textStyle="bold" />
         </LinearLayout>
 
@@ -91,6 +99,8 @@
                 android:layout_below="@+id/button6"
                 android:layout_gravity="center"
                 android:text="Velocidad"
+                android:textColor="@android:color/white"
+                android:textSize="16sp"
                 android:textStyle="bold" />
 
             <TextView
@@ -101,6 +111,8 @@
                 android:background="@android:color/transparent"
                 android:singleLine="true"
                 android:text="0(km/h)"
+                android:textColor="@android:color/white"
+                android:textSize="16sp"
                 android:textStyle="bold" />
         </LinearLayout>
     </FrameLayout>

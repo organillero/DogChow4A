@@ -18,7 +18,6 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Color;
-import android.location.LocationManager;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.net.NetworkInfo.State;
@@ -63,7 +62,7 @@ public class ExerciseMenu extends Activity {
     private Facebook facebook;
     private boolean isNLP = false;
     private ProgressBar titleBar;
-    private Handler handler = new Handler();
+    private final Handler handler = new Handler();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -89,11 +88,12 @@ public class ExerciseMenu extends Activity {
         title_right.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (DogUtil.getInstance().getCurrentUserId() != null){
-                    DogUtil.getInstance().deleteCurrentUserId();
-                    DogUtil.getInstance().saveCurrentDogId(null);
-                    UI.showAlertDialog(null, "Se ha cerrado se la sesi\u00f3n actual.", "OK", context, null);
-                }
+
+                DogUtil.getInstance().saveCurrentUserId(null);
+                DogUtil.getInstance().saveCurrentDogId(null);
+                DogUtil.getInstance().saveCurrentOwnerId(null);
+                UI.showAlertDialog(null, "Se ha cerrado se la sesi\u00f3n actual.", "OK", context, null);
+                title_right.setVisibility(View.INVISIBLE);
             }
         });
 
@@ -107,6 +107,13 @@ public class ExerciseMenu extends Activity {
     @Override
     protected void onResume() {
         super.onResume();
+
+        // Check for user logged in
+        if(DogUtil.getInstance().getCurrentUserId()==null) {
+            title_right.setVisibility(View.INVISIBLE);
+        } else {
+            title_right.setVisibility(View.VISIBLE);
+        }
 
         if(analyticsTracker == null)
             analyticsTracker = ((DogUtil)getApplication()).getTracker();
@@ -132,6 +139,7 @@ public class ExerciseMenu extends Activity {
         super.onActivityResult(requestCode, resultCode, intent);
 
         if (resultCode == Activity.RESULT_OK && intent != null) {
+            
             if (requestCode == DogUtil.NEW_ROUTE) {
                 Bundle extras = intent.getExtras();
                 Integer idUser = (Integer) extras.get("ID_USER");
@@ -141,12 +149,20 @@ public class ExerciseMenu extends Activity {
                     i.putExtra("loadroute", 2);
                     startActivity(i);
                 }
-            } else if(requestCode == DogUtil.LOAD_ROUTE) {
+            }
+            
+            else if(requestCode == DogUtil.LOAD_ROUTE) {
                 Intent i = new Intent(this, Starting.class);
                 i.putExtra("loadroute", 1);
                 startActivity(i);
-            } else if (requestCode == DogUtil.DOGWELFARE) {
+            }
+            
+            else if (requestCode == DogUtil.DOGWELFARE) {
                 startActivity(new Intent(this, DogProfile.class));
+            }
+            
+            else if (requestCode == DogUtil.DOG_CALENDAR){
+                startActivity(new Intent(this, ShowCalendar.class));
             }
         }
     }
@@ -280,6 +296,7 @@ public class ExerciseMenu extends Activity {
         alt_bld.setMessage(message)
         .setCancelable(false)
         .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+            @Override
             public void onClick(DialogInterface dialog, int id) {
                 if(isNLP){
                     startActivityForResult(new Intent(android.provider.Settings.ACTION_LOCATION_SOURCE_SETTINGS), 0);
@@ -295,6 +312,7 @@ public class ExerciseMenu extends Activity {
             }
         })
         .setNegativeButton("No", new DialogInterface.OnClickListener() {
+            @Override
             public void onClick(DialogInterface dialog, int id) {
                 dialog.cancel();
             }
@@ -371,17 +389,28 @@ public class ExerciseMenu extends Activity {
         DogUtil.TRACKER_VALUE++;
     }
 
-    public void onClickStatisticsButton(View v) {
+    public void onClickCalendarButton(View view) {
+     
         if(app.getCurrentUserId()==null) {
             startActivityForResult(new Intent(this, PreSignup.class), DogUtil.STATISTICS);
         } else {
+            startActivity(new Intent(this, ShowCalendar.class));
+        }
+    }
+
+    public void onClickStatisticsButton(View v) {
+        if(app.getCurrentUserId()==null) {
+            startActivityForResult(new Intent(this, PreSignup.class), DogUtil.DOG_CALENDAR);
+        } else {
             startActivity(new Intent(this, Report.class));
         }
+        /*
         analyticsTracker.trackEvent("Statictics",           // Category, i.e. Statictics Button
                 "Button",               // Action, i.e. New Route
                 "clicked",              // Label    i.e. New Route
                 DogUtil.TRACKER_VALUE); // Value,
         DogUtil.TRACKER_VALUE++;
+        */
     }
 
     public void onClickDogWelfare(View v) {
@@ -392,6 +421,12 @@ public class ExerciseMenu extends Activity {
             // User logged
             startActivity(new Intent(this, DogProfile.class));
         }
+    }
+
+    public void onClickNearPhotosButton(View view) {
+       
+        startActivity(new Intent(this, MapNearDogPhotos.class));
+        
     }
 
     public void onClickTButtonLeftButton(View v) {

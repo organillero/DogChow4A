@@ -183,30 +183,37 @@
 
     <!-- DogRegister activity -->
 
-    <string name="dog_data_label">Datos Mascota</string>
+    <string name="dog_data_label">Datos del perro</string>
     <string name="name">Nombre</string>
+    <string name="dog_name">Nombre del perro</string>
     <string name="breed">Raza</string>
     <string name="gender">G\u00e9nero</string>
     <string name="life_Style">Tipo de Vida</string>
     <string name="activity">Actividad F\u00edsica</string>
     <string name="birthday_label">Fecha de Nacimiento</string>
+    <string name="dog_age">A\u00f1o estimado de nacimiento</string>
     <string name="birthday">Fecha</string>
-    <string name="dog_owner_data">Datos Due\u00f1o</string>
+    <string name="dog_owner_data">Datos del due\u00f1o</string>
     <string name="state">Estado</string>
     <string name="send">"   Registrar   "</string>
     <string name="save">Guardar</string>
-    
+    <string name="no_dogs_registered">No hay mascotas registradas</string>
+    <string name="age">Edad</string>
+    <string name="less_than_one_year">Menos de 1 a\u00f1o</string>
+    <string name="between_one_and_seven_years">Entre 1 y 7 a\u00f1os</string>
+    <string name="more_than_seven_years">M\u00e1s de 7 a\u00f1os</string>
+
     <!-- perfil del perro -->
-    
+
     <string name="edit_profile">Editar Perfil</string>
     <string name="tips">Tips</string>
-    
 
     <!-- PreSignup activity -->
     <string name="title_activity_pre_signup">PreSignup</string>
     <string name="presignup_banner">Esta funcionalidad esta limitada a usuarios registrados. Para continuar por favor selecciona alguna de las siguientes opciones.\n \u00a1Gracias!</string>
     <string name="recover_password">Recuperar contrase\u00f1a</string>
-    <string name="to_login">Loguearse</string>
+    <string name="to_login">Iniciar sesi\u00f3n</string>
+    <string name="enter">Entrar</string>
     <string name="to_signup">Registrarse</string>
 
     <!-- Signup activity -->
@@ -217,6 +224,9 @@
     <string name="to_signup_with">Registrarse con</string>
     <string name="ups">\u00a1Ups!</string>
     <string name="an_error_ocurred">\u00a1Ocurri\u00f3 un error!</string>
+    <string name="type_an_email">Ingrese un correo</string>
+    <string name="type_a_password">Ingrese una contrase\u00f1a</string>
+    <string name="password_and_confirmation_not_equal">La contrase\u00f1a y su confirmaci\u00f3n no son iguales</string>
     <string name="please_wait_signing_up">"Por favor espere... \u00a1registrando!"</string>
 
     <!-- Login activity -->
@@ -227,6 +237,7 @@
     <string name="preferences_name">dogapp</string>
     <string name="preference_user_id">userid_new</string>
     <string name="preference_dog_id">dogid</string>
+    <string name="preference_owner_id">owner_id</string>
 
     <!-- DialogHelper -->
     <string name="title_message">DogChow</string>
@@ -239,4 +250,32 @@
     <string name="email_empty_message">Ingrese su correo electr\u00f3nico</string>
     <string name="password_empty_message">Ingrese su contrase\u00f1a</string>
 
+
+    <!-- Show Dog Photo -->
+    <string name="title_activity_show_dog_photo">ShowDogPhoto</string>
+    <string name="please_wait_loading_dog_photo">Por favor espere\u2026 cargando imagen del perro</string>
+
+    <!-- Add Dog Photo -->
+    <string name="title_activity_add_dog_photo">AddDogPhoto</string>
+    <string name="add_dog_photo_label">Agregar fotograf\u00eda</string>
+    <string name="dog_photo_description_label">Descripci\u00f3n de la fotograf\u00eda</string>
+    <string name="add_photo_label">Agregar</string>
+    <string name="take_image">Tomar imagen</string>
+    <string name="take_from_camera">C\u00e1mara</string>
+    <string name="take_from_images_stored">Im\u00e1genes guardadas</string>
+    <string name="validation_alert_dialog_title">Datos incompletos</string>
+    <string name="dog_image_not_selected_dialog_message">Seleccione una imagen</string>
+
+    <!-- ShowCalendar activity -->
+    <string name="year">Año</string>
+    <string name="month">Mes</string>
+    <string name="consult">Consultar</string>
+    
+    
+    <!-- DiahlogOptionsPhoto activity -->
+    <string name="details">Ver detalles</string>
+    <string name="edit">Editar Foto</string>
+
+
 </resources>
+

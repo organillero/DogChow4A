@@ -33,6 +33,7 @@
                 android:layout_height="wrap_content"
                 android:layout_below="@+id/textView1"
                 android:layout_centerHorizontal="true"
+                android:inputType="textPersonName"
                 android:layout_marginTop="10dp" />
 
             <TextView
@@ -90,7 +91,6 @@
                 android:layout_marginTop="20dp"
                 android:layout_marginBottom="20dp"
                 android:text="@string/cancel"
-                
                 android:width="225dp" />
 
             <TextView

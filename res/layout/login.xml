@@ -101,8 +101,23 @@
                         android:layout_marginBottom="3dp"
                         android:layout_marginTop="5dp"
                         android:onClick="onClickForgotPasswordButton"
+                        android:visibility="invisible"
                         android:background="@drawable/i_forgot" >
                     </Button>
+                    
+                    <Button
+                        android:id="@+id/login_with_facebook_btn"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_below="@+id/submit"
+                        android:layout_centerHorizontal="true"
+                        android:layout_margin="30dp"
+                        android:background="@drawable/bt_login_with_fb"
+                        android:gravity="right|center_vertical"
+                        android:onClick="onClickLoginWithFacebook"
+                        android:text="@string/to_login_with"
+                        android:textSize="15dp"
+                        android:width="250dp" />
                 </LinearLayout>
 
                 <ProgressBar

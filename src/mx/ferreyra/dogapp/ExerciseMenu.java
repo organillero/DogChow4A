@@ -139,6 +139,7 @@ public class ExerciseMenu extends Activity {
         super.onActivityResult(requestCode, resultCode, intent);
 
         if (resultCode == Activity.RESULT_OK && intent != null) {
+            
             if (requestCode == DogUtil.NEW_ROUTE) {
                 Bundle extras = intent.getExtras();
                 Integer idUser = (Integer) extras.get("ID_USER");
@@ -148,12 +149,20 @@ public class ExerciseMenu extends Activity {
                     i.putExtra("loadroute", 2);
                     startActivity(i);
                 }
-            } else if(requestCode == DogUtil.LOAD_ROUTE) {
+            }
+            
+            else if(requestCode == DogUtil.LOAD_ROUTE) {
                 Intent i = new Intent(this, Starting.class);
                 i.putExtra("loadroute", 1);
                 startActivity(i);
-            } else if (requestCode == DogUtil.DOGWELFARE) {
+            }
+            
+            else if (requestCode == DogUtil.DOGWELFARE) {
                 startActivity(new Intent(this, DogProfile.class));
+            }
+            
+            else if (requestCode == DogUtil.DOG_CALENDAR){
+                startActivity(new Intent(this, ShowCalendar.class));
             }
         }
     }
@@ -381,20 +390,27 @@ public class ExerciseMenu extends Activity {
     }
 
     public void onClickCalendarButton(View view) {
-        // TODO implement this method
+     
+        if(app.getCurrentUserId()==null) {
+            startActivityForResult(new Intent(this, PreSignup.class), DogUtil.STATISTICS);
+        } else {
+            startActivity(new Intent(this, ShowCalendar.class));
+        }
     }
 
     public void onClickStatisticsButton(View v) {
         if(app.getCurrentUserId()==null) {
-            startActivityForResult(new Intent(this, PreSignup.class), DogUtil.STATISTICS);
+            startActivityForResult(new Intent(this, PreSignup.class), DogUtil.DOG_CALENDAR);
         } else {
             startActivity(new Intent(this, Report.class));
         }
+        /*
         analyticsTracker.trackEvent("Statictics",           // Category, i.e. Statictics Button
                 "Button",               // Action, i.e. New Route
                 "clicked",              // Label    i.e. New Route
                 DogUtil.TRACKER_VALUE); // Value,
         DogUtil.TRACKER_VALUE++;
+        */
     }
 
     public void onClickDogWelfare(View v) {

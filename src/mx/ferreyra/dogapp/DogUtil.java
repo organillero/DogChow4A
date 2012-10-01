@@ -19,13 +19,13 @@ public class DogUtil extends Application {
 
     public static final String DEBUG_TAG = "DogChowMx";
 
-    public static final int DOGWELFARE = 0x01;
-    public static final int STATISTICS = 0x02;
-    public static final int LOAD_ROUTE = 0x03;
-    public static final int NEW_ROUTE = 0x04;
+    public static final int NEW_ROUTE = 0x04;  //nueva ruta
+    public static final int STATISTICS = 0x02; //estadisticas
+    public static final int LOAD_ROUTE = 0x03; //cargar ruta
+    public static final int DOGWELFARE = 0x01; //bienestar canico
+    public static final int DOG_CALENDAR = 0x07; // calendario del perro
 
     public static final int DOG_PROFILE = 0x05;
-
     public static final int DOG_EDIT_PROFILE = 0x06;
 
     public static String FB_ACCESS_TOKEN_PREFERENCE_KEY = "fb_access_token";

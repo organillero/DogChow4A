@@ -59,9 +59,11 @@
                 android:layout_margin="5dp"
                 android:layout_toRightOf="@id/loadroute_btn"
                 android:src="@drawable/selector_shape_obscurecer"
-                android:onClick="onClickCalendarRouteButton"
+                android:onClick="onClickCalendarButton"
                 android:background="@drawable/menu_calendar_button" />
 
+            
+            
             <Button
                 android:id="@+id/statistics_btn"
                 android:layout_width="90dp"

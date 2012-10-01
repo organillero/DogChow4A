@@ -4,6 +4,7 @@ import java.util.Date;
 import java.util.List;
 
 import mx.ferreyra.dogapp.pojos.FotosMascotaByLatLonResponse;
+import mx.ferreyra.dogapp.pojos.FotosMascotaByUsuarioMesAnoResponse;
 import mx.ferreyra.dogapp.recursos.Recursos;
 import mx.ferreyra.dogapp.ui.UI;
 import android.annotation.SuppressLint;
@@ -31,47 +32,51 @@ import android.widget.ImageView;
 
 public class ShowCalendar extends Activity {
 
-    
+
     private View activityRootView;
     private Context context;
     private GridView gridview;
-    
+
     private Button calMonth;
     private Button calYear;
+
+    public ImageAdapter adapter=null;
     
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         context = this;
-        
+
         setContentView(R.layout.activity_show_calendar);
 
         activityRootView = findViewById(R.id.activityRootView);
-        
+
         gridview = (GridView) findViewById(R.id.gridview);
         calMonth = (Button) findViewById(R.id.cal_month);
         calYear = (Button) findViewById(R.id.cal_year);
-        gridview.setAdapter(new ImageAdapter(this));
         
-        
+        adapter =  new ImageAdapter(this);
+        gridview.setAdapter(adapter);
+
+
 
         gridview.setOnItemClickListener(new OnItemClickListener() {
             public void onItemClick(AdapterView<?> parent, View v, int position, long id) {
                 UI.showToast("pos." + position, context);
-                
+
             }
         });
 
     }
 
-    
+
     private int month = -1;
     private int year = -1;
-    
+
     @SuppressLint("NewApi")
-	public void  onClickCalMonthButton (View v){
-        
+    public void  onClickCalMonthButton (View v){
+
         AlertDialog.Builder builder;
         checkAndHideKeyboard(null);
         builder = Build.VERSION.SDK_INT>=11 ?
@@ -87,13 +92,13 @@ public class ShowCalendar extends Activity {
                     }
                 });
                 builder.create().show();
-        
-        
+
+
     }
-    
+
     @SuppressLint("NewApi")
-	public void onClickCalYearButton (View v){
-        
+    public void onClickCalYearButton (View v){
+
         AlertDialog.Builder builder;
         checkAndHideKeyboard(null);
         builder = Build.VERSION.SDK_INT>=11 ?
@@ -109,10 +114,15 @@ public class ShowCalendar extends Activity {
                     }
                 });
                 builder.create().show();
-        
-        
-        
+
+
+
     }
+
+    public void  onClickConsultCalButton (View v){
+        new MyCalAsyncTask().execute();
+    } 
+
 
     public class ImageAdapter extends BaseAdapter {
         private Context mContext;
@@ -165,8 +175,8 @@ public class ShowCalendar extends Activity {
         };
     }
 
-    
-    private class MyCalAsyncTask extends AsyncTask<Void, Void, List<FotosMascotaByLatLonResponse>> {
+
+    private class MyCalAsyncTask extends AsyncTask<Void, Void,  List<FotosMascotaByUsuarioMesAnoResponse>> {
 
 
         ProgressDialog progress;
@@ -179,7 +189,7 @@ public class ShowCalendar extends Activity {
         }
 
         @Override
-        protected List<FotosMascotaByLatLonResponse> doInBackground(Void... arg0) {
+        protected List<FotosMascotaByUsuarioMesAnoResponse> doInBackground(Void... arg0) {
 
 
             String bestProvider;
@@ -188,36 +198,37 @@ public class ShowCalendar extends Activity {
             bestProvider = locationManager.getBestProvider(criteria, true);      
             Location location = locationManager.getLastKnownLocation(bestProvider);
 
-            String[][] ans = null;
+            List<FotosMascotaByUsuarioMesAnoResponse> ans = null;
 
             WsDogUtils dogUtils = new WsDogUtils();
 
-           Integer userId = DogUtil.getInstance().getCurrentUserId();
-           Date date= new Date();
-           
+            Integer userId = DogUtil.getInstance().getCurrentUserId();
+            Date date= new Date();
+
+            userId = 10;
             
             try {
-                ans = dogUtils.getFotosMascotaByUsuarioMesAno(userId, date);
-                
-                //ans = dogUtils.fotosMascotaByLatLonToPojo( dogUtils.getFotosMascotaByLatLon (location.getLatitude(), location.getLongitude(), 20 ) );
+                ans = dogUtils.fotosMascotaByUsuarioMesAnoToPojo(dogUtils.getFotosMascotaByUsuarioMesAno( userId.toString(), "2012-09-01"));
             } catch (Exception e) {
                 e.printStackTrace();
                 ans = null;
             } 
 
-            return null;
+            return ans;
         }
 
 
         @Override
-        protected void onPostExecute(List<FotosMascotaByLatLonResponse> fotosMascotas) {
+        protected void onPostExecute( List<FotosMascotaByUsuarioMesAnoResponse> fotosMascotas) {
             super.onPostExecute(fotosMascotas);
             progress.dismiss();
-            
 
+
+            //adapter.add;
+            
         }
     }
-    
+
     public void checkAndHideKeyboard(View view){
         if(getResources().getConfiguration().keyboardHidden == Configuration.KEYBOARDHIDDEN_NO){
             InputMethodManager imm = (InputMethodManager)context.getSystemService(Context.INPUT_METHOD_SERVICE);
@@ -225,5 +236,5 @@ public class ShowCalendar extends Activity {
         }
     }
 
-    
+
 }

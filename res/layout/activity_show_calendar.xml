@@ -38,7 +38,7 @@
             android:layout_marginTop="20dp"
             android:background="@drawable/bt_send"
             android:contentDescription="@null"
-            android:onClick="onClickSendButton"
+            android:onClick="onClickConsultCalButton"
             android:text="@string/consult"
             android:textColor="@android:color/white" />
     </RelativeLayout>

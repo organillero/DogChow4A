@@ -12,6 +12,8 @@ import mx.ferreyra.dogapp.org.ksoap2.SoapEnvelope;
 import mx.ferreyra.dogapp.org.ksoap2.serialization.SoapObject;
 import mx.ferreyra.dogapp.org.ksoap2.serialization.SoapSerializationEnvelope;
 import mx.ferreyra.dogapp.org.ksoap2.transport.HttpTransportSE;
+import mx.ferreyra.dogapp.pojos.FotosMascotaByLatLonResponse;
+import mx.ferreyra.dogapp.pojos.FotosMascotaByUsuarioMesAnoResponse;
 
 import org.xmlpull.v1.XmlPullParserException;
 

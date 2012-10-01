@@ -58,7 +58,7 @@ public class MapNearDogPhotos extends MapActivity {
 
         GeoPoint geoPoint = new GeoPoint(19426900, -99182200);
         mc.animateTo(geoPoint);
-        mc.setZoom(20);
+        mc.setZoom(14);
         mapView.invalidate();
 
         this.myLocationOverlay = new MyLocationOverlay(this, mapView);
@@ -100,7 +100,7 @@ public class MapNearDogPhotos extends MapActivity {
         @Override
         protected void onPreExecute() {
             super.onPreExecute();
-            progress =ProgressDialog.show(context, "Espere de favor", "Actualizando informaci—n", true, false);
+            progress =ProgressDialog.show(context, "Espere de favor", "Actualizando informaci\u00f3n", true, false);
 
         }
 

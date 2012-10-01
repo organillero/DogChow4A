@@ -1,36 +1,32 @@
 package mx.ferreyra.dogapp;
 
 
+import static mx.ferreyra.dogapp.ui.DialogHelper.ONLY_DISMISS;
+import static mx.ferreyra.dogapp.ui.DialogHelper.showOkDialog;
+
 import java.io.ByteArrayInputStream;
+import java.io.IOException;
 import java.io.InputStream;
 import java.io.UnsupportedEncodingException;
-import java.net.MalformedURLException;
-import java.net.UnknownHostException;
-import java.net.UnknownServiceException;
 
 import javax.xml.parsers.SAXParser;
 import javax.xml.parsers.SAXParserFactory;
 
-import mx.ferreyra.dogapp.org.ksoap2.SoapEnvelope;
-import mx.ferreyra.dogapp.org.ksoap2.serialization.SoapObject;
-import mx.ferreyra.dogapp.org.ksoap2.serialization.SoapSerializationEnvelope;
-import mx.ferreyra.dogapp.org.ksoap2.transport.HttpTransportSE;
-import static mx.ferreyra.dogapp.ui.UI.*;
-import static mx.ferreyra.dogapp.ui.DialogHelper.*;
+import mx.ferreyra.dogapp.pojos.FacebookUser;
 
 import org.xml.sax.Attributes;
 import org.xml.sax.InputSource;
 import org.xml.sax.SAXException;
 import org.xml.sax.XMLReader;
 import org.xml.sax.helpers.DefaultHandler;
+import org.xmlpull.v1.XmlPullParserException;
 
 import android.app.Activity;
+import android.app.ProgressDialog;
+import android.content.Context;
 import android.content.Intent;
-import android.graphics.Color;
-import android.graphics.RectF;
-import android.graphics.drawable.GradientDrawable;
-import android.graphics.drawable.ShapeDrawable;
-import android.graphics.drawable.shapes.RoundRectShape;
+import android.content.SharedPreferences;
+import android.content.SharedPreferences.Editor;
 import android.os.AsyncTask;
 import android.os.AsyncTask.Status;
 import android.os.Bundle;
@@ -42,29 +38,39 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ProgressBar;
 import android.widget.TextView;
-import android.widget.Toast;
+
+import com.facebook.android.DialogError;
+import com.facebook.android.Facebook;
+import com.facebook.android.Facebook.DialogListener;
+import com.facebook.android.FacebookError;
+import com.google.gson.Gson;
 
 public class LoginScreen extends Activity{
 
 	private String result;
 	private SoapParseLogin soapParseLogin;
 	private EditText email,password;
-	private Intent i; 
+	private Intent i;
 	private String returnValue;
-	private String userEmail,userPassword; 
+	private String userEmail,userPassword;
 	private ProgressBar progressBar;
 
 	private Button btnLeftTitle, btnRightTitle;
 	private TextView txtTitle;
-	
+
 	private LoginHandler loginHandler;
 
-	public void onCreate(Bundle savedInstanceState)
-	{ 
+    public static final String IS_FACEBOOK_SIGNUP = "1";
+    public static final String NOT_IS_FACEBOOK_SIGNUP = "0";
+    private Facebook f;
+
+	@Override
+    public void onCreate(Bundle savedInstanceState)
+	{
 		super.onCreate(savedInstanceState);
 
 		requestWindowFeature(Window.FEATURE_CUSTOM_TITLE);
-		setContentView(R.layout.login); 
+		setContentView(R.layout.login);
 		getWindow().setFeatureInt(Window.FEATURE_CUSTOM_TITLE,
 				R.layout.title_bar);
 
@@ -77,11 +83,11 @@ public class LoginScreen extends Activity{
 		btnRightTitle.setVisibility(View.INVISIBLE);
 
 
-		email = (EditText)findViewById(R.id.emailEdit);  
-		password = (EditText)findViewById(R.id.passwordEdit); 
+		email = (EditText)findViewById(R.id.emailEdit);
+		password = (EditText)findViewById(R.id.passwordEdit);
 		progressBar = (ProgressBar)findViewById(R.id.login_progress);
 		progressBar.setVisibility(View.INVISIBLE);
-		
+
 
 
 		btnLeftTitle.setOnClickListener(new OnClickListener() {
@@ -93,7 +99,7 @@ public class LoginScreen extends Activity{
 		});
 
 
-	} 
+	}
 
     public void onClickForgotPasswordButton(View view) {
         startActivity(new Intent(this, RetrievePassword.class));
@@ -105,10 +111,101 @@ public class LoginScreen extends Activity{
                 this.userEmail = this.email.getText().toString(),
                 this.userPassword = this.password.getText().toString()
             };
-            soapParseLogin = new SoapParseLogin();
+            soapParseLogin = new SoapParseLogin(this);
             soapParseLogin.execute(input);
         }
     }
+
+    public void onClickLoginWithFacebook(View view) {
+        f = new Facebook(DogUtil.FACEBOOK_APPID);
+
+        if(f.isSessionValid()) {
+            // Valid session
+            new GetDataFB(this).run();
+        } else {
+            // Not valid session
+            String[] fbPermissions = new String[] {
+                    "email",
+                    "read_stream",
+                    "publish_stream"};
+            f.authorize(this, fbPermissions,
+                    Facebook.FORCE_DIALOG_AUTH,
+                    new DialogListenerForFacebookSinup(this));
+        }
+    }
+
+    private class GetDataFB implements Runnable {
+        private final Context context;
+
+        public GetDataFB(Context context) {
+            this.context = context;
+        }
+
+        @Override
+        public void run() {
+            try {
+                //Facebook f = DogUtil.getInstance().getFacebook();
+
+                SharedPreferences pref = getSharedPreferences(getString(R.string.preferences_name), 0);
+                String fbToken   = f.getAccessToken();
+                long   fbExpires = f.getAccessExpires();
+
+                if(fbToken == null || fbExpires<0) {
+                    // Something wrong
+                    // TODO Improve this stage
+                } else {
+                    // Storing Facebook credentials in preferences
+                    Editor e = pref.edit();
+                    e.putString(DogUtil.FB_ACCESS_TOKEN_PREFERENCE_KEY, fbToken);
+                    e.putLong(DogUtil.FB_ACCESS_EXPIRES_PREFERENCE_KEY, fbExpires);
+                    e.commit();
+
+                    // Pulling user data
+                    String me = f.request("me");
+
+                    // Parsing
+                    FacebookUser user = new Gson().fromJson(me, FacebookUser.class);
+
+                    // Call web service
+                    String[] args = {
+                            user.getEmail(),
+                            user.getId()};
+                    soapParseLogin = new SoapParseLogin(context);
+                    soapParseLogin.execute(args);
+                }
+            } catch (Exception e) {
+                Log.e(DogUtil.DEBUG_TAG, e.toString(), e);
+            }
+        }
+    }
+
+    private class DialogListenerForFacebookSinup implements DialogListener {
+        private final Context context;
+
+        public DialogListenerForFacebookSinup(Context context) {
+            this.context = context;
+        }
+
+        @Override
+        public void onComplete(Bundle values) {
+            new GetDataFB(context).run();
+        }
+
+        @Override
+        public void onFacebookError(FacebookError error) {
+            Log.e(DogUtil.DEBUG_TAG, error.toString());
+        }
+
+        @Override
+        public void onError(DialogError e) {
+            Log.e(DogUtil.DEBUG_TAG, e.toString());
+        }
+
+        @Override
+        public void onCancel() {
+            // Nothing to do
+        }
+    };
 
     /**
      * Validates form to send for login.
@@ -139,124 +236,105 @@ public class LoginScreen extends Activity{
 		super.onPause();
 		if(progressBar != null)
 			progressBar.setVisibility(View.INVISIBLE);
-		
+
 		if(soapParseLogin != null && (soapParseLogin.getStatus() == Status.PENDING || soapParseLogin.getStatus() == Status.RUNNING)){
 			soapParseLogin.cancel(true);
 		}
 	}
 
-	private class SoapParseLogin extends AsyncTask<String, String, Boolean> {
+	private class SoapParseLogin extends AsyncTask<String, Integer, Integer> {
 		private String errorMsg;
+		private final Context context;
+		private ProgressDialog dialog;
+
+		public SoapParseLogin(Context context) {
+		    this.context = context;
+		}
+
 		@Override
 		protected void onPreExecute() {
-			if(progressBar != null){
-				progressBar.setVisibility(View.VISIBLE);
-				
-				int cornerRadius = 10;
-				float[] outerR = new float[]{cornerRadius, cornerRadius, cornerRadius, cornerRadius, cornerRadius, cornerRadius, cornerRadius, cornerRadius};
-				RectF inset = new RectF(2, 2, 2, 2);
-				float[] innerR = new float[]{cornerRadius, cornerRadius, cornerRadius, cornerRadius, cornerRadius, cornerRadius, cornerRadius, cornerRadius};
-				ShapeDrawable circle = new ShapeDrawable(new RoundRectShape(outerR, inset, innerR));
-				circle.setPadding(6, 0, 6, 0);
-				 
-				GradientDrawable gradient = new GradientDrawable(GradientDrawable.Orientation.TOP_BOTTOM, new int[]{Color.BLUE, Color.RED});
-				gradient.setCornerRadius(cornerRadius);
-				gradient.setBounds(circle.getBounds());		
-
-				
-				progressBar.setProgressDrawable(gradient);   
-				progressBar.setBackgroundDrawable(getResources().getDrawable(android.R.drawable.progress_horizontal));
-			}
+		    super.onPreExecute();
+            dialog = new ProgressDialog(context);
+            dialog.setMessage(context.getString(R.string.please_wait_signing_up));
+            dialog.show();
+//			if(progressBar != null){
+//				progressBar.setVisibility(View.VISIBLE);
+//
+//				int cornerRadius = 10;
+//				float[] outerR = new float[]{cornerRadius, cornerRadius, cornerRadius, cornerRadius, cornerRadius, cornerRadius, cornerRadius, cornerRadius};
+//				RectF inset = new RectF(2, 2, 2, 2);
+//				float[] innerR = new float[]{cornerRadius, cornerRadius, cornerRadius, cornerRadius, cornerRadius, cornerRadius, cornerRadius, cornerRadius};
+//				ShapeDrawable circle = new ShapeDrawable(new RoundRectShape(outerR, inset, innerR));
+//				circle.setPadding(6, 0, 6, 0);
+//
+//				GradientDrawable gradient = new GradientDrawable(GradientDrawable.Orientation.TOP_BOTTOM, new int[]{Color.BLUE, Color.RED});
+//				gradient.setCornerRadius(cornerRadius);
+//				gradient.setBounds(circle.getBounds());
+//
+//
+//				progressBar.setProgressDrawable(gradient);
+//				progressBar.setBackgroundDrawable(getResources().getDrawable(android.R.drawable.progress_horizontal));
+//			}
 		}
 
 
-		protected Boolean doInBackground(String... results) {
-			try {
-				SoapObject request = new SoapObject(AppData.NAMESPACE,	AppData.METHOD_NAME_USER_LOGIN);
+		@Override
+        protected Integer doInBackground(String... results) {
+		    WsDogUtils ws = new WsDogUtils();
+		    Integer result = null;
+            try {
+                result = ws.userLogin(results[0], results[1]);
+            } catch (IOException e) {
+                Log.e(DogUtil.DEBUG_TAG, e.toString(), e);
+            } catch (XmlPullParserException e) {
+                Log.e(DogUtil.DEBUG_TAG, e.toString(), e);
+            }
 
-				request.addProperty("username", userEmail);
-				request.addProperty("password", userPassword);
-
-				SoapSerializationEnvelope envelope = new SoapSerializationEnvelope(
-						SoapEnvelope.VER11);
-				envelope.dotNet=true;
-
-				envelope.setOutputSoapObject(request);
-
-				HttpTransportSE androidHttpTransport = new HttpTransportSE(AppData.URL);
-				androidHttpTransport.setXmlVersionTag("<?xml version=\"1.0\" encoding=\"UTF-8\"?>");
-				androidHttpTransport.debug=true;				
-
-				androidHttpTransport.call(AppData.SOAP_ACTION+AppData.METHOD_NAME_USER_LOGIN, envelope); 
-
-				result = androidHttpTransport.responseDump;	
-
-				return getParsedMyXML(result);
-			}
-			catch (UnknownHostException e) {
-				errorMsg = getResources().getString(R.string.no_connection);
-				Log.e(DogUtil.DEBUG_TAG, errorMsg);
-				return false;
-			}catch (UnknownServiceException e) {
-				errorMsg = getResources().getString(R.string.service_unavailable);				
-				Log.e(DogUtil.DEBUG_TAG,  getResources().getString(R.string.service_unavailable));
-				return false;
-			}catch (MalformedURLException e) {
-				errorMsg = getResources().getString(R.string.url_malformed);	
-				//e.printStackTrace();
-				Log.e(DogUtil.DEBUG_TAG, errorMsg );
-				return false;
-			}catch (Exception e) {
-				errorMsg = getResources().getString(R.string.unable_to_get_data);	
-				Log.e(DogUtil.DEBUG_TAG, errorMsg);
-				//e.printStackTrace();
-				return false;
-			}
-
-
+		    return result;
 		}
 
-		protected void onProgressUpdate(String... values ) {
-		}
-
-		protected void onPostExecute(Boolean b) {
-			try{
-				if(progressBar != null)
-					progressBar.setVisibility(View.INVISIBLE);
-
-				if (loginHandler != null && !loginHandler.getData())
-					Toast.makeText(getApplicationContext(), R.string.service_error, Toast.LENGTH_SHORT).show();
-				else if(!b){
-					Toast.makeText(getApplicationContext(), errorMsg, Toast.LENGTH_SHORT).show();
-					return;
-				}	
-				if (returnValue.equals("-1")){
-					Toast.makeText(getApplicationContext(), R.string.invalid_params, Toast.LENGTH_SHORT).show();
-				}else if (returnValue.equals("-2")) {
-					Toast.makeText(getApplicationContext(), R.string.invalid_username_pwd, Toast.LENGTH_SHORT).show();
-				}else if (returnValue.equals("-3")) {
-					Toast.makeText(getApplicationContext(), R.string.user_not_exist, Toast.LENGTH_SHORT).show();
-				}else{
-					Integer userId = Integer.parseInt( returnValue );
-					// Save user id
-                    DogUtil.getInstance().saveCurrentUserId(userId);
-
-                    Intent intent = new Intent();
-			        intent.putExtra("ID_USER", userId);
-					
-					setResult(RESULT_OK, intent);
-					finish();
-				}
-			}catch (Exception e) { 
-
-			}
+		@Override
+        protected void onPostExecute(Integer result) {
+		    super.onPostExecute(result);
+            dialog.dismiss();
+            dispatchResult(result);
+//			try{
+//				if(progressBar != null)
+//					progressBar.setVisibility(View.INVISIBLE);
+//
+//				if (loginHandler != null && !loginHandler.getData())
+//					Toast.makeText(getApplicationContext(), R.string.service_error, Toast.LENGTH_SHORT).show();
+//				else if(!b){
+//					Toast.makeText(getApplicationContext(), errorMsg, Toast.LENGTH_SHORT).show();
+//					return;
+//				}
+//				if (returnValue.equals("-1")){
+//					Toast.makeText(getApplicationContext(), R.string.invalid_params, Toast.LENGTH_SHORT).show();
+//				}else if (returnValue.equals("-2")) {
+//					Toast.makeText(getApplicationContext(), R.string.invalid_username_pwd, Toast.LENGTH_SHORT).show();
+//				}else if (returnValue.equals("-3")) {
+//					Toast.makeText(getApplicationContext(), R.string.user_not_exist, Toast.LENGTH_SHORT).show();
+//				}else{
+//					Integer userId = Integer.parseInt( returnValue );
+//					// Save user id
+//                    DogUtil.getInstance().saveCurrentUserId(userId);
+//
+//                    Intent intent = new Intent();
+//			        intent.putExtra("ID_USER", userId);
+//
+//					setResult(RESULT_OK, intent);
+//					finish();
+//				}
+//			}catch (Exception e) {
+//
+//			}
 		}
 
 		@Override
 		protected void onCancelled() {
 
 			super.onCancelled();
-			try{ 
+			try{
 				if(progressBar != null)
 					progressBar.setVisibility(View.INVISIBLE);
 			}catch (Exception e) {
@@ -266,6 +344,33 @@ public class LoginScreen extends Activity{
 		}
 	}
 
+	private void dispatchResult(Integer result) {
+        if(result == null || result < 0) {
+            // -1 => Some data wrong
+            // -2 => User registered
+            // -3 => Server error
+            Log.d(DogUtil.DEBUG_TAG, "Webservice response for signup request => " + result);
+            showOkDialog(this, getString(R.string.an_error_ocurred), ONLY_DISMISS);
+        } else {
+            // Save user id
+            DogUtil.getInstance().saveCurrentUserId(result);
+
+            // Return back
+            Intent intent = new Intent();
+            intent.putExtra("ID_USER", result);
+            setResult(RESULT_OK, intent);
+            finish();
+        }
+//          Integer userId = Integer.parseInt( returnValue );
+//          // Save user id
+//            DogUtil.getInstance().saveCurrentUserId(userId);
+//
+//            Intent intent = new Intent();
+//          intent.putExtra("ID_USER", userId);
+//
+//          setResult(RESULT_OK, intent);
+//          finish();        }
+    }
 
 	private  class LoginHandler extends DefaultHandler{
 
@@ -285,12 +390,12 @@ public class LoginScreen extends Activity{
 
 		@Override
 		public void startElement(String namespaceURI, String localName,
-				String qName, Attributes atts) throws SAXException {		
+				String qName, Attributes atts) throws SAXException {
 			if (localName.equals("return")){
 				isreturn = true;
 				hasData = true;
 			}
-		} 
+		}
 		@Override
 		public void endElement(String namespaceURI, String localName, String qName)
 		throws SAXException {
@@ -299,7 +404,7 @@ public class LoginScreen extends Activity{
 				isreturn = false;
 
 			}
-		}  
+		}
 
 		@Override
 		public void characters(char ch[], int start, int length) {
@@ -316,7 +421,7 @@ public class LoginScreen extends Activity{
 			return hasData;
 		}
 	}
-	
+
 	private boolean getParsedMyXML(String xml) throws Exception {
 		SAXParserFactory spf = SAXParserFactory.newInstance();
 		SAXParser sp = spf.newSAXParser();
@@ -324,14 +429,14 @@ public class LoginScreen extends Activity{
 		XMLReader xr = sp.getXMLReader();
 
 		loginHandler = new LoginHandler();
-		xr.setContentHandler(loginHandler);   
+		xr.setContentHandler(loginHandler);
 		try {
 			InputStream is = new ByteArrayInputStream(xml.getBytes("UTF-8"));
 			xr.parse(new InputSource(is));
 		} catch (UnsupportedEncodingException e) {
 			e.printStackTrace();
 			return false;
-		} 
+		}
 
 		if(!loginHandler.getData())
 			return false;

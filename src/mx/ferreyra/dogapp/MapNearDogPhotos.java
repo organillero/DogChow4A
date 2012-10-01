@@ -168,8 +168,8 @@ public class MapNearDogPhotos extends MapActivity {
             Drawable icon = new BitmapDrawable(getResources(),bmp);
 
             icon.setBounds(
-                    0 - icon.getIntrinsicWidth() / 2, 0 - icon.getIntrinsicHeight(), 
-                    icon.getIntrinsicWidth() / 2, 0);
+                    0 - icon.getIntrinsicWidth(), 0 - icon.getIntrinsicHeight()*2, 
+                    icon.getIntrinsicWidth(), 0);
 
             return  icon;
         }
